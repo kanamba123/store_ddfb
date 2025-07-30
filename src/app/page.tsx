@@ -18,7 +18,10 @@ export default function Dashboard() {
 
      
 
-      
+      {/* Footer */}
+      <footer className="bg-white shadow-inner py-4 text-center text-sm text-gray-500">
+        © {new Date().getFullYear()} Your Store. All rights reserved.
+      </footer>
     </div>
   );
 }
