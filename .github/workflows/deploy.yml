@@ -54,6 +54,6 @@ jobs:
             cd $DEPLOYMENT_DIRECTORY &&
             npm install --force &&
             npm run build &&
-            /root/.nvm/versions/node/v23.6.1/bin/pm2 restart win2cop_front_next || /root/.nvm/versions/node/v23.6.1/bin/pm2 start npm --name win2cop_front_next -- run start &&
+            /root/.nvm/versions/node/v23.6.1/bin/pm2 restart store-ddfb  || /root/.nvm/versions/node/v23.6.1/bin/pm2 start npm --name store-ddfb  -- run start &&
             /root/.nvm/versions/node/v23.6.1/bin/pm2 save
           "
