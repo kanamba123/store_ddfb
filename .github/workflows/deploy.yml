@@ -54,6 +54,6 @@ jobs:
             cd $DEPLOYMENT_DIRECTORY &&
             npm install --force &&
             npm run build &&
-            /root/.nvm/versions/node/v23.6.1/bin/pm2 restart ecosystem.config.js  || /root/.nvm/versions/node/v23.6.1/bin/pm2 start ecosystem.config.js --env production &&
+            /root/.nvm/versions/node/v23.6.1/bin/pm2 restart ecosystem.config.js  &&
             /root/.nvm/versions/node/v23.6.1/bin/pm2 save
           "
