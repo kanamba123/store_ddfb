@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
 import { useForm } from "react-hook-form"
 import axios from "axios"
+import { API_URL } from "@/config/API"
 
 interface VariantFormData {
   variantProductName: string
@@ -26,7 +27,7 @@ export default function UploadVariantForm() {
 
     const validate = async () => {
       try {
-        const res = await axios.get(`/api/public-upload/validate/${token}`)
+        const res = await axios.get(`${API_URL}/public-upload/validate/${token}`)
         if (res.data?.valid) {
           setIsValidToken(true)
         } else {
@@ -45,7 +46,7 @@ export default function UploadVariantForm() {
 
   const onSubmit = async (data: VariantFormData) => {
     try {
-      await axios.post(`/api/public-upload/${token}`, data)
+      await axios.post(`${API_URL}/public-upload/${token}`, data)
       setSubmitted(true)
       reset()
     } catch (err) {
