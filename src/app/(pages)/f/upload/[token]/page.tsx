@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useParams } from "next/navigation"
-import { useForm, useFieldArray, WatchObserver } from "react-hook-form"
+import { useForm, useFieldArray } from "react-hook-form"
 import axios from "axios"
 import { API_URL } from "@/config/API"
 
@@ -37,12 +37,11 @@ interface VariantFormData {
 
 export default function UploadVariantForm() {
   const { token } = useParams()
-  const [isValidToken, setIsValidToken] = useState(false)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [submitted, setSubmitted] = useState(false)
 
-  const { register, control, handleSubmit, reset, watch, formState: { errors } } = useForm<VariantFormData>({
+  const { register, control, handleSubmit, reset, watch } = useForm<VariantFormData>({
     defaultValues: { specifications: [{ key: "", value: "" }] }
   })
 
@@ -70,8 +69,9 @@ export default function UploadVariantForm() {
     const validate = async () => {
       try {
         const res = await axios.get(`${API_URL}/public-upload/validate/${token}`)
-        setIsValidToken(res.data?.valid)
-        if (!res.data?.valid) setError("⛔ Lien invalide ou expiré.")
+        if (!res.data?.valid) {
+          setError("⛔ Lien invalide ou expiré.")
+        }
       } catch {
         setError("⛔ Lien invalide ou expiré.")
       } finally {
@@ -91,8 +91,12 @@ export default function UploadVariantForm() {
           Array.from(value).forEach(file => formData.append("images", file))
         } else if (key === "specifications") {
           formData.append("specifications", JSON.stringify(value))
-        } else {
-          formData.append(key, value as any)
+        } else if (
+          typeof value === "string" ||
+          typeof value === "number" ||
+          typeof value === "boolean"
+        ) {
+          formData.append(key, String(value))
         }
       })
 
@@ -104,7 +108,7 @@ export default function UploadVariantForm() {
       reset()
     } catch (err) {
       console.error(err)
-      setError("❌ Échec de l'envoi. Vérifiez les champs.")
+      setError("❌ Échec de l&apos;envoi. Vérifiez les champs.")
     }
   }
 
@@ -117,70 +121,39 @@ export default function UploadVariantForm() {
       <h1 className="text-2xl font-bold mb-6 text-center">🛍️ Ajouter une Variante de Produit</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        {/* Grid Inputs */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-1 font-medium">Nom de la variante *</label>
-            <input {...register("variantProductName", { required: true })} className={inputClass} />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">Type de variante</label>
-            <input {...register("variantType")} className={inputClass} />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">Prix de vente (€) *</label>
-            <input type="number" step="0.01" {...register("sellingPrice", { required: true })} className={inputClass} />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">Prix conseillé</label>
-            <input type="number" step="0.01" {...register("recommendedPrice")} className={inputClass} />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">Prix d'achat</label>
-            <input type="number" step="0.01" {...register("purchasePrice")} className={inputClass} />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">Stock *</label>
-            <input type="number" {...register("stock", { required: true })} className={inputClass} />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">Seuil de stock bas</label>
-            <input type="number" {...register("lowStockThreshold")} className={inputClass} />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">ID du produit principal *</label>
-            <input type="number" {...register("productId", { required: true })} className={inputClass} />
-          </div>
+          <Input label="Nom de la variante *" {...register("variantProductName", { required: true })} />
+          <Input label="Type de variante" {...register("variantType")} />
+          <Input label="Prix de vente (€) *" type="number" {...register("sellingPrice", { required: true })} />
+          <Input label="Prix conseillé" type="number" {...register("recommendedPrice")} />
+          <Input label="Prix d&apos;achat" type="number" {...register("purchasePrice")} />
+          <Input label="Stock *" type="number" {...register("stock", { required: true })} />
+          <Input label="Seuil de stock bas" type="number" {...register("lowStockThreshold")} />
+          <Input label="ID du produit principal *" type="number" {...register("productId", { required: true })} />
         </div>
 
-        {/* Description */}
         <div>
           <label className="block mb-1 font-medium">Description</label>
           <textarea {...register("description")} className={inputClass} />
         </div>
 
-        {/* Specifications */}
         <div>
           <label className="block mb-1 font-medium">Spécifications</label>
           {fields.map((field, index) => (
             <div key={field.id} className="flex flex-col sm:flex-row gap-2 mb-2">
-              <input {...register(`specifications.${index}.key`)} placeholder="Clé" className={`${inputClass} flex-1`} />
-              <input {...register(`specifications.${index}.value`)} placeholder="Valeur" className={`${inputClass} flex-1`} />
-              <button type="button" onClick={() => remove(index)} className="text-red-500 text-sm self-center sm:self-auto">Supprimer</button>
+              <input {...register(`specifications.${index}.key`)} placeholder="Clé" className={inputClass} />
+              <input {...register(`specifications.${index}.value`)} placeholder="Valeur" className={inputClass} />
+              <button type="button" onClick={() => remove(index)} className="text-red-500 text-sm self-center">Supprimer</button>
             </div>
           ))}
-          <button type="button" onClick={() => append({ key: "", value: "" })} className="text-blue-500 mt-1">
-            ➕ Ajouter une spécification
-          </button>
+          <button type="button" onClick={() => append({ key: "", value: "" })} className="text-blue-500 mt-2">➕ Ajouter une spécification</button>
         </div>
 
-        {/* Images */}
         <div>
           <label className="block mb-1 font-medium">Images</label>
           <input type="file" {...register("images")} multiple accept="image/*" className={inputClass} />
         </div>
 
-        {/* Checkboxes */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
           <label><input type="checkbox" {...register("isPromotion")} /> Promotion</label>
           <label><input type="checkbox" {...register("isFeatured")} /> En vedette</label>
@@ -188,7 +161,6 @@ export default function UploadVariantForm() {
           <label><input type="checkbox" {...register("isNewArrival")} /> Nouveauté</label>
         </div>
 
-        {/* Status */}
         <div>
           <label className="block mb-1 font-medium">Statut</label>
           <select {...register("status")} className={inputClass}>
@@ -199,37 +171,18 @@ export default function UploadVariantForm() {
           </select>
         </div>
 
-        {/* Visibility */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label className="block mb-1 font-medium">Date de début de visibilité</label>
-            <input type="datetime-local" {...register("visibilityStart")} className={inputClass} />
-          </div>
-          <div>
-            <label className="block mb-1 font-medium">Date de fin de visibilité</label>
-            <input type="datetime-local" {...register("visibilityEnd")} className={inputClass} />
-          </div>
+          <Input label="Date de début de visibilité" type="datetime-local" {...register("visibilityStart")} />
+          <Input label="Date de fin de visibilité" type="datetime-local" {...register("visibilityEnd")} />
         </div>
 
-        {/* Tags */}
-        <div>
-          <label className="block mb-1 font-medium">Tags (séparés par des virgules)</label>
-          <input {...register("tags")} className={inputClass} placeholder="été,promotion,homme" />
-        </div>
-
-        {/* Guide URL */}
-        <div>
-          <label className="block mb-1 font-medium">Lien guide utilisateur</label>
-          <input {...register("userGuideURL")} className={inputClass} placeholder="https://..." />
-        </div>
-
-        {/* Admin Note */}
+        <Input label="Tags (séparés par des virgules)" {...register("tags")} />
+        <Input label="Lien guide utilisateur" {...register("userGuideURL")} />
         <div>
           <label className="block mb-1 font-medium">Note interne</label>
-          <textarea {...register("adminNote")} className={inputClass} placeholder="Visible par l'admin uniquement" />
+          <textarea {...register("adminNote")} className={inputClass} />
         </div>
 
-        {/* 📝 Summary Block */}
         <div className="p-4 border dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300">
           <h2 className="font-semibold mb-2">🧾 Résumé :</h2>
           <p><strong>Nom:</strong> {watchFields[0]}</p>
@@ -238,10 +191,13 @@ export default function UploadVariantForm() {
           <p><strong>Prix conseillé (€):</strong> {watchFields[3] || "—"}</p>
           <p><strong>Stock:</strong> {watchFields[4] || "—"}</p>
           <p><strong>Produit ID:</strong> {watchFields[5] || "—"}</p>
-          <p><strong>Flags:</strong> {["isPromotion", "isFeatured", "isPopular", "isNewArrival"].map((f, i) => watchFields[6 + i] ? `✅ ${f}` : "").filter(Boolean).join(", ") || "Aucun"}</p>
+          <p><strong>Flags:</strong> {
+            ["isPromotion", "isFeatured", "isPopular", "isNewArrival"]
+              .map((f, i) => watchFields[6 + i] ? `✅ ${f}` : "")
+              .filter(Boolean).join(", ") || "Aucun"
+          }</p>
         </div>
 
-        {/* Submit */}
         <button
           type="submit"
           className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded transition-colors duration-200"
@@ -254,3 +210,14 @@ export default function UploadVariantForm() {
 }
 
 const inputClass = "w-full border dark:border-gray-600 p-2 rounded bg-white dark:bg-gray-800"
+
+type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
+  label: string
+}
+
+const Input = ({ label, ...props }: InputProps) => (
+  <div>
+    <label className="block mb-1 font-medium">{label}</label>
+    <input {...props} className={inputClass} />
+  </div>
+)
