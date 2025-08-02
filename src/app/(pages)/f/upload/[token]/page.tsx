@@ -71,7 +71,6 @@ export default function UploadVariantForm() {
       try {
         const dataProduct = await fetchProductCategories();
         setData(dataProduct)
-        console.log(dataProduct)
       } catch (error) {
 
       }
@@ -79,8 +78,6 @@ export default function UploadVariantForm() {
     loadProduct()
 
   }, [])
-
-
 
 
   const onSubmit = async (data: VariantFormData) => {
@@ -101,24 +98,24 @@ export default function UploadVariantForm() {
         }
       })
 
-      await axios.post(`${API_URL}/public-upload/${token}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" }
-      })
+      await axios.post(`${API_URL}/public-upload/${token}`, data)
 
       setSubmitted(true)
       reset()
     } catch (err) {
       console.error(err)
-      setError("❌ Échec de l&apos;envoi. Vérifiez les champs.")
+      setError("❌ Échec de l'envoi. Vérifiez les champs.")
     }
   }
 
   if (loading) return <p className="text-center mt-10 text-gray-600 dark:text-gray-300">⏳ Vérification du lien...</p>
-  if (error) return <p className="text-red-600 dark:text-red-400 text-center mt-10">{error}</p>
-  if (submitted) return <p className="text-green-600 dark:text-green-400 text-center mt-10">✅ Variante soumise avec succès !</p>
+
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6 mt-10 bg-white dark:bg-gray-900 shadow-md dark:shadow-lg rounded-lg text-gray-800 dark:text-gray-100">
+
+      {error ?? <p className="text-red-600 dark:text-red-400 text-center mt-10">{error}</p>}
+      {submitted ?? <p className="text-green-600 dark:text-green-400 text-center mt-10">✅ Variante soumise avec succès !</p>}
       <h1 className="text-2xl font-bold mb-6 text-center">🛍️ Ajouter une Variante de Produit</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
