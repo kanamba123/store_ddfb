@@ -5,43 +5,36 @@ import { useParams } from "next/navigation"
 import { useForm, useFieldArray } from "react-hook-form"
 import axios from "axios"
 import { API_URL } from "@/config/API"
+import { fetchProductCategories } from "@/libs/api/products"
 
 interface Specification {
   key: string
   value: string
 }
 
+interface Product {
+  id: number
+  productName: string
+}
+
 interface VariantFormData {
   variantProductName: string
   variantType?: string
   description?: string
-  purchasePrice?: number
-  recommendedPrice?: number
-  sellingPrice: number
-  stock: number
-  lowStockThreshold?: number
   productId: number
-  status?: string
-  tags?: string
-  userGuideURL?: string
-  adminNote?: string
-  isPromotion?: boolean
-  isFeatured?: boolean
-  isPopular?: boolean
-  isNewArrival?: boolean
-  visibilityStart?: string
-  visibilityEnd?: string
-  specifications: Specification[]
+  purchasePrice?: number
   images: FileList
+  specifications: Specification[]
 }
 
 export default function UploadVariantForm() {
   const { token } = useParams()
   const [loading, setLoading] = useState(true)
+  const [data, setData] = useState<Product[]>([]);
   const [error, setError] = useState("")
   const [submitted, setSubmitted] = useState(false)
 
-  const { register, control, handleSubmit, reset, watch } = useForm<VariantFormData>({
+  const { register, control, handleSubmit, reset } = useForm<VariantFormData>({
     defaultValues: { specifications: [{ key: "", value: "" }] }
   })
 
@@ -50,18 +43,7 @@ export default function UploadVariantForm() {
     name: "specifications"
   })
 
-  const watchFields = watch([
-    "variantProductName",
-    "variantType",
-    "sellingPrice",
-    "recommendedPrice",
-    "stock",
-    "productId",
-    "isPromotion",
-    "isFeatured",
-    "isPopular",
-    "isNewArrival"
-  ])
+
 
   useEffect(() => {
     if (!token || typeof token !== "string") return
@@ -79,8 +61,27 @@ export default function UploadVariantForm() {
       }
     }
 
+
+
     validate()
   }, [token])
+
+  useEffect(() => {
+    const loadProduct = async () => {
+      try {
+        const dataProduct = await fetchProductCategories();
+        setData(dataProduct)
+        console.log(dataProduct)
+      } catch (error) {
+
+      }
+    }
+    loadProduct()
+
+  }, [])
+
+
+
 
   const onSubmit = async (data: VariantFormData) => {
     try {
@@ -117,25 +118,48 @@ export default function UploadVariantForm() {
   if (submitted) return <p className="text-green-600 dark:text-green-400 text-center mt-10">✅ Variante soumise avec succès !</p>
 
   return (
-    <div className="max-w-4xl mx-auto p-4 sm:p-6 mt-10 bg-white dark:bg-gray-900 shadow-md dark:shadow-lg rounded-lg text-gray-800 dark:text-gray-100">
+    <div className="max-w-7xl mx-auto p-4 sm:p-6 mt-10 bg-white dark:bg-gray-900 shadow-md dark:shadow-lg rounded-lg text-gray-800 dark:text-gray-100">
       <h1 className="text-2xl font-bold mb-6 text-center">🛍️ Ajouter une Variante de Produit</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Input label="Nom de la variante *" {...register("variantProductName", { required: true })} />
-          <Input label="Type de variante" {...register("variantType")} />
-          <Input label="Prix de vente (€) *" type="number" {...register("sellingPrice", { required: true })} />
-          <Input label="Prix conseillé" type="number" {...register("recommendedPrice")} />
+
+          <div>
+            <label className="block mb-1 font-medium">Type de variante</label>
+            <select {...register("variantType")} className={inputClass}>
+              <option value="">-- Choisir --</option>
+              <option value="product">Product</option>
+              <option value="accessory">Accessory</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block mb-1 font-medium">Description</label>
+            <textarea {...register("description")} className={inputClass} />
+          </div>
+
+          <div>
+            <label className="block mb-1 font-medium">Categorie du produit *</label>
+            <select
+              {...register("productId", { required: true })}
+              className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            >
+              <option value="">Sélectionnez --</option>
+              {data.map((product: Product) => (
+                <option key={product.id} value={product.id}>
+                  {product.productName}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <Input label="Prix d&apos;achat" type="number" {...register("purchasePrice")} />
-          <Input label="Stock *" type="number" {...register("stock", { required: true })} />
-          <Input label="Seuil de stock bas" type="number" {...register("lowStockThreshold")} />
-          <Input label="ID du produit principal *" type="number" {...register("productId", { required: true })} />
+
         </div>
 
-        <div>
-          <label className="block mb-1 font-medium">Description</label>
-          <textarea {...register("description")} className={inputClass} />
-        </div>
+
 
         <div>
           <label className="block mb-1 font-medium">Spécifications</label>
@@ -152,50 +176,6 @@ export default function UploadVariantForm() {
         <div>
           <label className="block mb-1 font-medium">Images</label>
           <input type="file" {...register("images")} multiple accept="image/*" className={inputClass} />
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          <label><input type="checkbox" {...register("isPromotion")} /> Promotion</label>
-          <label><input type="checkbox" {...register("isFeatured")} /> En vedette</label>
-          <label><input type="checkbox" {...register("isPopular")} /> Populaire</label>
-          <label><input type="checkbox" {...register("isNewArrival")} /> Nouveauté</label>
-        </div>
-
-        <div>
-          <label className="block mb-1 font-medium">Statut</label>
-          <select {...register("status")} className={inputClass}>
-            <option value="">-- Choisir --</option>
-            <option value="active">Actif</option>
-            <option value="inactive">Inactif</option>
-            <option value="archived">Archivé</option>
-          </select>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input label="Date de début de visibilité" type="datetime-local" {...register("visibilityStart")} />
-          <Input label="Date de fin de visibilité" type="datetime-local" {...register("visibilityEnd")} />
-        </div>
-
-        <Input label="Tags (séparés par des virgules)" {...register("tags")} />
-        <Input label="Lien guide utilisateur" {...register("userGuideURL")} />
-        <div>
-          <label className="block mb-1 font-medium">Note interne</label>
-          <textarea {...register("adminNote")} className={inputClass} />
-        </div>
-
-        <div className="p-4 border dark:border-gray-700 rounded bg-gray-50 dark:bg-gray-800 text-sm text-gray-700 dark:text-gray-300">
-          <h2 className="font-semibold mb-2">🧾 Résumé :</h2>
-          <p><strong>Nom:</strong> {watchFields[0]}</p>
-          <p><strong>Type:</strong> {watchFields[1] || "—"}</p>
-          <p><strong>Prix (€):</strong> {watchFields[2] || "—"}</p>
-          <p><strong>Prix conseillé (€):</strong> {watchFields[3] || "—"}</p>
-          <p><strong>Stock:</strong> {watchFields[4] || "—"}</p>
-          <p><strong>Produit ID:</strong> {watchFields[5] || "—"}</p>
-          <p><strong>Flags:</strong> {
-            ["isPromotion", "isFeatured", "isPopular", "isNewArrival"]
-              .map((f, i) => watchFields[6 + i] ? `✅ ${f}` : "")
-              .filter(Boolean).join(", ") || "Aucun"
-          }</p>
         </div>
 
         <button
