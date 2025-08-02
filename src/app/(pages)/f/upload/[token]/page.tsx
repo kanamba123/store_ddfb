@@ -140,13 +140,14 @@ export default function UploadVariantForm() {
             <label className="block mb-1 font-medium">Categorie du produit *</label>
             <select
               {...register("productId", { required: true })}
-              className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={inputClass}
               required
             >
-              <option value="">Sélectionnez --</option>
+              <option value="" >Sélectionnez --</option>
               {data.map((product: Product) => (
-                <option key={product.id} value={product.id}>
+                <option key={product.id} value={product.id} >
                   {product.productName}
+                  
                 </option>
               ))}
             </select>
@@ -155,7 +156,6 @@ export default function UploadVariantForm() {
           <Input label="Prix d&apos;achat" type="number" {...register("purchasePrice")} />
 
         </div>
-
 
 
         <div>
