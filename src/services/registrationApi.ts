@@ -71,6 +71,22 @@ export const addStoreToOwner = async (
   }
 };
 
+// Ajouter un magasin à un propriétaire existant
+export const valideAddStore = async (
+  ownerId: number,
+  storeId: number
+): Promise<StoreResponse> => {
+  try {
+    const response = await apiClient.post(
+      `/stores/complete-registration`, 
+      { ownerId, storeId }
+    );
+    return response.data;
+  } catch (error) {
+    return handleApiError(error as AxiosError);
+  }
+};
+
 // Obtenir un propriétaire avec son magasin
 export const getOwnerWithStore = async (
   ownerId: number

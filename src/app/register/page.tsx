@@ -8,6 +8,7 @@ import { ConfirmationStep } from "@/components/forms/ConfirmationStep";
 import {
   createTemporaryOwner,
   addStoreToOwner,
+  valideAddStore,
 } from "@/services/registrationApi";
 import {
   OwnerData,
@@ -15,16 +16,16 @@ import {
   RegistrationStep,
   FormErrors,
 } from "@/types/registration";
+import { Check, Store, UserRoundPlus } from "lucide-react";
 
 export default function RegisterPage() {
   const [currentStep, setCurrentStep] = useState<RegistrationStep>("owner");
   const [ownerData, setOwnerData] = useState<OwnerData>({
     fullName: "",
-    userName: "",
     email: "",
     phoneNumber: "",
     password: "",
-    businessName: "",
+    confirmPassword:"",
     profil: "",
   });
 
@@ -33,25 +34,18 @@ export default function RegisterPage() {
     storeType: "retail",
     nif: "",
     rc: "",
-    bp: "",
-    activitySector: "",
-    taxCenter: "",
     storeAddress: "",
     city: "",
     country: "Burundi",
     storeContactPhone: [""],
-    storeContactMail: "",
-    personReferences: [],
     storeDescription: "",
-    storePlatformUrl: [""],
-    location: { latitude: 0, longitude: 0 },
-    isDisplay: true,
   });
 
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const [successMessage, setSuccessMessage] = useState("");
   const [ownerId, setOwnerId] = useState<number | null>(null);
+  const [storeId, setStoreId] = useState<number | null>(null);
 
   const clearErrors = () => setErrors({});
 
@@ -95,12 +89,11 @@ export default function RegisterPage() {
       const response = await addStoreToOwner(ownerId, data);
       if (response.success && response.data) {
         setSuccessMessage(
-          "🎉 Magasin créé avec succès ! Vous pouvez maintenant vous connecter."
+          "🎉 Magasin créé avec succès ! Main confirmé l'enregistement"
         );
-        // Optionnel: rediriger vers une page de succès ou de connexion
-        setTimeout(() => {
-          window.location.href = "/login";
-        }, 3000);
+        setCurrentStep("confirmation");
+        setStoreData(response.data);
+        setStoreId(response.data.id!);
       } else {
         setErrors({
           general: response.error || "Erreur lors de la création du magasin",
@@ -109,6 +102,9 @@ export default function RegisterPage() {
     } catch (error: any) {
       console.error("Erreur magasin:", error);
       setErrors({ general: error.message || "Erreur de connexion" });
+      
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -121,8 +117,20 @@ export default function RegisterPage() {
     setLoading(true);
     clearErrors();
 
+
     try {
-      // Implementation for final confirmation
+      const response = await valideAddStore(ownerId, storeId!);
+
+      if (response.success && response.data) {
+        // Optionnel: rediriger vers une page de succès ou de connexion
+        setSuccessMessage(
+          "🎉 Magasin créé avec succès ! Vous pouvez maintenant vous connecter."
+        );
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 3000);
+      }
+      
     } catch (error: any) {
       console.error("Erreur magasin:", error);
       setErrors({ general: error.message || "Erreur de connexion" });
@@ -138,9 +146,13 @@ export default function RegisterPage() {
 
   const ProgressBar = () => {
     const steps = [
-      { key: "owner", label: "Propriétaire", icon: "👤" },
-      { key: "store", label: "Magasin", icon: "🏪" },
-      { key: "confirmation", label: "Confirmation", icon: "✅" },
+      {
+        key: "owner",
+        label: "Propriétaire",
+        icon: <UserRoundPlus size={18} />,
+      },
+      { key: "store", label: "Magasin", icon: <Store size={18} /> },
+      { key: "confirmation", label: "Confirmation", icon: <Check size={18} /> },
     ];
 
     const currentIndex = steps.findIndex((step) => step.key === currentStep);
@@ -160,7 +172,7 @@ export default function RegisterPage() {
                   }
                 `}
               >
-                <span className="text-lg">{step.icon}</span>
+                {step.icon}
               </div>
               <div className="ml-2 mr-2 md:mr-8 text-center">
                 <p
@@ -191,9 +203,8 @@ export default function RegisterPage() {
       </div>
     );
   };
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 md:py-12 px-4 sm:px-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 md:py-12 px-2 sm:px-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 md:mb-12">

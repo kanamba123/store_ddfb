@@ -2,11 +2,10 @@
 export interface OwnerData {
     id?: number;
     fullName: string;
-    userName: string;
     email?: string;
     phoneNumber?: string;
-    password?: string;
-    businessName?: string;
+    password: string;
+    confirmPassword:string;
     documents?: any[];
     profil?: string;
   }
@@ -17,24 +16,15 @@ export interface OwnerData {
     storeType: 'retail' | 'wholesale' | 'online' | 'physical';
     nif?: string;
     rc?: string;
-    bp?: string;
-    activitySector?: string;
-    taxCenter?: string;
     storeAddress?: string;
     city: string;
     country: string;
     storeContactPhone?: string[];
-    storeContactMail?: string;
     personReferences?: PersonReference[];
     storeStatus?: 'active' | 'inactive' | 'suspended';
     storeDescription?: string;
-    storePlatformUrl?: string[];
     ownerId?: number;
     marketId?: number;
-    location?: {
-      latitude: number;
-      longitude: number;
-    };
     documents?: any[];
     isDisplay?: boolean;
   }

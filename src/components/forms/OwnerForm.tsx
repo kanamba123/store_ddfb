@@ -1,7 +1,17 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { OwnerData, FormErrors } from "@/types/registration";
+import { uploadImageToFirebase } from "@/services/firebaseStorageService";
+import {
+  Camera,
+  Eye,
+  EyeOff,
+  CheckCircle,
+  XCircle,
+  ArrowLeft,
+} from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface OwnerFormProps {
   initialData?: Partial<OwnerData>;
@@ -18,17 +28,70 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
   loading = false,
   errors = {},
 }) => {
+  const router = useRouter();
   const [formData, setFormData] = useState<OwnerData>({
     fullName: initialData.fullName || "",
-    userName: initialData.userName || "",
     email: initialData.email || "",
     phoneNumber: initialData.phoneNumber || "",
     password: initialData.password || "",
-    businessName: initialData.businessName || "",
+    confirmPassword: "",
     profil: initialData.profil || "",
   });
 
-  const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    confirmPassword: false,
+  });
+  const [uploadProgress, setUploadProgress] = useState<number>(0);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [showExitModal, setShowExitModal] = useState(false);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+
+  // Auto-fill email from browser credentials
+  useEffect(() => {
+    if (!initialData.email) {
+      const tryAutofillEmail = async () => {
+        try {
+          // Method 1: Using Credential Management API
+          if (navigator.credentials?.get) {
+            const cred = await navigator.credentials.get({
+              mediation: "optional",
+            });
+            if (cred?.id.includes("@")) {
+              setFormData((prev) => ({ ...prev, email: cred.id }));
+              return;
+            }
+          }
+
+          // Method 2: Using autoComplete on hidden input
+          if ("autocomplete" in document.createElement("input")) {
+            const tempInput = document.createElement("input");
+            tempInput.type = "email";
+            tempInput.autocomplete = "email";
+            tempInput.style.position = "absolute";
+            tempInput.style.opacity = "0";
+            tempInput.style.height = "0";
+            tempInput.style.width = "0";
+            document.body.appendChild(tempInput);
+
+            setTimeout(() => {
+              if (tempInput.value) {
+                setFormData((prev) => ({ ...prev, email: tempInput.value }));
+              }
+              document.body.removeChild(tempInput);
+            }, 100);
+
+            tempInput.focus();
+          }
+        } catch (error) {
+          console.log("Autofill error:", error);
+        }
+      };
+
+      tryAutofillEmail();
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -38,9 +101,72 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
     }));
   };
 
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+
+    const file = e.target.files[0];
+
+    if (!file.type.match("image.*")) {
+      setUploadError("Only images are allowed (JPEG, PNG, etc.)");
+      return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      setUploadError("Image must be less than 5MB");
+      return;
+    }
+
+    setUploadError(null);
+    setUploadProgress(0);
+
+    try {
+      const nameForFile = `photo_profile_owner_${formData.fullName
+        .replace(/\s+/g, "_")
+        .toLowerCase()}`;
+
+      const imageUrl = await uploadImageToFirebase(
+        file,
+        nameForFile,
+        "owner_folder"
+      );
+
+      setFormData((prev) => ({ ...prev, profil: imageUrl }));
+    } catch (error) {
+      console.error("Upload error:", error);
+      setUploadError("Failed to upload image. Please try again.");
+    } finally {
+      setUploadProgress(0);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      setUploadError("Passwords do not match");
+      return;
+    }
+
     onSubmit(formData);
+  };
+
+  const togglePasswordVisibility = (field: "password" | "confirmPassword") => {
+    setShowPassword((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
+  const handleExit = () => {
+    setFormData({
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      password: "",
+      confirmPassword: "",
+      profil: "",
+    });
+    router.push("/");
   };
 
   const inputClasses = (fieldName: string) => `
@@ -54,34 +180,118 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
     dark:placeholder-gray-400
   `;
 
+  const isPasswordValid = formData.password.length >= 8;
+  const doPasswordsMatch = formData.password === formData.confirmPassword;
+  const hasPasswordError = formData.password.length > 0 && !isPasswordValid;
+  const hasConfirmPasswordError =
+    formData.confirmPassword.length > 0 && !doPasswordsMatch;
+
   return (
-    <div className="max-w-2xl mx-auto p-4 sm:p-6 bg-white rounded-xl shadow-lg dark:bg-gray-800 transition-colors duration-300">
-      <div className="mb-6 sm:mb-8">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-2">
-          Informations du propriétaire
-        </h2>
-        <p className="text-gray-600 dark:text-gray-300">
-          Remplissez vos informations personnelles pour créer votre compte
-        </p>
+    <div className="max-w-2xl mx-auto p-2 sm:p-6 bg-white rounded-xl shadow-lg dark:bg-gray-800 transition-colors duration-300 relative">
+      {/* Exit Confirmation Modal */}
+      {showExitModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-xl max-w-md w-full">
+            <h3 className="text-lg font-semibold mb-4 dark:text-white">
+              Leave this page?
+            </h3>
+            <p className="mb-6 text-gray-600 dark:text-gray-300">
+              Your changes will not be saved. Are you sure you want to leave?
+            </p>
+            <div className="flex justify-end space-x-3">
+              <button
+                onClick={() => setShowExitModal(false)}
+                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-600 dark:text-white"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleExit}
+                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+              >
+                Yes, Leave
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Back Button */}
+      <button
+        onClick={() => setShowExitModal(true)}
+        className="absolute top-4 left-4 flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+      >
+        <ArrowLeft className="mr-1" size={18} />
+        <span className="text-sm">Back</span>
+      </button>
+
+      {/* Profile Picture at Top Center */}
+      <div className="flex flex-col items-center mb-6 mt-8">
+        <div
+          className="relative group cursor-pointer mb-2"
+          onClick={() => fileRef.current?.click()}
+        >
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleImageChange}
+          />
+          {formData.profil ? (
+            <div className="relative">
+              <img
+                src={formData.profil}
+                alt="Profile Preview"
+                className="w-32 h-32 rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-md group-hover:opacity-90 transition-opacity"
+              />
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-30 rounded-full">
+                <Camera className="text-white w-8 h-8" />
+              </div>
+            </div>
+          ) : (
+            <div className="w-32 h-32 rounded-full border-4 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center bg-gray-100 dark:bg-gray-700 group-hover:border-blue-500 transition-colors shadow-md">
+              <Camera className="text-gray-400 dark:text-gray-500 w-8 h-8 group-hover:text-blue-500 transition-colors" />
+            </div>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={() => fileRef.current?.click()}
+          className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
+        >
+          {formData.profil ? "Change photo" : "Add profile photo"}
+        </button>
+
+        {uploadProgress > 0 && uploadProgress < 100 && (
+          <div className="mt-2 w-full max-w-xs bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+            <div
+              className="bg-blue-600 h-2.5 rounded-full"
+              style={{ width: `${uploadProgress}%` }}
+            ></div>
+          </div>
+        )}
+
+        {uploadError && (
+          <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+            {uploadError}
+          </p>
+        )}
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
         {/* Full Name */}
         <div>
-          <label
-            htmlFor="fullName"
-            className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Nom complet *
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            Full Name *
           </label>
           <input
             type="text"
-            id="fullName"
             name="fullName"
             value={formData.fullName}
             onChange={handleChange}
             className={inputClasses("fullName")}
-            placeholder="Entrez votre nom complet"
+            placeholder="Enter your full name"
             required
           />
           {errors.fullName && (
@@ -91,48 +301,22 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
           )}
         </div>
 
-        {/* Username */}
-        <div>
-          <label
-            htmlFor="userName"
-            className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Nom d'utilisateur *
-          </label>
-          <input
-            type="text"
-            id="userName"
-            name="userName"
-            value={formData.userName}
-            onChange={handleChange}
-            className={inputClasses("userName")}
-            placeholder="Choisissez un nom d'utilisateur unique"
-            required
-          />
-          {errors.userName && (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-400">
-              {errors.userName}
-            </p>
-          )}
-        </div>
-
         {/* Email and Phone */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-            >
-              Email
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Email *
             </label>
             <input
+              ref={emailInputRef}
               type="email"
-              id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
               className={inputClasses("email")}
-              placeholder="votre@email.com"
+              placeholder="example@email.com"
+              autoComplete="email"
+              required
             />
             {errors.email && (
               <p className="mt-2 text-sm text-red-600 dark:text-red-400">
@@ -142,21 +326,18 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
           </div>
 
           <div>
-            <label
-              htmlFor="phoneNumber"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-            >
-              Téléphone
+            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Phone Number *
             </label>
             <input
               type="tel"
-              id="phoneNumber"
               name="phoneNumber"
               value={formData.phoneNumber}
               onChange={handleChange}
               className={inputClasses("phoneNumber")}
-              placeholder="75123456"
+              placeholder="12345678"
               pattern="[0-9]{8}"
+              required
             />
             {errors.phoneNumber && (
               <p className="mt-2 text-sm text-red-600 dark:text-red-400">
@@ -168,88 +349,111 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
 
         {/* Password */}
         <div>
-          <label
-            htmlFor="password"
-            className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Mot de passe
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            Password *
           </label>
           <div className="relative">
             <input
-              type={showPassword ? "text" : "password"}
-              id="password"
+              type={showPassword.password ? "text" : "password"}
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className={inputClasses("password")}
-              placeholder="Minimum 8 caractères"
+              className={`${inputClasses("password")} ${
+                hasPasswordError ? "pr-10" : ""
+              }`}
+              placeholder="Minimum 8 characters"
               minLength={8}
+              required
             />
-            <button
-              type="button"
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
-              onClick={() => setShowPassword(!showPassword)}
-              aria-label={showPassword ? "Hide password" : "Show password"}
-            >
-              {showPassword ? "👁️" : "👁️‍🗨️"}
-            </button>
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 space-x-1">
+              {formData.password.length > 0 && (
+                <span className="text-gray-500">
+                  {isPasswordValid ? (
+                    <CheckCircle className="h-5 w-5 text-green-500" />
+                  ) : (
+                    <XCircle className="h-5 w-5 text-red-500" />
+                  )}
+                </span>
+              )}
+              <button
+                type="button"
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                onClick={() => togglePasswordVisibility("password")}
+                aria-label={
+                  showPassword.password ? "Hide password" : "Show password"
+                }
+              >
+                {showPassword.password ? (
+                  <EyeOff size={18} />
+                ) : (
+                  <Eye size={18} />
+                )}
+              </button>
+            </div>
           </div>
-          {errors.password && (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-400">
-              {errors.password}
-            </p>
-          )}
+          <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+            {hasPasswordError && (
+              <span className="text-red-500">
+                Password must be at least 8 characters
+              </span>
+            )}
+            {isPasswordValid && (
+              <span className="text-green-500">Password strength: Good</span>
+            )}
+          </div>
         </div>
 
-        {/* Business Name */}
+        {/* Confirm Password */}
         <div>
-          <label
-            htmlFor="businessName"
-            className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Nom de l'entreprise
+          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            Confirm Password *
           </label>
-          <input
-            type="text"
-            id="businessName"
-            name="businessName"
-            value={formData.businessName}
-            onChange={handleChange}
-            className={inputClasses("businessName")}
-            placeholder="Nom de votre entreprise (optionnel)"
-          />
-          {errors.businessName && (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-400">
-              {errors.businessName}
-            </p>
+          <div className="relative">
+            <input
+              type={showPassword.confirmPassword ? "text" : "password"}
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className={`${inputClasses("confirmPassword")} ${
+                hasConfirmPasswordError ? "pr-10" : ""
+              }`}
+              placeholder="Confirm your password"
+              required
+            />
+            <div className="absolute inset-y-0 right-0 flex items-center pr-3 space-x-1">
+              {formData.confirmPassword.length > 0 && (
+                <span className="text-gray-500">
+                  {doPasswordsMatch ? (
+                    <CheckCircle className="h-5 w-5 text-green-500" />
+                  ) : (
+                    <XCircle className="h-5 w-5 text-red-500" />
+                  )}
+                </span>
+              )}
+              <button
+                type="button"
+                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                onClick={() => togglePasswordVisibility("confirmPassword")}
+                aria-label={
+                  showPassword.confirmPassword
+                    ? "Hide password"
+                    : "Show password"
+                }
+              >
+                {showPassword.confirmPassword ? (
+                  <EyeOff size={18} />
+                ) : (
+                  <Eye size={18} />
+                )}
+              </button>
+            </div>
+          </div>
+          {hasConfirmPasswordError && (
+            <p className="mt-1 text-xs text-red-500">Passwords do not match</p>
           )}
         </div>
 
-        {/* Profile Picture */}
-        <div>
-          <label
-            htmlFor="profil"
-            className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Photo de profil (URL)
-          </label>
-          <input
-            type="url"
-            id="profil"
-            name="profil"
-            value={formData.profil}
-            onChange={handleChange}
-            className={inputClasses("profil")}
-            placeholder="https://exemple.com/photo.jpg"
-          />
-          {errors.profil && (
-            <p className="mt-2 text-sm text-red-600 dark:text-red-400">
-              {errors.profil}
-            </p>
-          )}
-        </div>
-
-        {/* Buttons */}
+        {/* Form Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 pt-6">
           {onBack && (
             <button
@@ -258,24 +462,22 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
               className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
               disabled={loading}
             >
-              Retour
+              Back
             </button>
           )}
-
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !isPasswordValid || !doPasswordsMatch}
             className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors dark:bg-blue-700 dark:hover:bg-blue-800"
           >
-            {/* {loading ? (
+            {loading ? (
               <div className="flex items-center justify-center">
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                Chargement...
+                Processing...
               </div>
             ) : (
-              "Continuer"
-            )} */}
-            Continuer
+              "Continue"
+            )}
           </button>
         </div>
       </form>

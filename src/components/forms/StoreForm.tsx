@@ -23,19 +23,11 @@ export const StoreForm: React.FC<StoreFormProps> = ({
     storeType: initialData.storeType || "retail",
     nif: initialData.nif || "",
     rc: initialData.rc || "",
-    bp: initialData.bp || "",
-    activitySector: initialData.activitySector || "",
-    taxCenter: initialData.taxCenter || "",
     storeAddress: initialData.storeAddress || "",
     city: initialData.city || "",
     country: initialData.country || "Burundi",
     storeContactPhone: initialData.storeContactPhone || [""],
-    storeContactMail: initialData.storeContactMail || "",
-    personReferences: initialData.personReferences || [],
     storeDescription: initialData.storeDescription || "",
-    storePlatformUrl: initialData.storePlatformUrl || [""],
-    location: initialData.location || { latitude: 0, longitude: 0 },
-    isDisplay: initialData.isDisplay ?? true,
   });
 
   const handleChange = (
@@ -83,42 +75,7 @@ export const StoreForm: React.FC<StoreFormProps> = ({
     }));
   };
 
-  const handleUrlChange = (index: number, value: string) => {
-    const newUrls = [...formData.storePlatformUrl!];
-    newUrls[index] = value;
-    setFormData((prev) => ({
-      ...prev,
-      storePlatformUrl: newUrls,
-    }));
-  };
 
-  const addUrl = () => {
-    setFormData((prev) => ({
-      ...prev,
-      storePlatformUrl: [...prev.storePlatformUrl!, ""],
-    }));
-  };
-
-  const removeUrl = (index: number) => {
-    const newUrls = formData.storePlatformUrl!.filter((_, i) => i !== index);
-    setFormData((prev) => ({
-      ...prev,
-      storePlatformUrl: newUrls.length > 0 ? newUrls : [""],
-    }));
-  };
-
-  const handleLocationChange = (
-    field: "latitude" | "longitude",
-    value: string
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      location: {
-        ...prev.location!,
-        [field]: parseFloat(value) || 0,
-      },
-    }));
-  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -127,10 +84,7 @@ export const StoreForm: React.FC<StoreFormProps> = ({
       ...formData,
       storeContactPhone: formData.storeContactPhone?.filter(
         (phone) => phone.trim() !== ""
-      ),
-      storePlatformUrl: formData.storePlatformUrl?.filter(
-        (url) => url.trim() !== ""
-      ),
+      )
     };
 
     onSubmit(cleanData);
@@ -214,7 +168,7 @@ export const StoreForm: React.FC<StoreFormProps> = ({
         </div>
 
         {/* Legal Information */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label
               htmlFor="nif"
@@ -251,63 +205,8 @@ export const StoreForm: React.FC<StoreFormProps> = ({
             />
           </div>
 
-          <div>
-            <label
-              htmlFor="bp"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-            >
-              BP
-            </label>
-            <input
-              type="text"
-              id="bp"
-              name="bp"
-              value={formData.bp}
-              onChange={handleChange}
-              className={inputClasses("bp")}
-              placeholder="Boîte Postale"
-            />
-          </div>
         </div>
 
-        {/* Activity Sector */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-          <div>
-            <label
-              htmlFor="activitySector"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-            >
-              Secteur d'activité
-            </label>
-            <input
-              type="text"
-              id="activitySector"
-              name="activitySector"
-              value={formData.activitySector}
-              onChange={handleChange}
-              className={inputClasses("activitySector")}
-              placeholder="Commerce général, Alimentation, etc."
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="taxCenter"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-            >
-              Centre fiscal
-            </label>
-            <input
-              type="text"
-              id="taxCenter"
-              name="taxCenter"
-              value={formData.taxCenter}
-              onChange={handleChange}
-              className={inputClasses("taxCenter")}
-              placeholder="Centre fiscal de rattachement"
-            />
-          </div>
-        </div>
 
         {/* Address */}
         <div>
@@ -414,87 +313,8 @@ export const StoreForm: React.FC<StoreFormProps> = ({
           </button>
         </div>
 
-        {/* Contact Email */}
-        <div>
-          <label
-            htmlFor="storeContactMail"
-            className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
-          >
-            Email de contact
-          </label>
-          <input
-            type="email"
-            id="storeContactMail"
-            name="storeContactMail"
-            value={formData.storeContactMail}
-            onChange={handleChange}
-            className={inputClasses("storeContactMail")}
-            placeholder="contact@monmagasin.bi"
-          />
-        </div>
 
-        {/* Platform URLs */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-            URLs des plateformes (Facebook, Instagram, etc.)
-          </label>
-          {formData.storePlatformUrl?.map((url, index) => (
-            <div key={index} className="flex gap-2 mb-2">
-              <input
-                type="url"
-                value={url}
-                onChange={(e) => handleUrlChange(index, e.target.value)}
-                className={inputClasses("storePlatformUrl")}
-                placeholder="https://facebook.com/monmagasin"
-              />
-              {formData.storePlatformUrl!.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeUrl(index)}
-                  className="px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                  aria-label="Supprimer URL"
-                >
-                  ✕
-                </button>
-              )}
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={addUrl}
-            className="mt-2 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-          >
-            + Ajouter une URL
-          </button>
-        </div>
-
-        {/* Location */}
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-            Localisation GPS (optionnel)
-          </label>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input
-              type="number"
-              step="any"
-              value={formData.location?.latitude || ""}
-              onChange={(e) => handleLocationChange("latitude", e.target.value)}
-              className={inputClasses("latitude")}
-              placeholder="Latitude"
-            />
-            <input
-              type="number"
-              step="any"
-              value={formData.location?.longitude || ""}
-              onChange={(e) =>
-                handleLocationChange("longitude", e.target.value)
-              }
-              className={inputClasses("longitude")}
-              placeholder="Longitude"
-            />
-          </div>
-        </div>
-
+     
         {/* Description */}
         <div>
           <label
@@ -512,24 +332,6 @@ export const StoreForm: React.FC<StoreFormProps> = ({
             className={inputClasses("storeDescription")}
             placeholder="Décrivez votre magasin, les produits vendus, etc."
           />
-        </div>
-
-        {/* Public Display */}
-        <div className="flex items-center">
-          <input
-            type="checkbox"
-            id="isDisplay"
-            name="isDisplay"
-            checked={formData.isDisplay}
-            onChange={handleChange}
-            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded dark:bg-gray-700 dark:border-gray-600"
-          />
-          <label
-            htmlFor="isDisplay"
-            className="ml-2 block text-sm text-gray-700 dark:text-gray-300"
-          >
-            Afficher ce magasin publiquement sur le site web
-          </label>
         </div>
 
         {/* Buttons */}

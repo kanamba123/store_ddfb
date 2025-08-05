@@ -75,14 +75,6 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
             </div>
             <div>
               <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
-                Nom d'utilisateur
-              </p>
-              <p className="text-gray-800 dark:text-gray-100">
-                {ownerData.userName}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Email
               </p>
               <p className="text-gray-800 dark:text-gray-100">
@@ -95,14 +87,6 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
               </p>
               <p className="text-gray-800 dark:text-gray-100">
                 {ownerData.phoneNumber || "Non spécifié"}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
-                Nom de l'entreprise
-              </p>
-              <p className="text-gray-800 dark:text-gray-100">
-                {ownerData.businessName || "Non spécifié"}
               </p>
             </div>
             <div>
@@ -196,14 +180,6 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
               </div>
               <div>
                 <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
-                  Secteur d'activité
-                </p>
-                <p className="text-gray-800 dark:text-gray-100">
-                  {storeData.activitySector || "Non spécifié"}
-                </p>
-              </div>
-              <div>
-                <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
                   Téléphones
                 </p>
                 <p className="text-gray-800 dark:text-gray-100">
@@ -246,20 +222,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
               </div>
             )}
 
-          {/* Localisation */}
-          {storeData.location &&
-            (storeData.location.latitude !== 0 ||
-              storeData.location.longitude !== 0) && (
-              <div className="mt-3 sm:mt-4">
-                <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1 sm:mb-2">
-                  Localisation GPS
-                </p>
-                <p className="text-gray-800 dark:text-gray-100">
-                  Latitude: {storeData.location.latitude}, Longitude:{" "}
-                  {storeData.location.longitude}
-                </p>
-              </div>
-            )}
+         
 
           {/* Affichage public */}
           <div className="mt-3 sm:mt-4">

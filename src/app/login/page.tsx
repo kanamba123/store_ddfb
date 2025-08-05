@@ -15,6 +15,22 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const { login, isAuthenticated } = useAuth();
   const { redirectUrl, setRedirectUrl } = useRedirectContext();
+  const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    // Check for user's preferred color scheme
+    const isDarkMode =
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setDarkMode(isDarkMode);
+
+    // Listen for changes in color scheme preference
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const handler = (e: MediaQueryListEvent) => setDarkMode(e.matches);
+    mediaQuery.addEventListener("change", handler);
+
+    return () => mediaQuery.removeEventListener("change", handler);
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -26,13 +42,11 @@ export default function LoginPage() {
       }
     }
   }, [isAuthenticated, redirectUrl, router, setRedirectUrl]);
-  
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg("");
-
 
     try {
       const res = await fetch(`${API_URL}/ownerstores/login`, {
@@ -62,15 +76,25 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="max-w-md w-full bg-white rounded-xl shadow-md p-6 space-y-6">
-        <h2 className="text-2xl font-bold text-center text-gray-800">
-          Connexion
-        </h2>
+    <div
+      className={`min-h-screen flex items-center justify-center px-4 transition-colors duration-300 ${
+        darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
+      }`}
+    >
+      <div
+        className={`w-full max-w-md rounded-xl shadow-md p-6 space-y-6 transition-colors duration-300 ${
+          darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+        } border`}
+      >
+        <h2 className="text-2xl font-bold text-center">Connexion</h2>
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              className={`block text-sm font-medium ${
+                darkMode ? "text-gray-300" : "text-gray-700"
+              }`}
+            >
               Email
             </label>
             <input
@@ -78,11 +102,19 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="mt-1 w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
+              className={`mt-1 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300 ${
+                darkMode
+                  ? "bg-gray-700 border-gray-600 text-white focus:border-blue-400"
+                  : "border-gray-300 focus:border-blue-400"
+              } border`}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">
+            <label
+              className={`block text-sm font-medium ${
+                darkMode ? "text-gray-300" : "text-gray-700"
+              }`}
+            >
               Mot de passe
             </label>
             <input
@@ -90,12 +122,16 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="mt-1 w-full px-4 py-2 border rounded-lg shadow-sm focus:ring focus:ring-blue-200"
+              className={`mt-1 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300 ${
+                darkMode
+                  ? "bg-gray-700 border-gray-600 text-white focus:border-blue-400"
+                  : "border-gray-300 focus:border-blue-400"
+              } border`}
             />
           </div>
 
           {errorMsg && (
-            <p className="text-sm text-red-600 text-center">{errorMsg}</p>
+            <p className="text-sm text-red-500 text-center">{errorMsg}</p>
           )}
 
           <button
@@ -103,20 +139,33 @@ export default function LoginPage() {
             disabled={loading}
             className={`w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition ${
               loading ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            } ${darkMode ? "hover:bg-blue-500" : ""}`}
           >
             {loading ? "Connexion..." : "Se connecter"}
           </button>
         </form>
 
-        <p className="text-sm text-center text-gray-600">
+        <p
+          className={`text-sm text-center ${
+            darkMode ? "text-gray-400" : "text-gray-600"
+          }`}
+        >
           Pas encore de compte ?{" "}
-          <Link href="/register" className="text-blue-600 hover:underline">
+          <Link
+            href="/register"
+            className={`text-blue-500 hover:underline ${
+              darkMode ? "hover:text-blue-400" : ""
+            }`}
+          >
             Créer un compte
           </Link>
         </p>
 
-        <div className="text-xs text-center text-gray-400 pt-2">
+        <div
+          className={`text-xs text-center pt-2 ${
+            darkMode ? "text-gray-500" : "text-gray-400"
+          }`}
+        >
           <p>Démo : admin@example.com / 123456</p>
         </div>
       </div>
