@@ -186,14 +186,6 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
                   {formatPhoneNumbers(storeData.storeContactPhone)}
                 </p>
               </div>
-              <div>
-                <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
-                  Email
-                </p>
-                <p className="text-gray-800 dark:text-gray-100">
-                  {storeData.storeContactMail || "Non spécifié"}
-                </p>
-              </div>
             </div>
           </div>
 
@@ -209,18 +201,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
             </div>
           )}
 
-          {/* Plateformes */}
-          {storeData.storePlatformUrl &&
-            storeData.storePlatformUrl.some((url) => url.trim() !== "") && (
-              <div className="mt-3 sm:mt-4">
-                <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1 sm:mb-2">
-                  Plateformes
-                </p>
-                <p className="text-gray-800 dark:text-gray-100">
-                  {formatUrls(storeData.storePlatformUrl)}
-                </p>
-              </div>
-            )}
+         
 
          
 
