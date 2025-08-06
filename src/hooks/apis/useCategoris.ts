@@ -1,5 +1,5 @@
+import API from "@/config/Axios";
 import { useQuery } from "@tanstack/react-query";
-import { API } from "@/config/Axios";
 
 const fetchCategories = async () => {
   const response = await API.get(`/categories`);
