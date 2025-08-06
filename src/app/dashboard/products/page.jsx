@@ -1,22 +1,22 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([
     { id: 1, name: 'MacBook Pro 16"', price: 2499, stock: 10 },
-    { id: 2, name: 'iPhone 15 Pro', price: 1199, stock: 25 },
-    { id: 3, name: 'AirPods Pro 2', price: 249, stock: 40 },
+    { id: 2, name: "iPhone 15 Pro", price: 1199, stock: 25 },
+    { id: 3, name: "AirPods Pro 2", price: 249, stock: 40 },
   ]);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [formData, setFormData] = useState({ name: '', price: '', stock: '' });
-  const [filterText, setFilterText] = useState(''); // Pour le filtre
+  const [formData, setFormData] = useState({ name: "", price: "", stock: "" });
+  const [filterText, setFilterText] = useState("");
 
   const openModalForNew = () => {
     setEditingProduct(null);
-    setFormData({ name: '', price: '', stock: '' });
+    setFormData({ name: "", price: "", stock: "" });
     setModalOpen(true);
   };
 
@@ -59,7 +59,9 @@ export default function ProductsPage() {
         )
       );
     } else {
-      const nextId = products.length ? Math.max(...products.map(p => p.id)) + 1 : 1;
+      const nextId = products.length
+        ? Math.max(...products.map((p) => p.id)) + 1
+        : 1;
       setProducts([
         ...products,
         {
@@ -74,14 +76,15 @@ export default function ProductsPage() {
     closeModal();
   };
 
-  // Filtrage des produits selon filterText
-  const filteredProducts = products.filter(product =>
+  const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(filterText.toLowerCase())
   );
 
   return (
-    <div className="space-y-6 p-6">
-      <h2 className="text-2xl font-bold text-gray-800">Produits</h2>
+    <div className="space-y-6 p-6 dark:bg-gray-900 dark:text-gray-200 ">
+      <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+        Produits
+      </h2>
 
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <input
@@ -89,12 +92,12 @@ export default function ProductsPage() {
           placeholder="Rechercher un produit..."
           value={filterText}
           onChange={handleFilterChange}
-          className="flex-grow px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          className="flex-grow px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
         />
 
         <button
           onClick={openModalForNew}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition"
+          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition dark:bg-indigo-700 dark:hover:bg-indigo-600"
         >
           + Ajouter un produit
         </button>
@@ -106,44 +109,55 @@ export default function ProductsPage() {
           filteredProducts.map((product) => (
             <div
               key={product.id}
-              className="bg-white rounded-xl shadow p-4 border border-gray-200 relative"
+              className="bg-white rounded-xl shadow p-4 border border-gray-200 relative dark:bg-gray-800 dark:border-gray-700 dark:shadow-none"
             >
-              <h3 className="font-semibold text-lg text-gray-700">{product.name}</h3>
-              <p className="text-sm text-gray-500">Prix: {product.price} €</p>
-              <p className="text-sm text-gray-500">Stock: {product.stock}</p>
+              <h3 className="font-semibold text-lg text-gray-700 dark:text-white">
+                {product.name}
+              </h3>
+              <p className="text-sm text-gray-500 dark:text-gray-300">
+                Prix: {product.price} €
+              </p>
+              <p className="text-sm text-gray-500 dark:text-gray-300">
+                Stock: {product.stock}
+              </p>
 
               <button
                 onClick={() => openModalForEdit(product)}
-                className="absolute top-2 right-2 text-indigo-600 hover:text-indigo-800 text-sm"
+                className="absolute top-2 right-2 text-indigo-600 hover:text-indigo-800 text-sm dark:text-indigo-400 dark:hover:text-indigo-300"
               >
                 Modifier
               </button>
             </div>
           ))
         ) : (
-          <p className="text-gray-500">Aucun produit trouvé.</p>
+          <p className="text-gray-500 dark:text-gray-400">
+            Aucun produit trouvé.
+          </p>
         )}
       </div>
 
       {/* Modal */}
       {modalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative">
+          <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative dark:bg-gray-800 dark:shadow-none dark:border dark:border-gray-700">
             <button
               onClick={closeModal}
-              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
               aria-label="Fermer modal"
             >
               ✕
             </button>
 
-            <h3 className="text-xl font-semibold mb-4">
-              {editingProduct ? 'Modifier le produit' : 'Ajouter un produit'}
+            <h3 className="text-xl font-semibold mb-4 dark:text-white">
+              {editingProduct ? "Modifier le produit" : "Ajouter un produit"}
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   Nom du produit
                 </label>
                 <input
@@ -153,12 +167,15 @@ export default function ProductsPage() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className="mt-1 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="mt-1 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
               </div>
 
               <div>
-                <label htmlFor="price" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="price"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   Prix (€)
                 </label>
                 <input
@@ -170,12 +187,15 @@ export default function ProductsPage() {
                   value={formData.price}
                   onChange={handleChange}
                   required
-                  className="mt-1 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="mt-1 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
               </div>
 
               <div>
-                <label htmlFor="stock" className="block text-sm font-medium text-gray-700">
+                <label
+                  htmlFor="stock"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   Stock
                 </label>
                 <input
@@ -186,15 +206,17 @@ export default function ProductsPage() {
                   value={formData.stock}
                   onChange={handleChange}
                   required
-                  className="mt-1 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                  className="mt-1 w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition"
+                className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition dark:bg-indigo-700 dark:hover:bg-indigo-600"
               >
-                {editingProduct ? 'Enregistrer les modifications' : 'Ajouter produit'}
+                {editingProduct
+                  ? "Enregistrer les modifications"
+                  : "Ajouter produit"}
               </button>
             </form>
           </div>
