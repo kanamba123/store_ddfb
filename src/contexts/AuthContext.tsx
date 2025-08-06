@@ -14,7 +14,6 @@ interface User {
   id: string;
   name: string;
   email: string;
-  // ajoute les champs nécessaires selon ton backend
 }
 
 interface AuthContextType {
