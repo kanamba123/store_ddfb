@@ -4,6 +4,7 @@ import { useProductsFeatured } from "@/hooks/apis/useProducts";
 import { useMemo, useState } from "react";
 import Image from "next/image";
 
+
 export default function ProductsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
