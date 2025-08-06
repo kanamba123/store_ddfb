@@ -91,7 +91,7 @@ export default function Sidebar({ isOpen, onClose }) {
       <aside
         className={`
           fixed top-0 left-0 h-screen w-72 sm:w-80 z-50 transform transition-all duration-300 ease-out
-          lg:relative lg:h-screen lg:w-full lg:transform-none lg:transition-none
+          lg:relative lg:h-full lg:w-full lg:transform-none lg:transition-none
           bg-white/85 dark:bg-gray-900/85 backdrop-blur-xl shadow-2xl border-r border-white/30 dark:border-gray-800/30
           flex flex-col
           ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
