@@ -1,5 +1,4 @@
 "use client";
-import { InputChangeEvent } from "@/types/events";
 import { StoreByOwner } from "@/types/store";
 import {
   Eye,
@@ -17,11 +16,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
 
-interface StoreProfileTabProps {
-  handleChange: (e: InputChangeEvent) => void;
-}
 
-export default function ProfileTab({ handleChange }: StoreProfileTabProps) {
+export default function ProfileTab() {
   const { id } = useParams<{ id: string }>();
   const [store, setStore] = useState<StoreByOwner | null>(null);
   const [isLoading, setIsLoading] = useState(true);
