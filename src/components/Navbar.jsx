@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Navbar({ onToggleSidebar }) {
   const pathname = usePathname();
@@ -25,6 +26,7 @@ export default function Navbar({ onToggleSidebar }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const { logout } = useAuth();
 
   const profileRef = useRef(null);
   const notificationRef = useRef(null);
@@ -243,7 +245,7 @@ export default function Navbar({ onToggleSidebar }) {
                       </span>
                     </Link>
                     <hr className="my-2 border-gray-100 dark:border-gray-800" />
-                    <button className="w-full flex items-center space-x-2 p-2 sm:p-3 rounded-lg hover:bg-red-50/50 dark:hover:bg-red-900/50 transition-colors text-red-600 dark:text-red-400">
+                    <button onClick={logout} className="w-full flex items-center space-x-2 p-2 sm:p-3 rounded-lg hover:bg-red-50/50 dark:hover:bg-red-900/50 transition-colors text-red-600 dark:text-red-400">
                       <LogOut className="w-4 h-4 flex-shrink-0" />
                       <span className="text-xs sm:text-sm">Déconnexion</span>
                     </button>
