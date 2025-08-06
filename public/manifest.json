@@ -1,0 +1,13 @@
+{
+  "name": "Win2Cop",
+  "short_name": "Win2Cop",
+  "description": "Plateforme de jeux et compétitions en ligne",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1a1a1a",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "fr"
+ 
+}
