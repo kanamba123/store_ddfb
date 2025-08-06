@@ -227,7 +227,7 @@ export default function Navbar({ onToggleSidebar }) {
                 <div className="absolute right-0 mt-2 w-44 sm:w-48 bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl rounded-xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 z-50">
                   <div className="p-2">
                     <Link
-                      href="/profile"
+                      href="/dashboard/profile"
                       className="flex items-center space-x-2 p-2 sm:p-3 rounded-lg hover:bg-gray-50/50 dark:hover:bg-gray-800/50 transition-colors"
                     >
                       <User className="w-4 h-4 text-gray-500 dark:text-gray-400 flex-shrink-0" />
