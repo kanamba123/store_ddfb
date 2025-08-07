@@ -18,6 +18,7 @@ import {
 import { useState, useEffect, useRef } from "react";
 import { useTheme } from "next-themes";
 import { useAuth } from "@/contexts/AuthContext";
+import { getInitials } from "../utils/getInitials"; 
 
 export default function Navbar({ onToggleSidebar }) {
   const pathname = usePathname();
@@ -210,7 +211,7 @@ export default function Navbar({ onToggleSidebar }) {
               >
                 <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
                   <span className="text-white font-semibold text-xs sm:text-sm">
-                    JD
+                   {getInitials(user?.fullName)|| "W"}
                   </span>
                 </div>
                 <div className="hidden lg:block text-left min-w-0">

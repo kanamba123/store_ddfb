@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { FaUsers } from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
+import { getInitials } from "../utils/getInitials";
 
 const sidebarLinks = [
   {
@@ -186,7 +187,7 @@ export default function Sidebar({ isOpen, onClose }) {
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-600 dark:to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-semibold text-xs sm:text-sm">
-                  JD
+                  {getInitials(user?.fullName)|| "W"}
                 </span>
               </div>
               <div className="flex-1 min-w-0">
