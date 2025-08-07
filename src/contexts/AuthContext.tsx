@@ -10,10 +10,20 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 
+
+interface Store {
+  id: string,
+  storeName: string,
+  storeType: string,
+  storeAddress: string
+
+}
+
 interface User {
   id: string;
   name: string;
   email: string;
+  store: Store
 }
 
 interface AuthContextType {

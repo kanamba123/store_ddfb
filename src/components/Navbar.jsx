@@ -26,7 +26,9 @@ export default function Navbar({ onToggleSidebar }) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const { logout } = useAuth();
+  const { logout ,user} = useAuth();
+
+  console.log(user)
 
   const profileRef = useRef(null);
   const notificationRef = useRef(null);
@@ -81,7 +83,7 @@ export default function Navbar({ onToggleSidebar }) {
                 <span className="text-white font-bold text-sm">W</span>
               </div>
               <span className="text-lg font-bold text-gray-800 dark:text-white hidden sm:block">
-                Win2Cop
+                {user?.store?.storeName}
               </span>
             </div>
 
@@ -213,7 +215,7 @@ export default function Navbar({ onToggleSidebar }) {
                 </div>
                 <div className="hidden lg:block text-left min-w-0">
                   <p className="text-sm font-medium text-gray-700 dark:text-gray-200 truncate">
-                    NISHIMAGIZWE Ruben
+                    {user?.fullName}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                     Admin

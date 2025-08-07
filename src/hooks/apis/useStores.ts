@@ -1,12 +1,19 @@
 import API from "@/config/Axios";
 import { useQuery } from "@tanstack/react-query";
 
+
+export const fetchStoreWithUserDetails = async (ownerId: string) => {
+  const { data } = await API.get(`/stores/storeWithOwner`, {
+    params: { ownerId },
+  });
+  return data;
+};
 const fetchStores = async () => {
   const response = await API.get(`/stores/shops`);
   return response.data;
 };
 
-const fetchStoreDetail = async (id:String) => {
+const fetchStoreDetail = async (id:string) => {
   const response = await API.get(`/stores/shps/${id}`);
   return response.data;
 };
@@ -20,10 +27,21 @@ export const useStores = () => {
   });
 };
 
-export const useStoreDetail = (storeId:String) => {
+
+
+export const useStoreDetail = (storeId:string) => {
   return useQuery({
     queryKey: ["storeDetail", storeId],
     queryFn: () => fetchStoreDetail(storeId),
+    enabled: !!storeId, 
+    staleTime: 5 * 60 * 1000,
+  });
+};
+
+export const useStoreWithUserDetails = (storeId:any) => {
+  return useQuery({
+    queryKey: ["storeUserDetail", storeId],
+    queryFn: () => fetchStoreWithUserDetails(storeId),
     enabled: !!storeId, 
     staleTime: 5 * 60 * 1000,
   });

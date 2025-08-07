@@ -3,11 +3,12 @@ import { InputChangeEvent } from "@/types/events";
 import { StoreByOwner } from "@/types/store";
 import { Eye, Store } from "lucide-react";
 import { useParams } from "next/navigation";
-import { fetchStoreDetails } from "@/libs/api/stores";
+import {  fetchStoreWithUserDetails } from "@/libs/api/stores";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { User } from "@/types/user";
 import StoreDetailsModal from "./StoreDetailsModal";
+import { useStoreWithUserDetails } from "@/hooks/apis/useStores";
 
 interface StoreProfileTabProps {
   handleChange: (e: InputChangeEvent) => void;
@@ -15,29 +16,10 @@ interface StoreProfileTabProps {
 
 export default function ProfileTab({ handleChange }: StoreProfileTabProps) {
   const { id } = useParams<{ id: string }>();
-  const [store, setStore] = useState<StoreByOwner | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAuth();
+  const { data: store, isLoading } = useStoreWithUserDetails(user?.id);
 
-  useEffect(() => {
-    const loadStoreData = async () => {
-      if (!user) return;
-
-      try {
-        const storeData = await fetchStoreDetails(Number(user.id));
-        setStore(storeData);
-      } catch (err) {
-        setError("Failed to load store data");
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadStoreData();
-  }, [id, user]);
 
   const handleSaveStore = async (updatedStore: any) => {
     try {

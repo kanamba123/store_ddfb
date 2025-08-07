@@ -14,6 +14,7 @@ import {
   ShoppingCart,
 } from "lucide-react";
 import { FaUsers } from "react-icons/fa";
+import { useAuth } from "@/contexts/AuthContext";
 
 const sidebarLinks = [
   {
@@ -76,6 +77,7 @@ const sidebarLinks = [
 
 export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
+  const { user} = useAuth();
 
   return (
     <>
@@ -106,7 +108,7 @@ export default function Sidebar({ isOpen, onClose }) {
               </div>
               <div className="min-w-0">
                 <h2 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent truncate">
-                  Win2Cop
+                  {user?.store?.storeName}
                 </h2>
                 <p className="text-xs text-gray-500 dark:text-gray-400">
                   Dashboard Pro
@@ -189,10 +191,10 @@ export default function Sidebar({ isOpen, onClose }) {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-xs sm:text-sm font-medium text-gray-800 dark:text-gray-200 truncate">
-                  Nishimagizwe Ruben
+                  {user?.fullName}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
-                  nishimagizwe@win2cop.com
+                  {user?.email}
                 </p>
               </div>
             </div>

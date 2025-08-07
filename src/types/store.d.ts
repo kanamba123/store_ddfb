@@ -1,8 +1,7 @@
-// types/store.d.ts
 export interface StoreByOwner {
   id: number;
   storeName: string;
-  storeType: "physical" | "online" | "both";
+  storeType: "physical" | "online" | "both" | "retail"; // added "retail"
   nif: string | null;
   rc: string | null;
   bp: string | null;
@@ -11,11 +10,14 @@ export interface StoreByOwner {
   storeAddress: string;
   city: string;
   country: string;
-  postalCode: string;
+  postalCode?: string; // optional because it's not in the response
   storeContactPhone: {
-    call: string;
-    whatsapp?: string;
-  };
+    call: string,
+    Whatsapp: string,
+    Busness :string,
+    Communication :sirng
+
+  }; // changed from object to string[]
   storeContactMail: string;
   personReferences: Array<{
     name: string;
@@ -23,28 +25,30 @@ export interface StoreByOwner {
     relation: string;
   }>;
   storeStatus: "active" | "inactive" | "suspended";
-  storeDescription: string;
-  storePlatformUrl: string[];
+  storeDescription: string | null;
+  storePlatformUrl: string[] | null; // changed to allow null
   ownerId: number;
   marketId: number | null;
   location: {
-    lat: number;
-    lng: number;
+    latitude: number;
+    longitude: number;
   } | null;
   documents: Array<{
     type: string;
     url: string;
     status: "pending" | "approved" | "rejected";
   }>;
-  logoUrl: string | null; // Added for store logo
-  coverImageUrl: string | null; // Added for store cover image
-  galleryImages: string[]; // Added for store gallery
+  logoUrl?: string | null;
+  coverImageUrl?: string | null;
+  galleryImages?: string[];
+
   isDisplay: boolean;
   isTemporary: boolean;
   verificationStatus: "pending" | "verified" | "rejected";
   verifiedAt: string | null;
   createdAt: string;
   updatedAt: string;
+
   socialMedia?: {
     facebook?: string;
     instagram?: string;
@@ -58,4 +62,22 @@ export interface StoreByOwner {
     isClosed: boolean;
   }>;
   paymentMethods?: string[];
+
+  OwnerStore: {
+    id: number;
+    fullName: string;
+    userName: string;
+    email: string;
+    phoneNumber: string;
+    businessName: string;
+    profil: string;
+  };
+
+  Market: {
+    id: number;
+    marketName: string;
+    marketType: string;
+    contact: string;
+    adressMarket: string;
+  };
 }
