@@ -1,8 +1,9 @@
 "use client";
 
-import { useProductsFeatured } from "@/hooks/apis/useProducts";
+import { useVariantsProductByStore } from "@/hooks/apis/useProducts";
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import { useAuth } from "@/contexts/AuthContext";
 
 
 export default function ProductsPage() {
@@ -17,6 +18,7 @@ export default function ProductsPage() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const { user } = useAuth();
 
   const {
     data,
@@ -25,9 +27,9 @@ export default function ProductsPage() {
     isFetchingNextPage,
     isLoading,
     isError,
-  } = useProductsFeatured();
+  } = useVariantsProductByStore(user?.store?.id) 
 
-  // Flatten all pages data and extract products
+   // Flatten all pages data and extract products
   const allProducts = useMemo(() => {
     return data?.pages.flatMap((page) => page.data || []) || [];
   }, [data]);

@@ -1,5 +1,5 @@
 import API from "@/config/Axios";
-import { useInfiniteQuery, useQuery ,useIsMutating} from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery, useIsMutating } from "@tanstack/react-query";
 
 
 
@@ -8,14 +8,14 @@ export const useProducts = () => {
     queryKey: ["products"],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await API.get(`/variantesProduits?page=${pageParam}&limit=10`);
-      return response.data; 
+      return response.data;
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (lastPage.meta && lastPage.meta.currentPage < lastPage.meta.totalPages) {
         return lastPage.meta.currentPage + 1;
       }
-      return undefined; 
+      return undefined;
     },
     select: (data) => ({
       ...data,
@@ -31,7 +31,7 @@ export const useProductsCategorie = () => {
     queryKey: ["productsCategorie"],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await API.get(`/products/prodCat?page=${pageParam}&limit=10`);
-      return response.data; 
+      return response.data;
     },
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
@@ -46,22 +46,34 @@ export const useProductsCategorie = () => {
 };
 
 
-export const useProductsFeatured = () => {
+export const useVariantsProductByStore = (ownerProducstoreId?: number) => {
   return useInfiniteQuery({
-    queryKey: ["productsFeatured"],
+    queryKey: ["productsFeatured", ownerProducstoreId],
     queryFn: async ({ pageParam = 1 }) => {
-      const response = await API.get(`/variantesProduits/featured?page=${pageParam}&limit=5`);
-      return response.data; 
+      const response = await API.get(
+        `/variantesProduits/byStore`,
+        {
+          params: {
+            ownerProducstoreId,
+            page: pageParam,
+            limit: 5,
+          }
+        }
+      );
+      return response.data;
     },
+    enabled: !!ownerProducstoreId, // only run when ID exists
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       if (lastPage.meta && lastPage.meta.currentPage < lastPage.meta.totalPages) {
         return lastPage.meta.currentPage + 1;
       }
-      return undefined; 
+      return undefined;
     },
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
 };
+
+
 
