@@ -116,7 +116,8 @@ export default function ProductsPage() {
       navigator.share({
         title: product.variantProductName,
         text: `Découvrez ${product.variantProductName} à ${product.recommendedPrice.toFixed(2)} fbu`,
-        url: window.location.href,
+        // url: window.location.href,
+        url: `https://win2cop.com/products/${product.slug}/${product.id}`,
       }).catch(console.error);
     } else {
       // Fallback - copy to clipboard
@@ -161,7 +162,7 @@ export default function ProductsPage() {
 
   // Mobile Card Component
   const ProductCard = ({ product }) => (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 space-y-3">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-2 space-y-3">
       {/* Header avec image et nom */}
       <div className="flex items-start space-x-3">
         <div className="flex-shrink-0">
@@ -275,6 +276,8 @@ export default function ProductsPage() {
   );
 
   return (
+
+     
     <div className="space-y-6 p-2 dark:bg-gray-900 dark:text-gray-200">
      
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
