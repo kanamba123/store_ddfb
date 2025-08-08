@@ -5,7 +5,6 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 
-
 export default function ProductsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -27,9 +26,9 @@ export default function ProductsPage() {
     isFetchingNextPage,
     isLoading,
     isError,
-  } = useVariantsProductByStore(user?.store?.id) 
+  } = useVariantsProductByStore(user?.store?.id);
 
-   // Flatten all pages data and extract products
+  // Flatten all pages data and extract products
   const allProducts = useMemo(() => {
     return data?.pages.flatMap((page) => page.data || []) || [];
   }, [data]);
@@ -100,6 +99,79 @@ export default function ProductsPage() {
   if (isLoading) return <div>Loading products...</div>;
   if (isError) return <div>Error loading products</div>;
 
+  // Mobile Card Component
+  const ProductCard = ({ product }) => (
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 space-y-3">
+      {/* Header avec image et nom */}
+      <div className="flex items-start space-x-3">
+        <div className="flex-shrink-0">
+          {product?.image?.length > 0 ? (
+            <div className="relative h-16 w-16">
+              <Image
+                src={product?.image[0]}
+                alt={product.variantProductName}
+                fill
+                className="rounded-lg object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            </div>
+          ) : (
+            <div className="h-16 w-16 bg-gray-200 rounded-lg flex items-center justify-center dark:bg-gray-700">
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                No image
+              </span>
+            </div>
+          )}
+        </div>
+        
+        <div className="flex-1 min-w-0">
+          <h3 className="font-medium text-gray-900 dark:text-white truncate">
+            {product.variantProductName}
+          </h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+            {product?.Product?.productName}
+          </p>
+          <div className="flex items-center justify-between mt-2">
+            <span className="text-lg font-semibold text-gray-900 dark:text-white">
+              {product?.recommendedPrice.toFixed(2)} fbu
+            </span>
+            <span
+              className={`px-2 py-1 text-xs font-medium rounded-full ${
+                product.isDisplay
+                  ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                  : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+              }`}
+            >
+              {product.isDisplay ? "Visible" : "Masqué"}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Description */}
+      <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
+        <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+          {product?.Product?.description?.fr ||
+            product?.Product?.description?.en ||
+            "Aucune description"}
+        </p>
+      </div>
+
+      {/* Actions */}
+      <div className="flex space-x-3 pt-2">
+        <button
+          onClick={() => openModalForEdit(product)}
+          className="flex-1 bg-indigo-50 text-indigo-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-indigo-100 dark:bg-indigo-900/50 dark:text-indigo-400 dark:hover:bg-indigo-900/70 transition-colors"
+        >
+          Modifier
+        </button>
+        <button className="flex-1 bg-red-50 text-red-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-red-100 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-900/70 transition-colors">
+          Supprimer
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <div className="space-y-6 p-2 dark:bg-gray-900 dark:text-gray-200">
       <h2 className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -123,100 +195,111 @@ export default function ProductsPage() {
         </button>
       </div>
 
-      {/* Products Table */}
-      <div className="overflow-x-auto overflow-y-auto max-h-[50vh]">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead className="bg-gray-50 dark:bg-gray-800">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                Image
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                Nom
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                Description
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                Prix (€)
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                Statut
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
-            {filteredProducts.map((product) => (
-              <tr key={product.id}>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  {product?.image?.length > 0 ? (
-                    <div className="relative h-10 w-10">
-                      <Image
-                        src={product?.image[0]}
-                        alt={product.variantProductName}
-                        fill
-                        className="rounded-md object-cover"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                    </div>
-                  ) : (
-                    <div className="h-10 w-10 bg-gray-200 rounded-md flex items-center justify-center dark:bg-gray-700">
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        No image
-                      </span>
-                    </div>
-                  )}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="font-medium text-gray-900 dark:text-white">
-                    {product.variantProductName}
-                  </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">
-                    {product?.Product?.productName}
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="text-sm text-gray-900 dark:text-gray-200 max-w-xs truncate">
-                    {product?.Product?.description?.fr ||
-                      product?.Product?.description?.en ||
-                      "Aucune description"}
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900 dark:text-white">
-                    {product?.recommendedPrice.toFixed(2)} fbu
-                  </div>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                    ${
-                      product.isDisplay
-                        ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
-                        : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
-                    }`}
-                  >
-                    {product.isDisplay ? "Visible" : "Masqué"}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button
-                    onClick={() => openModalForEdit(product)}
-                    className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-4"
-                  >
-                    Modifier
-                  </button>
-                  <button className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
-                    Supprimer
-                  </button>
-                </td>
+      {/* Vue Mobile (Cards) - visible uniquement sur mobile */}
+      <div className="block md:hidden">
+        <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+          {filteredProducts.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
+      </div>
+
+      {/* Vue Desktop (Table) - masquée sur mobile */}
+      <div className="hidden md:block">
+        <div className="overflow-x-auto overflow-y-auto max-h-[50vh]">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead className="bg-gray-50 dark:bg-gray-800">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
+                  Image
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
+                  Nom
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
+                  Description
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
+                  Prix (€)
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
+                  Statut
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider dark:text-gray-300">
+                  Actions
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
+              {filteredProducts.map((product) => (
+                <tr key={product.id}>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {product?.image?.length > 0 ? (
+                      <div className="relative h-10 w-10">
+                        <Image
+                          src={product?.image[0]}
+                          alt={product.variantProductName}
+                          fill
+                          className="rounded-md object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        />
+                      </div>
+                    ) : (
+                      <div className="h-10 w-10 bg-gray-200 rounded-md flex items-center justify-center dark:bg-gray-700">
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          No image
+                        </span>
+                      </div>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="font-medium text-gray-900 dark:text-white">
+                      {product.variantProductName}
+                    </div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      {product?.Product?.productName}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="text-sm text-gray-900 dark:text-gray-200 max-w-xs truncate">
+                      {product?.Product?.description?.fr ||
+                        product?.Product?.description?.en ||
+                        "Aucune description"}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900 dark:text-white">
+                      {product?.recommendedPrice.toFixed(2)} fbu
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                      ${
+                        product.isDisplay
+                          ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+                          : "bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300"
+                      }`}
+                    >
+                      {product.isDisplay ? "Visible" : "Masqué"}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button
+                      onClick={() => openModalForEdit(product)}
+                      className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 mr-4"
+                    >
+                      Modifier
+                    </button>
+                    <button className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
+                      Supprimer
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       {/* Pagination Controls */}
@@ -244,7 +327,7 @@ export default function ProductsPage() {
 
       {/* Modal (same as before) */}
       {modalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative dark:bg-gray-800 dark:shadow-none dark:border dark:border-gray-700">
             <button
               onClick={closeModal}
