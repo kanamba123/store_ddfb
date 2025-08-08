@@ -29,8 +29,6 @@ export default function Navbar({ onToggleSidebar }) {
   const [mounted, setMounted] = useState(false);
   const { logout ,user} = useAuth();
 
-  console.log(user)
-
   const profileRef = useRef(null);
   const notificationRef = useRef(null);
 

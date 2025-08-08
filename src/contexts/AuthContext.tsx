@@ -73,6 +73,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = useCallback(() => {
+    // Supprimer le cookie
+    document.cookie = 'authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+
     localStorage.removeItem("authToken");
     localStorage.removeItem("user");
     setToken(null);

@@ -43,37 +43,41 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, redirectUrl, router, setRedirectUrl]);
 
-  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-    setErrorMsg("");
+ // Dans votre page de login
+const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  setLoading(true);
+  setErrorMsg("");
 
-    try {
-      const res = await fetch(`${API_URL}/ownerstores/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+  try {
+    const res = await fetch(`${API_URL}/ownerstores/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await res.json();
+    const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.message || "Erreur lors de la connexion.");
-      }
-
-      await login(data.token, data.user);
-
-      if (redirectUrl) {
-        window.location.href = redirectUrl;
-      } else {
-        router.push("/dashboard");
-      }
-    } catch (err: any) {
-      setErrorMsg(err.message || "Échec de la connexion.");
-    } finally {
-      setLoading(false);
+    if (!res.ok) {
+      throw new Error(data.message || "Erreur lors de la connexion.");
     }
-  };
+
+    // Set cookie en plus du localStorage
+    document.cookie = `authToken=${data.token}; path=/; max-age=${60 * 60 * 24 * 7}; Secure; SameSite=Strict`;
+    
+    await login(data.token, data.user);
+
+    if (redirectUrl) {
+      window.location.href = redirectUrl;
+    } else {
+      router.push("/dashboard");
+    }
+  } catch (err: any) {
+    setErrorMsg(err.message || "Échec de la connexion.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div
