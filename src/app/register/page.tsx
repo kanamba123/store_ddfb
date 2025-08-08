@@ -46,10 +46,21 @@ export default function RegisterPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const [ownerId, setOwnerId] = useState<number | null>(null);
   const [storeId, setStoreId] = useState<number | null>(null);
+  
+  // État pour les conditions d'utilisation
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const clearErrors = () => setErrors({});
 
   const handleOwnerSubmit = async (data: OwnerData) => {
+    // Vérifier que les conditions sont acceptées
+    if (!acceptedTerms) {
+      setErrors({
+        general: "Vous devez accepter les conditions d'utilisation et la politique de confidentialité pour continuer",
+      });
+      return;
+    }
+
     setLoading(true);
     clearErrors();
 
@@ -203,6 +214,59 @@ export default function RegisterPage() {
       </div>
     );
   };
+
+  // Composant pour la case à cocher des conditions
+  const TermsCheckbox = () => {
+    return (
+      <div className="max-w-2xl mx-auto mb-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+          <div className="flex items-start space-x-3">
+            <div className="flex items-center h-5">
+              <input
+                id="terms-checkbox"
+                type="checkbox"
+                checked={acceptedTerms}
+                onChange={(e) => {
+                  setAcceptedTerms(e.target.checked);
+                  if (e.target.checked && errors.general?.includes("conditions")) {
+                    clearErrors();
+                  }
+                }}
+                className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+              />
+            </div>
+            <div className="text-sm">
+              <label htmlFor="terms-checkbox" className="font-medium text-gray-900 dark:text-gray-300">
+                J'accepte les conditions d'utilisation et la politique de confidentialité
+              </label>
+              <p className="text-gray-500 dark:text-gray-400 mt-1">
+                En cochant cette case, vous acceptez nos{" "}
+                <a 
+                  href="/terms-of-service" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                >
+                  conditions d'utilisation
+                </a>
+                {" "}et notre{" "}
+                <a 
+                  href="/privacy-policy" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
+                >
+                  politique de confidentialité
+                </a>
+                .
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 md:py-12 px-2 sm:px-6">
       <div className="max-w-6xl mx-auto">
@@ -219,6 +283,9 @@ export default function RegisterPage() {
 
         {/* Progress Bar */}
         <ProgressBar />
+
+        {/* Terms and Conditions Checkbox - Affiché uniquement sur l'étape propriétaire */}
+        {currentStep === "owner" && <TermsCheckbox />}
 
         {/* Error messages */}
         {errors.general && (
