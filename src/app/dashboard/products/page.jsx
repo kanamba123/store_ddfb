@@ -1,7 +1,7 @@
 "use client";
 
 import { useVariantsProductByStore } from "@/hooks/apis/useProducts";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { useAuth } from "@/contexts/AuthContext";
 
@@ -14,12 +14,12 @@ export default function ProductsPage() {
     stock: "",
   });
   const [filterText, setFilterText] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const { user } = useAuth();
-
-  const {
+    const {
     data,
     fetchNextPage,
     hasNextPage,
@@ -27,6 +27,39 @@ export default function ProductsPage() {
     isLoading,
     isError,
   } = useVariantsProductByStore(user?.store?.id);
+
+  // Detect mobile viewport
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+  // Infinite scroll for mobile
+  const handleScroll = useCallback(() => {
+    if (!isMobile || !hasNextPage || isFetchingNextPage) return;
+    
+    const scrollPosition = window.innerHeight + window.scrollY;
+    const threshold = document.documentElement.offsetHeight - 1000;
+    
+    if (scrollPosition >= threshold) {
+      fetchNextPage();
+    }
+  }, [isMobile, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    if (isMobile) {
+      window.addEventListener('scroll', handleScroll);
+      return () => window.removeEventListener('scroll', handleScroll);
+    }
+  }, [isMobile, handleScroll]);
+
+
 
   // Flatten all pages data and extract products
   const allProducts = useMemo(() => {
@@ -75,6 +108,33 @@ export default function ProductsPage() {
     e.preventDefault();
     // Your submit logic here
     closeModal();
+  };
+
+  const handleShare = (product) => {
+    if (navigator.share && isMobile) {
+      // Native sharing on mobile
+      navigator.share({
+        title: product.variantProductName,
+        text: `Découvrez ${product.variantProductName} à ${product.recommendedPrice.toFixed(2)} fbu`,
+        url: window.location.href,
+      }).catch(console.error);
+    } else {
+      // Fallback - copy to clipboard
+      const shareText = `${product.variantProductName} - ${product.recommendedPrice.toFixed(2)} fbu\n${window.location.href}`;
+      navigator.clipboard.writeText(shareText).then(() => {
+        // You can add a toast notification here
+        alert('Lien copié dans le presse-papiers !');
+      }).catch(() => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = shareText;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        alert('Lien copié dans le presse-papiers !');
+      });
+    }
   };
 
   const filteredProducts = allProducts.filter((product) =>
@@ -158,15 +218,57 @@ export default function ProductsPage() {
       </div>
 
       {/* Actions */}
-      <div className="flex space-x-3 pt-2">
+      <div className="flex space-x-2 pt-2">
         <button
           onClick={() => openModalForEdit(product)}
-          className="flex-1 bg-indigo-50 text-indigo-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-indigo-100 dark:bg-indigo-900/50 dark:text-indigo-400 dark:hover:bg-indigo-900/70 transition-colors"
+          className="flex-1 bg-indigo-50 text-indigo-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-indigo-100 dark:bg-indigo-900/50 dark:text-indigo-400 dark:hover:bg-indigo-900/70 transition-colors flex items-center justify-center"
         >
-          Modifier
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+            />
+          </svg>
         </button>
-        <button className="flex-1 bg-red-50 text-red-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-red-100 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-900/70 transition-colors">
-          Supprimer
+        <button
+          onClick={() => handleShare(product)}
+          className="flex-1 bg-blue-50 text-blue-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-blue-100 dark:bg-blue-900/50 dark:text-blue-400 dark:hover:bg-blue-900/70 transition-colors flex items-center justify-center"
+        >
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"
+            />
+          </svg>
+        </button>
+        <button className="flex-1 bg-red-50 text-red-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-red-100 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-900/70 transition-colors flex items-center justify-center">
+          <svg
+            className="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+            />
+          </svg>
         </button>
       </div>
     </div>
@@ -174,7 +276,7 @@ export default function ProductsPage() {
 
   return (
     <div className="space-y-6 p-2 dark:bg-gray-900 dark:text-gray-200">
-      
+     
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <input
           type="text"
@@ -184,9 +286,10 @@ export default function ProductsPage() {
           className="flex-grow px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
         />
 
+        {/* Bouton d'ajout - visible uniquement sur desktop */}
         <button
           onClick={openModalForNew}
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition dark:bg-indigo-700 dark:hover:bg-indigo-600"
+          className="hidden md:block bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition dark:bg-indigo-700 dark:hover:bg-indigo-600"
         >
           + Ajouter un produit
         </button>
@@ -194,10 +297,23 @@ export default function ProductsPage() {
 
       {/* Vue Mobile (Cards) - visible uniquement sur mobile */}
       <div className="block md:hidden">
-        <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+        <div className="space-y-4 pb-24">
           {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
+          
+          {/* Loading indicator pour scroll infini */}
+          {isFetchingNextPage && (
+            <div className="flex justify-center py-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+            </div>
+          )}
+          
+          {!hasNextPage && filteredProducts.length > 0 && (
+            <div className="text-center py-4 text-gray-500 dark:text-gray-400">
+              Tous les produits ont été chargés
+            </div>
+          )}
         </div>
       </div>
 
@@ -288,6 +404,12 @@ export default function ProductsPage() {
                     >
                       Modifier
                     </button>
+                    <button
+                      onClick={() => handleShare(product)}
+                      className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-4"
+                    >
+                      Partager
+                    </button>
                     <button className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
                       Supprimer
                     </button>
@@ -299,8 +421,8 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {/* Pagination Controls */}
-      <div className="flex items-center justify-between mt-4">
+      {/* Pagination Controls - visible uniquement sur desktop */}
+      <div className="hidden md:flex items-center justify-between mt-4">
         <div className="text-sm text-gray-700 dark:text-gray-300">
           Showing page {paginationInfo.currentPage} of{" "}
           {paginationInfo.totalPages}
@@ -322,10 +444,36 @@ export default function ProductsPage() {
         </div>
       </div>
 
-      {/* Modal (same as before) */}
+      {/* FloatingActionButton - visible uniquement sur mobile */}
+      <button
+        onClick={openModalForNew}
+        className="md:hidden fixed bottom-8 right-6 w-16 h-16 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-200 flex items-center justify-center z-50 border-4 border-white dark:border-gray-900"
+        aria-label="Ajouter un produit"
+        style={{ 
+          position: 'fixed',
+          bottom: '32px',
+          right: '24px'
+        }}
+      >
+        <svg
+          className="w-7 h-7"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          strokeWidth={3}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 4v16m8-8H4"
+          />
+        </svg>
+      </button>
+
+      {/* Modal */}
       {modalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative dark:bg-gray-800 dark:shadow-none dark:border dark:border-gray-700">
+          <div className="bg-white rounded-xl shadow-lg max-w-md w-full p-6 relative dark:bg-gray-800 dark:shadow-none dark:border dark:border-gray-700 max-h-[90vh] overflow-y-auto">
             <button
               onClick={closeModal}
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
