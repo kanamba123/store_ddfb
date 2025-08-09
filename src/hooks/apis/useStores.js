@@ -1,6 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import config from "../../config/config";
 import { notifySuccess, notifyError } from "../../components/ui/ToastNotification";
 import API from "@/config/Axios";
 import { API_URL } from "@/config/API";
