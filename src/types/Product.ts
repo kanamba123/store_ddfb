@@ -3,7 +3,7 @@ import { VariantsProduct } from "./VariantsProduct";
 export interface Product {
     id: number;
     productName: string;
-    description: string | {
+    description:{
       en?: string;
       fr?: string;
       sw?: string;
