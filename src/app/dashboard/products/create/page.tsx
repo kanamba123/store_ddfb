@@ -1,25 +1,17 @@
 "use client"
-
 import { useEffect, useState, useCallback } from "react"
-import { useForm, useFieldArray } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { fetchProductCategories } from "@/libs/api/products"
 import { useCreateVariantProduct } from "@/hooks/apis/useVariants"
 import ImageUploader from "@/components/ui/ImageUploader"
+import AddKeyValuePairs from "@/components/ui/AddKeyValuePairs"
 import { useStores } from "@/hooks/apis/useStores"
+import { Product } from "@/types/Product"
+import { StoreData } from "@/types/registration"
 
 interface Specification {
   key: string
   value: string
-}
-
-interface Product {
-  id: number
-  productName: string
-}
-
-interface Store {
-  id: number
-  storeName: string
 }
 
 type VariantType = 'product' | 'accessory' | ''
@@ -29,14 +21,41 @@ interface VariantFormData {
   variantType?: VariantType
   description?: string
   productId: number | ''
-  storeId: number | '',
+  storeId: number | ''
   purchasePrice?: number | string
-  images: FileList | null
+  image: FileList | null
   specifications: Specification[]
   bulkInput?: string
 }
 
+const inputClass = "w-full border dark:border-gray-600 p-2 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
 
+const Input = ({ label, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string }) => (
+  <div>
+    <label className="block mb-1 font-medium">{label}</label>
+    <input {...props} className={inputClass} />
+  </div>
+)
+
+const Select = ({
+  label,
+  options,
+  ...props
+}: {
+  label: string,
+  options: { value: string, label: string }[]
+} & React.SelectHTMLAttributes<HTMLSelectElement>) => (
+  <div>
+    <label className="block mb-1 font-medium">{label}</label>
+    <select {...props} className={inputClass}>
+      {options.map(opt => (
+        <option key={opt.value} value={opt.value}>
+          {opt.label}
+        </option>
+      ))}
+    </select>
+  </div>
+)
 
 export default function UploadVariantForm() {
   const { data: store = [] } = useStores();
@@ -46,29 +65,32 @@ export default function UploadVariantForm() {
   const [error, setError] = useState("")
   const [submitted, setSubmitted] = useState(false)
   const [previews, setPreviews] = useState<string[]>([])
+  const [specifications, setSpecifications] = useState<Record<string, string>>({})
 
   const {
     register,
-    control,
     handleSubmit,
     reset,
     formState: { errors },
     setValue
   } = useForm<VariantFormData>({
     defaultValues: {
-      specifications: [{ key: "", value: "" }],
+      specifications: [],
       productId: '',
       storeId: '',
       variantType: '',
-      images: null,
+      image: null,
       bulkInput: ''
     }
   })
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "specifications"
-  })
+  const handleSpecificationsChange = useCallback((specs: Record<string, string>) => {
+    setSpecifications(specs);
+  }, []);
+
+  useEffect(() => {
+    setValue("specifications", Object.entries(specifications).map(([key, value]) => ({ key, value })))
+  }, [specifications, setValue])
 
   useEffect(() => {
     const loadProduct = async () => {
@@ -82,43 +104,48 @@ export default function UploadVariantForm() {
     loadProduct()
   }, [])
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files)
+  const handleImageChange = useCallback((image: React.ChangeEvent<HTMLInputElement>) => {
+    if (image.target.files) {
+      const files = Array.from(image.target.files)
       const urls = files.map(file => URL.createObjectURL(file))
       setPreviews(urls)
+      setValue("image", image.target.files)
     }
-  }
-
+  }, [setValue])
 
   const onSubmit = async (data: VariantFormData) => {
     setSubmitting(true)
 
     const formData = new FormData()
-
     const payload = {
       ...data,
       purchasePrice: data.purchasePrice ? Number(data.purchasePrice) : undefined,
       productId: Number(data.productId),
-      variantType: data.variantType || undefined
+      storeId: Number(data.storeId),
+      variantType: data.variantType || undefined,
+      specifications: Object.keys(specifications).length > 0 
+        ? specifications 
+        : undefined
     }
 
     Object.entries(payload).forEach(([key, value]) => {
-      if (key === "images" && value) {
-        Array.from(value as FileList).forEach(file =>
-          formData.append("images", file)
-        )
-      } else if (key === "specifications") {
-        formData.append(key, JSON.stringify(value))
+      if (key === "image" && value) {
+        Array.from(value as FileList).forEach(file => {
+          formData.append("image", file)
+        })
       } else if (value !== undefined && value !== null) {
-        formData.append(key, String(value))
+        formData.append(
+          key, 
+          typeof value === 'object' ? JSON.stringify(value) : String(value))
       }
     })
 
-    useMutation.mutate(payload, {
+    useMutation.mutate(formData, {
       onSuccess: () => {
         setSubmitted(true)
         reset()
+        setSpecifications({})
+        setPreviews([])
       },
       onError: (error) => {
         console.error(error)
@@ -128,7 +155,7 @@ export default function UploadVariantForm() {
       onSettled: () => {
         setSubmitting(false)
       }
-    });
+    })
   }
 
   return (
@@ -142,31 +169,28 @@ export default function UploadVariantForm() {
       <h1 className="text-2xl font-bold mb-6 text-center">🛍️ Ajouter une Variante de Produit</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-
         <div>
           <Select
             label="Magasin du produit *"
-
             options={[
               { value: '', label: 'Sélectionnez --' },
-              ...store.map(store=> ({
+              ...store.map((store: StoreData) => ({
                 value: String(store.id),
                 label: store.storeName
               }))
             ]}
             {...register("storeId", { required: true })}
           />
-          {errors.productId && (
+          {errors.storeId && (
             <span className="text-red-500 text-sm">Ce champ est requis</span>
           )}
         </div>
-
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <Input
               label="Nom de la variante *"
-              placeholder="Nom de la variante "
+              placeholder="Nom de la variante"
               {...register("variantProductName", { required: true })}
             />
             {errors.variantProductName && (
@@ -197,7 +221,6 @@ export default function UploadVariantForm() {
           <div>
             <Select
               label="Catégorie du produit *"
-
               options={[
                 { value: '', label: 'Sélectionnez --' },
                 ...data.map(product => ({
@@ -221,110 +244,47 @@ export default function UploadVariantForm() {
           />
         </div>
 
-        {/* Specifications List */}
         <div>
-          <label className="block mb-1 font-medium">Spécifications</label>
-          {fields.map((field, index) => (
-            <div key={field.id} className="flex flex-col sm:flex-row gap-2 mb-2">
-              <input
-                {...register(`specifications.${index}.key` as const)}
-                placeholder="Clé (ex: Couleur)"
-                className={inputClass}
-              />
-              <input
-                {...register(`specifications.${index}.value` as const)}
-                placeholder="Valeur (ex: Noir)"
-                className={inputClass}
-              />
-              <button
-                type="button"
-                onClick={() => remove(index)}
-                className="text-red-500 hover:text-red-700 text-sm self-center px-2 py-1 rounded transition-colors duration-200"
-              >
-                🗑️ Supprimer
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={() => append({ key: "", value: "" })}
-            className="text-blue-500 hover:text-blue-700 mt-2 text-sm transition-colors duration-200"
-          >
-            ➕ Ajouter une spécification manuellement
-          </button>
+          <label className="block mb-2 font-medium">Spécifications</label>
+          <AddKeyValuePairs
+            title="Ajouter des spécifications"
+            keyPlaceholder="Nom de la spécification"
+            valuePlaceholder="Valeur"
+            onAdd={handleSpecificationsChange}
+          />
         </div>
 
-        {/* Images Section */}
         <div>
           <label className="block mb-1 font-medium">Images</label>
-          <input
-            type="file"
-            {...register("images")}
-            multiple
-            accept="image/*"
-            onChange={handleImageChange}
-            className={inputClass}
-          />
+          <ImageUploader onImagesChange={handleImageChange} />
           <div className="flex flex-wrap gap-2 mt-2">
             {previews.map((src, i) => (
-              <img key={i} src={src} className="h-20 w-20 object-cover rounded border border-gray-300 dark:border-gray-600" />
+              <img
+                key={i}
+                src={src}
+                alt="Preview"
+                className="h-20 w-20 object-cover rounded border border-gray-300 dark:border-gray-600"
+              />
             ))}
           </div>
         </div>
 
-        <div className="form-custom-row">
-          <div className="form-custom-group">
-            <ImageUploader onImagesChange={handleImageChange} />
-          </div>
-        </div>
-
-        {/* Submit Button */}
         <button
           type="submit"
           disabled={submitting}
-          className={`w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white py-3 rounded-lg shadow-md transition-all duration-200 font-medium ${submitting ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
+          className={`w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white py-3 rounded-lg shadow-md transition-all duration-200 font-medium ${
+            submitting ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
         >
           {submitting ? '⏳ Envoi en cours...' : '✅ Soumettre la Variante'}
         </button>
 
         {error && (
-          <p className="text-red-500 text-center bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-700">{error}</p>
+          <p className="text-red-500 text-center bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-700">
+            {error}
+          </p>
         )}
       </form>
     </div>
   )
 }
-
-const inputClass = "w-full border dark:border-gray-600 p-2 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-
-type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  label: string
-}
-
-const Input = ({ label, ...props }: InputProps) => (
-  <div>
-    <label className="block mb-1 font-medium">{label}</label>
-    <input {...props} className={inputClass} />
-  </div>
-)
-
-const Select = ({
-  label,
-  options,
-  ...props
-}: {
-  label: string,
-  options: { value: string, label: string }[]
-} & React.SelectHTMLAttributes<HTMLSelectElement>) => (
-  <div>
-    <label className="block mb-1 font-medium">{label}</label>
-    <select {...props} className={inputClass}  >
-      {options.map(opt => (
-        <option key={opt.value} value={opt.value}>
-          {opt.label}
-        </option>
-      ))}
-    </select>
-  </div>
-)

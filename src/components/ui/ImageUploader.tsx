@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
 
-interface ImageUploaderProps {
-  onImagesChange: (images: File[]) => void;
-}
 
-const ImageUploader = ({ onImagesChange }: ImageUploaderProps) => {
-  const [images, setImages] = useState<File[]>([]);
+
+const ImageUploader = ({ onImagesChange }:any) => {
+  const [image, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,7 +12,7 @@ const ImageUploader = ({ onImagesChange }: ImageUploaderProps) => {
     
     const files = Array.from(event.target.files);
     if (files.length > 0) {
-      const newImages = [...images, ...files];
+      const newImages = [...image, ...files];
       const newPreviews = [
         ...imagePreviews,
         ...files.map((file) => URL.createObjectURL(file)),
@@ -27,7 +25,7 @@ const ImageUploader = ({ onImagesChange }: ImageUploaderProps) => {
   };
 
   const removeImage = (index: number) => {
-    const newImages = images.filter((_, i) => i !== index);
+    const newImages = image.filter((_, i) => i !== index);
     const newPreviews = imagePreviews.filter((_, i) => i !== index);
 
     // Revoke the object URL to avoid memory leaks

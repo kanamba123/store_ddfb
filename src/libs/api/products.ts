@@ -1,4 +1,5 @@
 import API from "@/config/Axios";
+import { Product } from "@/types/Product";
 import { VariantsProduct } from "@/types/VariantsProduct";
 
 // Récupère les détails d'une variante spécifique
@@ -10,7 +11,7 @@ export const fetchVariantDetails = async (id: number) => {
 // Récupère les catégories de produits (pour les select options)
 export const fetchProductCategories = async () => {
   const { data } = await API.get(`/products/byAdminSelect`);
-  return data as { id: number; productName: string }[];
+  return data as Product[];
 };
 
 // Crée une nouvelle variante de produit
