@@ -1,39 +1,38 @@
+"use client"
 import React, { useState } from "react";
 import { X } from "lucide-react";
 
+interface ImageUploaderProps {
+  onImagesChange: (files: File[]) => void;
+}
 
-
-const ImageUploader = ({ onImagesChange }:any) => {
-  const [image, setImages] = useState<File[]>([]);
+const ImageUploader = ({ onImagesChange }: ImageUploaderProps) => {
+  const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (!event.target || !event.target.files) return;
+    if (!event.target.files || event.target.files.length === 0) return;
     
-    const files = Array.from(event.target.files);
-    if (files.length > 0) {
-      const newImages = [...image, ...files];
-      const newPreviews = [
-        ...imagePreviews,
-        ...files.map((file) => URL.createObjectURL(file)),
-      ];
+    const newFiles = Array.from(event.target.files);
+    const newPreviews = newFiles.map(file => URL.createObjectURL(file));
 
-      setImages(newImages);
-      setImagePreviews(newPreviews);
-      onImagesChange(newImages); // This now correctly passes File[]
-    }
+    const updatedFiles = [...images, ...newFiles];
+    const updatedPreviews = [...imagePreviews, ...newPreviews];
+
+    setImages(updatedFiles);
+    setImagePreviews(updatedPreviews);
+    onImagesChange(updatedFiles);
   };
 
   const removeImage = (index: number) => {
-    const newImages = image.filter((_, i) => i !== index);
+    const newImages = images.filter((_, i) => i !== index);
     const newPreviews = imagePreviews.filter((_, i) => i !== index);
 
-    // Revoke the object URL to avoid memory leaks
     URL.revokeObjectURL(imagePreviews[index]);
 
     setImages(newImages);
     setImagePreviews(newPreviews);
-    onImagesChange(newImages); // This now correctly passes File[]
+    onImagesChange(newImages);
   };
 
   return (

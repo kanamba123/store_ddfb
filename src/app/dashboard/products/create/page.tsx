@@ -8,6 +8,7 @@ import AddKeyValuePairs from "@/components/ui/AddKeyValuePairs"
 import { useStores } from "@/hooks/apis/useStores"
 import { Product } from "@/types/Product"
 import { StoreData } from "@/types/registration"
+import { uploadMultipleImagesToFirebase } from "@/services/uploadMultipleImagesToFirebase"
 
 interface Specification {
   key: string
@@ -66,6 +67,7 @@ export default function UploadVariantForm() {
   const [submitted, setSubmitted] = useState(false)
   const [previews, setPreviews] = useState<string[]>([])
   const [specifications, setSpecifications] = useState<Record<string, string>>({})
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
 
   const {
     register,
@@ -104,59 +106,60 @@ export default function UploadVariantForm() {
     loadProduct()
   }, [])
 
-  const handleImageChange = useCallback((image: React.ChangeEvent<HTMLInputElement>) => {
-    if (image.target.files) {
-      const files = Array.from(image.target.files)
-      const urls = files.map(file => URL.createObjectURL(file))
-      setPreviews(urls)
-      setValue("image", image.target.files)
-    }
-  }, [setValue])
+  const handleImageChange = useCallback((files: File[]) => {
+    setUploadedFiles(files);
+  }, []);
 
-  const onSubmit = async (data: VariantFormData) => {
-    setSubmitting(true)
+   const onSubmit = async (data: VariantFormData) => {
+    setSubmitting(true);
+    setError("");
 
-    const formData = new FormData()
-    const payload = {
-      ...data,
-      purchasePrice: data.purchasePrice ? Number(data.purchasePrice) : undefined,
-      productId: Number(data.productId),
-      storeId: Number(data.storeId),
-      variantType: data.variantType || undefined,
-      specifications: Object.keys(specifications).length > 0 
-        ? specifications 
-        : undefined
-    }
-
-    Object.entries(payload).forEach(([key, value]) => {
-      if (key === "image" && value) {
-        Array.from(value as FileList).forEach(file => {
-          formData.append("image", file)
-        })
-      } else if (value !== undefined && value !== null) {
-        formData.append(
-          key, 
-          typeof value === 'object' ? JSON.stringify(value) : String(value))
+    try {
+      let imageUrls: string[] = [];
+      
+      if (uploadedFiles.length > 0) {
+        imageUrls = await uploadMultipleImagesToFirebase(
+          uploadedFiles,
+          "photo_products",
+          "products"
+        );
       }
-    })
 
-    useMutation.mutate(formData, {
-      onSuccess: () => {
-        setSubmitted(true)
-        reset()
-        setSpecifications({})
-        setPreviews([])
-      },
-      onError: (error) => {
-        console.error(error)
-        setSubmitting(false)
-        setError("❌ Échec de l'envoi. Vérifiez les champs.")
-      },
-      onSettled: () => {
-        setSubmitting(false)
-      }
-    })
-  }
+      const payload = {
+        ...data,
+        purchasePrice: data.purchasePrice ? Number(data.purchasePrice) : undefined,
+        productId: Number(data.productId),
+        storeId: Number(data.storeId),
+        variantType: data.variantType || undefined,
+        image:imageUrls,
+        specifications: Object.keys(specifications).length > 0 
+          ? specifications 
+          : undefined
+      };
+
+      useMutation.mutate(payload, {
+        onSuccess: () => {
+          setSubmitted(true);
+          reset();
+          setSpecifications({});
+          setPreviews([]);
+          setUploadedFiles([]);
+        },
+        onError: (error) => {
+          console.error(error);
+          setError("❌ Échec de l'envoi. Vérifiez les champs.");
+        },
+        onSettled: () => {
+          setSubmitting(false);
+        }
+      });
+
+    } catch (uploadError) {
+      console.error("Error uploading images:", uploadError);
+      setError("❌ Erreur lors de l'upload des images. Veuillez réessayer.");
+      setSubmitting(false);
+    }
+  };
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6 mt-10 bg-white dark:bg-gray-900 shadow-md dark:shadow-lg rounded-lg text-gray-800 dark:text-gray-100">
