@@ -110,13 +110,13 @@ export default function UploadVariantForm() {
     setUploadedFiles(files);
   }, []);
 
-   const onSubmit = async (data: VariantFormData) => {
+  const onSubmit = async (data: VariantFormData) => {
     setSubmitting(true);
     setError("");
 
     try {
       let imageUrls: string[] = [];
-      
+
       if (uploadedFiles.length > 0) {
         imageUrls = await uploadMultipleImagesToFirebase(
           uploadedFiles,
@@ -131,9 +131,9 @@ export default function UploadVariantForm() {
         productId: Number(data.productId),
         storeId: Number(data.storeId),
         variantType: data.variantType || undefined,
-        image:imageUrls,
-        specifications: Object.keys(specifications).length > 0 
-          ? specifications 
+        image: imageUrls,
+        specifications: Object.keys(specifications).length > 0
+          ? specifications
           : undefined
       };
 
@@ -222,7 +222,7 @@ export default function UploadVariantForm() {
           </div>
 
           <div>
-            <Select
+            <SearchableSelect
               label="Catégorie du produit *"
               options={[
                 { value: '', label: 'Sélectionnez --' },
@@ -250,11 +250,9 @@ export default function UploadVariantForm() {
         <div>
           <label className="block mb-2 font-medium">Spécifications</label>
           <AddKeyValuePairs
-            title="Ajouter des spécifications"
             keyPlaceholder="Nom de la spécification"
             valuePlaceholder="Valeur"
-            onAdd={handleSpecificationsChange}
-          />
+            onAdd={handleSpecificationsChange} title={""} />
         </div>
 
         <div>
@@ -275,9 +273,8 @@ export default function UploadVariantForm() {
         <button
           type="submit"
           disabled={submitting}
-          className={`w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white py-3 rounded-lg shadow-md transition-all duration-200 font-medium ${
-            submitting ? 'opacity-50 cursor-not-allowed' : ''
-          }`}
+          className={`w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white py-3 rounded-lg shadow-md transition-all duration-200 font-medium ${submitting ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
         >
           {submitting ? '⏳ Envoi en cours...' : '✅ Soumettre la Variante'}
         </button>

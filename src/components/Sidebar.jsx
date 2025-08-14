@@ -93,7 +93,7 @@ export default function Sidebar({ isOpen, onClose }) {
       {/* Sidebar */}
       <aside
         className={`
-          fixed top-0 left-0 h-screen w-72 sm:w-80 z-50 transform transition-all duration-300 ease-out
+          fixed top-0 left-0 h-full   w-72 sm:w-80 z-50 transform transition-all duration-300 ease-out
           lg:relative lg:h-full lg:w-full lg:transform-none lg:transition-none
           bg-white/85 dark:bg-gray-900/85 backdrop-blur-xl shadow-2xl border-r border-white/30 dark:border-gray-800/30
           flex flex-col
@@ -101,7 +101,7 @@ export default function Sidebar({ isOpen, onClose }) {
         `}
       >
         {/* Header */}
-        <div className="p-4 sm:p-6 border-b border-gray-100/50 dark:border-gray-800/50 flex-shrink-0">
+        <div className="p-2 sm:py-2 sm:px-4 border-b border-gray-100/50 dark:border-gray-800/50 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl flex items-center justify-center flex-shrink-0">
@@ -126,7 +126,7 @@ export default function Sidebar({ isOpen, onClose }) {
         </div>
 
         {/* Navigation - flex-1 makes this take all available space */}
-        <nav className="flex-1 overflow-y-auto p-3 sm:p-4 space-y-1 sm:space-y-2">
+        <nav className="flex-1  p-2 sm:p-2 space-y-1 sm:space-y-2  ">
           {sidebarLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href;
@@ -136,7 +136,7 @@ export default function Sidebar({ isOpen, onClose }) {
                 key={link.href}
                 href={link.href}
                 onClick={onClose}
-                className={`group relative flex items-center space-x-3 px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl transition-all duration-200 ${
+                className={`group relative flex items-center space-x-3 px-3 sm:px-4 py-1 sm:py-0 rounded-xl transition-all duration-200 ${
                   isActive
                     ? "bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 text-blue-700 dark:text-blue-300 shadow-md"
                     : "text-gray-600 dark:text-gray-400 hover:bg-gray-50/50 dark:hover:bg-gray-800/50 hover:text-gray-800 dark:hover:text-gray-200"
@@ -182,8 +182,8 @@ export default function Sidebar({ isOpen, onClose }) {
         </nav>
 
         {/* Bottom section - fixed at bottom */}
-        <div className="p-3 sm:p-4 flex-shrink-0 border-t border-gray-100/50 dark:border-gray-800/50">
-          <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 dark:from-blue-500/20 dark:to-purple-500/20 rounded-xl p-3 sm:p-4 border border-blue-200/20 dark:border-blue-800/30">
+        <div className="p-2 sm:p-2 flex-shrink-0 border-t border-gray-100/50 dark:border-gray-800/50">
+          <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 dark:from-blue-500/20 dark:to-purple-500/20 rounded-xl p-1 sm:p-1 border border-blue-200/20 dark:border-blue-800/30">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-blue-500 to-purple-500 dark:from-blue-600 dark:to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
                 <span className="text-white font-semibold text-xs sm:text-sm">

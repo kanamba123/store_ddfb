@@ -60,7 +60,7 @@ export default function Navbar({ onToggleSidebar }) {
 
   return (
     <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-white/20 dark:border-gray-800 shadow-sm relative z-30">
-      <div className="px-3 sm:px-4 lg:px-6 py-3 sm:py-4">
+      <div className="px-3 sm:px-4 lg:px-6 py-3 sm:py-1">
         <div className="flex justify-between items-center">
           {/* Left section */}
           <div className="flex items-center space-x-2 sm:space-x-4 flex-1 lg:flex-none">

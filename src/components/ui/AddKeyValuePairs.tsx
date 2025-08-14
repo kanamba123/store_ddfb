@@ -10,7 +10,7 @@ interface AddKeyValuePairsProps {
 }
 
 const AddKeyValuePairs: React.FC<AddKeyValuePairsProps> = ({
-  title,
+  title=null,
   keyPlaceholder,
   valuePlaceholder,
   onAdd,
@@ -71,7 +71,7 @@ const AddKeyValuePairs: React.FC<AddKeyValuePairsProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-lg p-4 mb-4 transition-colors duration-200">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-lg p-1 mb-4 transition-colors duration-200">
       <h5 className="text-lg font-medium mb-4 text-gray-800 dark:text-gray-100">
         {title}
       </h5>
@@ -140,7 +140,7 @@ const AddKeyValuePairs: React.FC<AddKeyValuePairsProps> = ({
       </div>
 
       {Object.keys(items).length > 0 && (
-        <div className="mt-4 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg transition-colors duration-200">
+        <div className="mt-2 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg transition-colors duration-200">
           <h6 className="font-medium mb-3 text-gray-700 dark:text-gray-200">
             {title} ajoutés
           </h6>
