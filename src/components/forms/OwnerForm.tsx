@@ -312,7 +312,7 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
               value={formData.email}
               onChange={handleChange}
               className={inputClasses("email")}
-              placeholder="example@email.com"
+              placeholder="win2cop@email.com"
               autoComplete="email"
               required
             />
@@ -333,7 +333,7 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
               value={formData.phoneNumber}
               onChange={handleChange}
               className={inputClasses("phoneNumber")}
-              placeholder="12345678"
+              placeholder="79406751"
               pattern="[0-9]{8}"
               required
             />
