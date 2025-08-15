@@ -12,6 +12,7 @@ import {
   ArrowLeft,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface OwnerFormProps {
   initialData?: Partial<OwnerData>;
@@ -49,49 +50,46 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
   const emailInputRef = useRef<HTMLInputElement>(null);
 
   // Auto-fill email from browser credentials
-  useEffect(() => {
-    if (!initialData.email) {
-      const tryAutofillEmail = async () => {
-        try {
-          // Method 1: Using Credential Management API
-          if (navigator.credentials?.get) {
-            const cred = await navigator.credentials.get({
-              mediation: "optional",
-            });
-            if (cred?.id.includes("@")) {
-              setFormData((prev) => ({ ...prev, email: cred.id }));
-              return;
-            }
+ useEffect(() => {
+  if (!initialData.email) {
+    const tryAutofillEmail = async () => {
+      try {
+        if (navigator.credentials?.get) {
+          const cred = await navigator.credentials.get({ mediation: "optional" });
+          if (cred?.id.includes("@")) {
+            setFormData((prev) => ({ ...prev, email: cred.id }));
+            return;
           }
-
-          // Method 2: Using autoComplete on hidden input
-          if ("autocomplete" in document.createElement("input")) {
-            const tempInput = document.createElement("input");
-            tempInput.type = "email";
-            tempInput.autocomplete = "email";
-            tempInput.style.position = "absolute";
-            tempInput.style.opacity = "0";
-            tempInput.style.height = "0";
-            tempInput.style.width = "0";
-            document.body.appendChild(tempInput);
-
-            setTimeout(() => {
-              if (tempInput.value) {
-                setFormData((prev) => ({ ...prev, email: tempInput.value }));
-              }
-              document.body.removeChild(tempInput);
-            }, 100);
-
-            tempInput.focus();
-          }
-        } catch (error) {
-          console.log("Autofill error:", error);
         }
-      };
 
-      tryAutofillEmail();
-    }
-  }, []);
+        if ("autocomplete" in document.createElement("input")) {
+          const tempInput = document.createElement("input");
+          tempInput.type = "email";
+          tempInput.autocomplete = "email";
+          tempInput.style.position = "absolute";
+          tempInput.style.opacity = "0";
+          tempInput.style.height = "0";
+          tempInput.style.width = "0";
+          document.body.appendChild(tempInput);
+
+          setTimeout(() => {
+            if (tempInput.value) {
+              setFormData((prev) => ({ ...prev, email: tempInput.value }));
+            }
+            document.body.removeChild(tempInput);
+          }, 100);
+
+          tempInput.focus();
+        }
+      } catch (error) {
+        console.log("Autofill error:", error);
+      }
+    };
+
+    tryAutofillEmail();
+  }
+}, [initialData.email]);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -171,10 +169,9 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
 
   const inputClasses = (fieldName: string) => `
     w-full px-4 py-3 rounded-lg border-2 transition-all
-    ${
-      errors[fieldName]
-        ? "border-red-300 bg-red-50 focus:border-red-500 dark:bg-red-900/20 dark:border-red-700"
-        : "border-gray-200 focus:border-blue-500 focus:bg-blue-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:bg-gray-600"
+    ${errors[fieldName]
+      ? "border-red-300 bg-red-50 focus:border-red-500 dark:bg-red-900/20 dark:border-red-700"
+      : "border-gray-200 focus:border-blue-500 focus:bg-blue-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:bg-gray-600"
     }
     focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-blue-500
     dark:placeholder-gray-400
@@ -240,10 +237,11 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
           />
           {formData.profil ? (
             <div className="relative">
-              <img
-                src={formData.profil}
+              <Image
+                src={typeof formData.profil === "string" ? formData.profil : URL.createObjectURL(formData.profil)}
                 alt="Profile Preview"
-                className="w-32 h-32 rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-md group-hover:opacity-90 transition-opacity"
+                fill
+                className="rounded-full object-cover border-4 border-white dark:border-gray-700 shadow-md group-hover:opacity-90 transition-opacity"
               />
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-30 rounded-full">
                 <Camera className="text-white w-8 h-8" />
@@ -358,9 +356,8 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className={`${inputClasses("password")} ${
-                hasPasswordError ? "pr-10" : ""
-              }`}
+              className={`${inputClasses("password")} ${hasPasswordError ? "pr-10" : ""
+                }`}
               placeholder="Minimum 8 characters"
               minLength={8}
               required
@@ -414,9 +411,8 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className={`${inputClasses("confirmPassword")} ${
-                hasConfirmPasswordError ? "pr-10" : ""
-              }`}
+              className={`${inputClasses("confirmPassword")} ${hasConfirmPasswordError ? "pr-10" : ""
+                }`}
               placeholder="Confirm your password"
               required
             />

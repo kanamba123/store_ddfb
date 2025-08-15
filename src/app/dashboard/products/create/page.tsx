@@ -10,6 +10,7 @@ import { Product } from "@/types/Product"
 import { StoreData } from "@/types/registration"
 import { uploadMultipleImagesToFirebase } from "@/services/uploadMultipleImagesToFirebase"
 import SearchableSelect from "@/components/ui/SearchableSelect"
+import Image from "next/image"
 
 interface Specification {
   key: string
@@ -282,11 +283,14 @@ export default function UploadVariantForm() {
           <ImageUploader onImagesChange={handleImageChange} />
           <div className="flex flex-wrap gap-2 mt-2">
             {previews.map((src, i) => (
-              <img
+              <Image
                 key={i}
                 src={src}
                 alt="Preview"
-                className="h-20 w-20 object-cover rounded border border-gray-300 dark:border-gray-600"
+                loader={() => src} 
+                width={80}
+                height={80}
+                className="object-cover rounded border border-gray-300 dark:border-gray-600"
               />
             ))}
           </div>

@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import { X } from "lucide-react";
+import Image from "next/image";
 
 interface ImageUploaderProps {
   onImagesChange: (files: File[]) => void;
@@ -12,7 +13,7 @@ const ImageUploader = ({ onImagesChange }: ImageUploaderProps) => {
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files || event.target.files.length === 0) return;
-    
+
     const newFiles = Array.from(event.target.files);
     const newPreviews = newFiles.map(file => URL.createObjectURL(file));
 
@@ -40,7 +41,7 @@ const ImageUploader = ({ onImagesChange }: ImageUploaderProps) => {
       <label className="text-sm font-semibold text-blue-600 dark:text-blue-400">
         Upload Images
       </label>
-      
+
       <input
         type="file"
         multiple
@@ -55,10 +56,14 @@ const ImageUploader = ({ onImagesChange }: ImageUploaderProps) => {
             key={index}
             className="relative rounded-lg overflow-hidden transition-transform duration-200 ease-in-out hover:scale-105"
           >
-            <img
+            <Image
+              key={index}
               src={preview}
               alt={`Preview ${index}`}
-              className="w-full h-24 object-cover rounded-lg"
+              loader={() => preview}
+              width={100} 
+              height={96} 
+              className="object-cover rounded-lg"
             />
             <button
               type="button"
