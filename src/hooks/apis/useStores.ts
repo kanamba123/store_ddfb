@@ -38,12 +38,12 @@ export const useStoreDetail = (storeId:string) => {
   });
 };
 
-export const useStoreWithUserDetails = (storeId:any) => {
-
+export const useStoreWithUserDetails = (storeId: string | undefined) => {
   return useQuery({
     queryKey: ["storeUserDetail", storeId],
-    queryFn: () => fetchStoreWithUserDetails(storeId),
-    enabled: !!storeId, 
+    queryFn: () => fetchStoreWithUserDetails(storeId!),
+    enabled: !!storeId,
     staleTime: 5 * 60 * 1000,
   });
 };
+
