@@ -9,7 +9,7 @@ export const fetchStoreWithUserDetails = async (ownerId: string) => {
   return data;
 };
 const fetchStores = async () => {
-  const response = await API.get(`/stores/shops`);
+  const response = await API.get(`/stores/shops-dashboard-select`);
   return response.data;
 };
 

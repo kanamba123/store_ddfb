@@ -176,29 +176,29 @@ export default function UploadVariantForm() {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Magasin */}
-        <Controller
-          name="storeId"
-          control={control}
-          rules={{ required: true }}
-          render={({ field, fieldState }) => (
-            <div>
-              <Select
+       
+         <Controller
+            name="storeId"
+            control={control}
+            rules={{ required: true }}
+            render={({ field, fieldState }) => (
+              <div>
+              <SearchableSelect
                 label="Magasin du produit *"
-                options={[
-                  { value: '', label: 'Sélectionnez --' },
-                  ...store.map((store: StoreData) => ({
-                    value: String(store.id),
-                    label: store.storeName
-                  }))
-                ]}
-                {...field}
+                options={store.map((store: StoreData) => ({
+                  value: String(store.id),
+                  label: store.storeName
+                }))}
+                value={String(field.value || '')} 
+                onChange={(value: string) => field.onChange(Number(value))}
+                required
               />
               {fieldState.error && (
                 <span className="text-red-500 text-sm">Ce champ est requis</span>
               )}
-            </div>
-          )}
-        />
+              </div>
+            )}
+          />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Nom de la variante */}
@@ -250,7 +250,7 @@ export default function UploadVariantForm() {
                   value: String(product.id),
                   label: product.productName
                 }))}
-                value={String(field.value || '')} // Toujours string pour le composant
+                value={String(field.value || '')} 
                 onChange={(value: string) => field.onChange(Number(value))}
                 required
               />
