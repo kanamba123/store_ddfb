@@ -154,7 +154,7 @@ const ProductDetailBackoffice = () => {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-2 sm:space-x-4">
               <button 
-                onClick={() => router.push("/products")}
+                onClick={() => router.push("/dashboard/products")}
                 className="flex items-center space-x-1 sm:space-x-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors p-1 sm:p-0"
               >
                 <ArrowLeft className="w-5 h-5" />

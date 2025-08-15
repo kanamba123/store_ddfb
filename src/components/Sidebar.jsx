@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
-  Users,
   Settings,
   X,
   ChevronRight,
@@ -36,13 +35,6 @@ const sidebarLinks = [
     label: "Sales",
     href: "/dashboard/sales",
     icon: FaUsers,
-    color: "from-purple-500 to-pink-500",
-    darkColor: "from-purple-600 to-pink-600",
-  },
-  {
-    label: "Utilisateurs",
-    href: "/dashboard/users",
-    icon: Users,
     color: "from-purple-500 to-pink-500",
     darkColor: "from-purple-600 to-pink-600",
   },

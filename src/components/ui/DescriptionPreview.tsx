@@ -10,7 +10,7 @@ interface DescriptionPreviewProps {
 
 export default function DescriptionPreview({
   text = "Aucune description",
-  maxLength = 100,
+  maxLength = 50,
 }: DescriptionPreviewProps) {
   const [isOpen, setIsOpen] = useState(false);
 
