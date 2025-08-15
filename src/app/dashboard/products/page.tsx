@@ -24,7 +24,7 @@ export default function ProductsPage() {
       <div className="flex justify-end mb-4">
         <Link
           href="/dashboard/products/create"
-          className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition dark:bg-indigo-700 dark:hover:bg-indigo-600"
+          className="bg-indigo-600 text-white px-4 py-1 rounded-md hover:bg-indigo-700 transition dark:bg-indigo-700 dark:hover:bg-indigo-600"
         >
           + Ajouter un produit
         </Link>

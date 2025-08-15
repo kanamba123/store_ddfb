@@ -31,8 +31,8 @@ export default function DashboardLayout({ children }) {
 
       {/* Main Content - Full width on mobile, right column on desktop */}
       <main className="lg:col-start-2 lg:row-start-2 overflow-hidden">
-        <div className="h-full p-1 sm:p-4 md:p-6 lg:p-8">
-          <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 dark:border-gray-700/30 h-full p-2 sm:p-2 overflow-auto">
+        <div className="h-full p-2">
+          <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 dark:border-gray-700/30 h-full  overflow-auto">
             {children}
           </div>
         </div>

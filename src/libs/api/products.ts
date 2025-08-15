@@ -37,7 +37,7 @@ export const updateVariant = async (id: number, formData: FormData) => {
 // Récupère une variante par son ID
 export const getVariantById = async (id: string | number) => {
   const { data } = await API.get(`/variantesProduits/${id}`);
-  return data as VariantsProduct;
+  return data ;
 };
 
 // Fonctions pour les produits (conservées pour compatibilité)
@@ -55,3 +55,9 @@ export async function getProductById(id: string | number) {
   const response = await API.get(`/api/products/${id}`);
   return response.data as VariantsProduct;
 }
+
+// Supprime une variante par son ID
+export const deleteVariant = async (id: string | number) => {
+  const { data } = await API.delete(`/variantesProduits/${id}`);
+  return data as { message: string }; // ou adapte selon la réponse de ton API
+};

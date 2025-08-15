@@ -4,6 +4,7 @@ import Image from "next/image";
 import { VariantsProduct } from "@/types/VariantsProduct";
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
     product: VariantsProduct;
@@ -19,6 +20,9 @@ export default function ProductCard({ product }: ProductCardProps) {
         sellingPrice: "",
         stock: "",
     });
+     const [isDetailOpen, setIsDetailOpen] = useState(false);
+      const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+       const router = useRouter();
 
     const handleShare = (product: VariantsProduct) => {
         if (navigator.share && isMobile) {
@@ -59,8 +63,15 @@ export default function ProductCard({ product }: ProductCardProps) {
         setModalOpen(true);
     };
 
+
+
+    const handleRowClick = (product: VariantsProduct) => {
+    setSelectedProductId(product.id);
+    router.push(`/dashboard/products/view/${product.id}`);
+  };
+
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-2 space-y-3">
+        <div onClick={() => handleRowClick(product)} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-2 space-y-3">
             {/* Header avec image et nom */}
             <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0">
