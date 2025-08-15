@@ -38,6 +38,7 @@ export const useStoreDetail = (storeId:string) => {
   });
 };
 
+
 export const useStoreWithUserDetails = (storeId: string | undefined) => {
   return useQuery({
     queryKey: ["storeUserDetail", storeId],
