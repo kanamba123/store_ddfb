@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     images: [
       {
-        url: "https://s.win2cop.com/win2cop-seller-platform.png",
+        url: "https://s.win2cop.com/online-selling.jpg",
         width: 1200,
         height: 630,
         alt: "Dashboard Win2Cop",
