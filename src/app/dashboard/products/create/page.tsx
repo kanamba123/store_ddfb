@@ -9,6 +9,7 @@ import { useStores } from "@/hooks/apis/useStores"
 import { Product } from "@/types/Product"
 import { StoreData } from "@/types/registration"
 import { uploadMultipleImagesToFirebase } from "@/services/uploadMultipleImagesToFirebase"
+import SearchableSelect from "@/components/ui/SearchableSelect"
 
 interface Specification {
   key: string
