@@ -85,20 +85,47 @@ export default function ProductList({
   }, [isMobile, hasNextPage, isFetchingNextPage, fetchNextPage, filteredProducts]);
 
 
-  const handleShare = (product: VariantsProduct) => {
-    if (navigator.share && isMobile) {
-      navigator.share({
-        title: product.variantProductName,
-        text: `Découvrez ${product.variantProductName} à ${product.recommendedPrice} fbu`,
-        url: `https://win2cop.com/products/${product.slug}/${product.id}`,
-      }).catch(console.error);
-    } else {
-      const shareText = `${product.variantProductName} - ${product.recommendedPrice} fbu\nhttps://win2cop.com/products/${product.slug}/${product.id}`;
-      navigator.clipboard.writeText(shareText).then(() => {
-        alert("Lien copié dans le presse-papiers !");
-      });
-    }
-  };
+    const handleShare = (product: VariantsProduct) => {
+        const shareData = {
+            title: product.variantProductName,
+            text: `Découvrez ${product.variantProductName} à ${product.recommendedPrice} fbu`,
+            url: `https://win2cop.com/products/${product.slug}/${product.id}`,
+        };
+
+        if (navigator.share) {
+            // Mobile / navigateur supporté
+            navigator.share(shareData).catch(console.error);
+        } else {
+            // Desktop fallback
+            const shareText = `${shareData.text}\n${shareData.url}`;
+
+            // Copier le lien dans le presse-papiers
+            navigator.clipboard.writeText(shareText)
+                .then(() => alert("Lien copié dans le presse-papiers !"))
+                .catch(() => {
+                    // fallback plus ancien
+                    const textArea = document.createElement('textarea');
+                    textArea.value = shareText;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert("Lien copié dans le presse-papiers !");
+                });
+
+            // Ouvrir un mini menu de partage dans de nouveaux onglets
+            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+            const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}`;
+            const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareData.url)}&text=${encodeURIComponent(shareText)}`;
+
+            // Exemple : ouvrir WhatsApp dans un nouvel onglet
+            const userChoice = window.prompt("Partager sur :\n1 = WhatsApp\n2 = Facebook\n3 = Telegram\nEntrez le numéro :");
+            if (userChoice === "1") window.open(whatsappUrl, "_blank");
+            if (userChoice === "2") window.open(facebookUrl, "_blank");
+            if (userChoice === "3") window.open(telegramUrl, "_blank");
+        }
+    };
+
 
   const handleDelete = async (id: number) => {
     if (!confirm("Voulez-vous vraiment supprimer ce produit ?")) return;
