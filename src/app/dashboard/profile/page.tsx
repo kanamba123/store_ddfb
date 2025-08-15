@@ -1,7 +1,5 @@
 "use client";
-import { StoreByOwner } from "@/types/store";
 import {
-  Eye,
   Store,
   Edit,
   MapPin,
@@ -23,10 +21,9 @@ import { useStoreWithUserDetails } from "@/hooks/apis/useStores";
 
 export default function ProfileTab() {
 
-  const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAuth();
-  const { data: store, isLoading } = useStoreWithUserDetails(user?.id);
+  const { data: store, isLoading,isError } = useStoreWithUserDetails(user?.id);
 
 
 
@@ -36,9 +33,9 @@ export default function ProfileTab() {
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
-      ) : error ? (
+      ) : isError ? (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          {error}
+          {isError}
         </div>
       ) : store ? (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
