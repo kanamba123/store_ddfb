@@ -9,14 +9,14 @@ interface SelectProps {
   required?: boolean;
 }
 
-const SearchableSelect = ({
+
+const SearchableSelect: React.FC<SelectProps> = ({
   label,
   options,
   value,
   onChange,
   required = false,
-  ...props
-}: SelectProps & React.SelectHTMLAttributes<HTMLSelectElement>) => {
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -47,7 +47,7 @@ const SearchableSelect = ({
         {label}
         {required && <span className="text-red-500"> *</span>}
       </label>
-      
+
       {/* Champ de contrôle */}
       <div className="relative">
         <input
@@ -76,9 +76,8 @@ const SearchableSelect = ({
             filteredOptions.map((option) => (
               <div
                 key={option.value}
-                className={`px-4 py-2 cursor-pointer hover:bg-blue-50 dark:hover:bg-gray-700 ${
-                  value === option.value ? 'bg-blue-100 dark:bg-gray-600' : ''
-                }`}
+                className={`px-4 py-2 cursor-pointer hover:bg-blue-50 dark:hover:bg-gray-700 ${value === option.value ? 'bg-blue-100 dark:bg-gray-600' : ''
+                  }`}
                 onClick={() => {
                   onChange(option.value);
                   setIsOpen(false);
@@ -96,9 +95,8 @@ const SearchableSelect = ({
 
       {/* Champ caché pour react-hook-form */}
       <select
-        {...props}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value)} // transforme event en string
         className="hidden"
         required={required}
       >

@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState, useCallback } from "react"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { fetchProductCategories } from "@/libs/api/products"
 import { useCreateVariantProduct } from "@/hooks/apis/useVariants"
 import ImageUploader from "@/components/ui/ImageUploader"
@@ -74,6 +74,7 @@ export default function UploadVariantForm() {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors },
     setValue
   } = useForm<VariantFormData>({
@@ -173,45 +174,60 @@ export default function UploadVariantForm() {
       <h1 className="text-2xl font-bold mb-6 text-center">🛍️ Ajouter une Variante de Produit</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-        <div>
-          <Select
-            label="Magasin du produit *"
-            options={[
-              { value: '', label: 'Sélectionnez --' },
-              ...store.map((store: StoreData) => ({
-                value: String(store.id),
-                label: store.storeName
-              }))
-            ]}
-            {...register("storeId", { required: true })}
-          />
-          {errors.storeId && (
-            <span className="text-red-500 text-sm">Ce champ est requis</span>
+        {/* Magasin */}
+        <Controller
+          name="storeId"
+          control={control}
+          rules={{ required: true }}
+          render={({ field, fieldState }) => (
+            <div>
+              <Select
+                label="Magasin du produit *"
+                options={[
+                  { value: '', label: 'Sélectionnez --' },
+                  ...store.map((store: StoreData) => ({
+                    value: String(store.id),
+                    label: store.storeName
+                  }))
+                ]}
+                {...field}
+              />
+              {fieldState.error && (
+                <span className="text-red-500 text-sm">Ce champ est requis</span>
+              )}
+            </div>
           )}
-        </div>
+        />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <Input
-              label="Nom de la variante *"
-              placeholder="Nom de la variante"
-              {...register("variantProductName", { required: true })}
-            />
-            {errors.variantProductName && (
-              <span className="text-red-500 text-sm">Ce champ est requis</span>
-            )}
-          </div>
+          {/* Nom de la variante */}
+          <Input
+            label="Nom de la variante *"
+            placeholder="Nom de la variante"
+            {...register("variantProductName", { required: true })}
+          />
+          {errors.variantProductName && (
+            <span className="text-red-500 text-sm">Ce champ est requis</span>
+          )}
 
-          <Select
-            label="Type de variante"
-            options={[
-              { value: '', label: '-- Choisir --' },
-              { value: 'product', label: 'Product' },
-              { value: 'accessory', label: 'Accessory' }
-            ]}
-            {...register("variantType")}
+          {/* Type de variante */}
+          <Controller
+            name="variantType"
+            control={control}
+            render={({ field }) => (
+              <Select
+                label="Type de variante"
+                options={[
+                  { value: '', label: '-- Choisir --' },
+                  { value: 'product', label: 'Product' },
+                  { value: 'accessory', label: 'Accessory' }
+                ]}
+                {...field}
+              />
+            )}
           />
 
+          {/* Description */}
           <div className="sm:col-span-2">
             <label className="block mb-1 font-medium">Description</label>
             <textarea
@@ -222,23 +238,28 @@ export default function UploadVariantForm() {
             />
           </div>
 
-          <div>
-            <SearchableSelect
-              label="Catégorie du produit *"
-              options={[
-                { value: '', label: 'Sélectionnez --' },
-                ...data.map(product => ({
+          <Controller
+            name="productId"
+            control={control}
+            rules={{ required: true }}
+            render={({ field, fieldState }) => (
+              <SearchableSelect
+                label="Produit *"
+                options={data.map(product => ({
                   value: String(product.id),
                   label: product.productName
-                }))
-              ]}
-              {...register("productId", { required: true })}
-            />
-            {errors.productId && (
-              <span className="text-red-500 text-sm">Ce champ est requis</span>
+                }))}
+                value={String(field.value || '')} // Toujours string pour le composant
+                onChange={(value: string) => field.onChange(Number(value))}
+                required
+              />
             )}
-          </div>
+          />
 
+
+
+
+          {/* Prix d'achat */}
           <Input
             label="Prix d'achat"
             type="number"
@@ -248,6 +269,7 @@ export default function UploadVariantForm() {
           />
         </div>
 
+        {/* Spécifications */}
         <div>
           <label className="block mb-2 font-medium">Spécifications</label>
           <AddKeyValuePairs
@@ -256,6 +278,7 @@ export default function UploadVariantForm() {
             onAdd={handleSpecificationsChange} title={""} />
         </div>
 
+        {/* Images */}
         <div>
           <label className="block mb-1 font-medium">Images</label>
           <ImageUploader onImagesChange={handleImageChange} />
@@ -271,6 +294,7 @@ export default function UploadVariantForm() {
           </div>
         </div>
 
+        {/* Bouton de soumission */}
         <button
           type="submit"
           disabled={submitting}
@@ -280,6 +304,7 @@ export default function UploadVariantForm() {
           {submitting ? '⏳ Envoi en cours...' : '✅ Soumettre la Variante'}
         </button>
 
+        {/* Message d'erreur */}
         {error && (
           <p className="text-red-500 text-center bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-700">
             {error}
