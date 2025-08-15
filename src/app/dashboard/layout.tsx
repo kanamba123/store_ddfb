@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     title: "Win2Cop - Dashboard vendeur",
     description:
       "Accédez au dashboard Win2Cop pour gérer votre boutique en ligne facilement.",
-    images: ["https://s.win2cop.com/win2cop-seller-social.png"],
+    images: ["https://s.win2cop.com/online-selling.jpg"],
   },
 };
 
