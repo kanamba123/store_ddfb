@@ -257,8 +257,6 @@ export default function UploadVariantForm() {
           />
 
 
-
-
           {/* Prix d'achat */}
           <Input
             label="Prix d'achat"
