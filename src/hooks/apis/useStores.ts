@@ -39,6 +39,7 @@ export const useStoreDetail = (storeId:string) => {
 };
 
 export const useStoreWithUserDetails = (storeId:any) => {
+
   return useQuery({
     queryKey: ["storeUserDetail", storeId],
     queryFn: () => fetchStoreWithUserDetails(storeId),
