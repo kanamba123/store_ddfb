@@ -20,9 +20,9 @@ export default function ProductCard({ product }: ProductCardProps) {
         sellingPrice: "",
         stock: "",
     });
-     const [isDetailOpen, setIsDetailOpen] = useState(false);
-      const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
-       const router = useRouter();
+    const [isDetailOpen, setIsDetailOpen] = useState(false);
+    const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+    const router = useRouter();
 
     const handleShare = (product: VariantsProduct) => {
         if (navigator.share && isMobile) {
@@ -66,12 +66,15 @@ export default function ProductCard({ product }: ProductCardProps) {
 
 
     const handleRowClick = (product: VariantsProduct) => {
-    setSelectedProductId(product.id);
-    router.push(`/dashboard/products/view/${product.id}`);
-  };
+        setSelectedProductId(product.id);
+        router.push(`/dashboard/products/view/${product.id}`);
+    };
 
     return (
-        <div onClick={() => handleRowClick(product)} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-2 space-y-3">
+        <div onClick={() => {
+            handleRowClick(product)
+        }
+        } className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-2 space-y-3">
             {/* Header avec image et nom */}
             <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0">
@@ -130,6 +133,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             <div className="flex space-x-2 pt-2">
                 <Link
                     href={`/dashboard/products/${product.id}`}
+                    onClick={(e) => e.stopPropagation()}
                     className="flex-1 bg-indigo-50 text-indigo-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-indigo-100 dark:bg-indigo-900/50 dark:text-indigo-400 dark:hover:bg-indigo-900/70 transition-colors flex items-center justify-center"
                 >
                     <svg
@@ -147,7 +151,11 @@ export default function ProductCard({ product }: ProductCardProps) {
                     </svg>
                 </Link>
                 <button
-                    onClick={() => handleShare(product)}
+                    onClick={(e) => {
+                        handleShare(product)
+                        e.stopPropagation();
+                    }
+                    }
                     className="flex-1 bg-blue-50 text-blue-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-blue-100 dark:bg-blue-900/50 dark:text-blue-400 dark:hover:bg-blue-900/70 transition-colors flex items-center justify-center"
                 >
                     <svg
@@ -164,7 +172,12 @@ export default function ProductCard({ product }: ProductCardProps) {
                         />
                     </svg>
                 </button>
-                <button className="flex-1 bg-red-50 text-red-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-red-100 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-900/70 transition-colors flex items-center justify-center">
+                <button 
+                onClick={(e) => {
+                    handleShare(product)
+                    e.stopPropagation();
+                }
+                } className="flex-1 bg-red-50 text-red-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-red-100 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-900/70 transition-colors flex items-center justify-center">
                     <svg
                         className="w-4 h-4"
                         fill="none"

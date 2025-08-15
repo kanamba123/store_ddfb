@@ -173,14 +173,13 @@ export default function ProductList({
             <tbody>
               {filteredProducts.map((product, idx) => (
                 <tr
-                   key={product.id}
+                  key={product.id}
                   ref={idx === filteredProducts.length - 1 ? lastDesktopRef : null}
                   onClick={() => handleRowClick(product)}
-                  className={`cursor-pointer transition-colors ${
-                    selectedProductId === product.id
-                      ? "bg-indigo-100 dark:bg-indigo-900"
-                      : "hover:bg-gray-100 dark:hover:bg-gray-700"
-                  }`}
+                  className={`cursor-pointer transition-colors ${selectedProductId === product.id
+                    ? "bg-indigo-100 dark:bg-indigo-900"
+                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                    }`}
                 >
                   <td className="px-6 py-4">
                     {product?.image?.length > 0 ? (
@@ -213,6 +212,7 @@ export default function ProductList({
                     {/* Modifier */}
                     <Link
                       href={`/dashboard/products/${product.id}`}
+                      onClick={(e) => e.stopPropagation()}
                       className="bg-indigo-50 text-indigo-600 p-2 rounded-md hover:bg-indigo-100 dark:bg-indigo-900/50 dark:text-indigo-400 dark:hover:bg-indigo-900/70"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -227,7 +227,10 @@ export default function ProductList({
 
                     {/* Partager */}
                     <button
-                      onClick={() => handleShare(product)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleShare(product);
+                      }}
                       className="bg-blue-50 text-blue-600 p-2 rounded-md hover:bg-blue-100 dark:bg-blue-900/50 dark:text-blue-400 dark:hover:bg-blue-900/70"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -242,7 +245,10 @@ export default function ProductList({
 
                     {/* Supprimer */}
                     <button
-                      onClick={() => handleDelete(product.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(product.id);
+                      }}
                       className="bg-red-50 text-red-600 p-2 rounded-md hover:bg-red-100 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-900/70"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
