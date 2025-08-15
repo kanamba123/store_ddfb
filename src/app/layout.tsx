@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     locale: "fr_FR",
     images: [
       {
-        url: "https://s.win2cop.com/win2cop-seller-platform.png",
+        url: "https://s.win2cop.com/online-selling.jpg",
         width: 1200,
         height: 630,
         alt: "Plateforme vendeurs Win2Cop",
@@ -66,7 +66,7 @@ export const metadata: Metadata = {
     title: "Win2Cop - La puissance e-commerce pour votre boutique",
     description:
       "Rejoignez la communauté de vendeurs qui transforment leur business avec Win2Cop. Votre succès commence ici.",
-    images: ["https://s.win2cop.com/win2cop-seller-social.png"],
+    images: ["https://s.win2cop.com/online-selling.jpg"],
   },
   other: {
     "google-site-verification": "dD8UWR2jFPLfVHce9jDMnjQGgCo3YnSr3883R_0VULQ",
