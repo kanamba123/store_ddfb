@@ -16,18 +16,18 @@ import {
   Sun,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import { useTheme } from "next-themes";
 import { useAuth } from "@/contexts/AuthContext";
-import { getInitials } from "../utils/getInitials"; 
+import { getInitials } from "../utils/getInitials";
+import { useTheme } from "@/contexts/ThemeContext";
 
 export default function Navbar({ onToggleSidebar }) {
   const pathname = usePathname();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const { logout ,user} = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const { logout, user } = useAuth();
 
   const profileRef = useRef(null);
   const notificationRef = useRef(null);
@@ -74,9 +74,8 @@ export default function Navbar({ onToggleSidebar }) {
 
             {/* Brand - Only show on mobile when search is closed */}
             <div
-              className={`lg:hidden flex items-center space-x-2 transition-all duration-200 ${
-                isSearchOpen ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
-              }`}
+              className={`lg:hidden flex items-center space-x-2 transition-all duration-200 ${isSearchOpen ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+                }`}
             >
               <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
                 <span className="text-white font-bold text-sm">W</span>
@@ -88,9 +87,8 @@ export default function Navbar({ onToggleSidebar }) {
 
             {/* Search bar */}
             <div
-              className={`relative transition-all duration-200 ${
-                isSearchOpen ? "flex-1" : "hidden md:flex"
-              }`}
+              className={`relative transition-all duration-200 ${isSearchOpen ? "flex-1" : "hidden md:flex"
+                }`}
             >
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 dark:text-gray-500" />
@@ -112,9 +110,8 @@ export default function Navbar({ onToggleSidebar }) {
             {/* Mobile search toggle */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className={`md:hidden p-2 rounded-xl hover:bg-gray-100/50 dark:hover:bg-gray-800/50 transition-colors ${
-                isSearchOpen ? "hidden" : "block"
-              }`}
+              className={`md:hidden p-2 rounded-xl hover:bg-gray-100/50 dark:hover:bg-gray-800/50 transition-colors ${isSearchOpen ? "hidden" : "block"
+                }`}
             >
               <Search className="w-5 h-5 text-gray-600 dark:text-gray-400" />
             </button>
@@ -122,13 +119,12 @@ export default function Navbar({ onToggleSidebar }) {
 
           {/* Right section */}
           <div
-            className={`flex items-center space-x-2 sm:space-x-3 ${
-              isSearchOpen ? "hidden md:flex" : "flex"
-            }`}
+            className={`flex items-center space-x-2 sm:space-x-3 ${isSearchOpen ? "hidden md:flex" : "flex"
+              }`}
           >
             {/* Theme toggle */}
             <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              onClick={toggleTheme}
               className="p-2 rounded-xl hover:bg-gray-100/50 dark:hover:bg-gray-800/50 transition-colors"
               aria-label="Toggle theme"
             >
@@ -209,7 +205,7 @@ export default function Navbar({ onToggleSidebar }) {
               >
                 <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
                   <span className="text-white font-semibold text-xs sm:text-sm">
-                   {getInitials(user?.fullName)|| "W"}
+                    {getInitials(user?.fullName) || "W"}
                   </span>
                 </div>
                 <div className="hidden lg:block text-left min-w-0">

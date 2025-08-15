@@ -4,7 +4,7 @@ import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { RedirectProvider } from "@/contexts/RedirectProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@/contexts/ThemeContext";
 
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -12,7 +12,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+      <ThemeProvider>
       <AuthProvider>
             <RedirectProvider>
                 {children}
