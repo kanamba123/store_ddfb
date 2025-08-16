@@ -53,7 +53,7 @@ export default async function PrivacyPolicyPage() {
     content = await getPrivacyContent();
   } catch (error) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-10 text-center text-red-600">
+      <div className="max-w-4xl mx-auto px-1 py-10 text-center text-red-600">
         Erreur : Impossible de charger le contenu de la politique de
         confidentialité.
       </div>
@@ -74,7 +74,7 @@ export default async function PrivacyPolicyPage() {
   };
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-10" aria-live="polite">
+    <main className="max-w-4xl mx-auto px-1 py-10" aria-live="polite">
       <h1 className="text-3xl font-bold mb-6 text-center">
         Politique de Confidentialité
       </h1>

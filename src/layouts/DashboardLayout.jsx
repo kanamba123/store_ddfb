@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -13,32 +12,40 @@ export default function DashboardLayout({ children }) {
   const closeSidebar = () => setSidebarOpen(false);
 
   return (
-    <div className="min-h-screen grid grid-rows-[auto_1fr_auto] lg:grid-cols-[280px_1fr] lg:grid-rows-[auto_1fr_auto] bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      {/* Navbar - Spans full width on mobile, right column on desktop */}
+    <div className="min-h-screen grid grid-rows-[auto_1fr_auto] lg:grid-cols-[280px_1fr] lg:grid-rows-[auto_1fr_auto] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
+      {/* Navbar */}
       <div className="lg:col-span-2 lg:col-start-1 relative z-20">
         <Navbar onToggleSidebar={toggleSidebar} />
       </div>
 
-      {/* Sidebar - Hidden on mobile (overlay), fixed column on desktop */}
+      {/* Sidebar - Desktop */}
       <div className="hidden lg:block lg:row-start-2 lg:row-end-4 mt-2 mb-2">
         <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
       </div>
 
-      {/* Mobile Sidebar Overlay */}
+      {/* Sidebar - Mobile */}
       <div className="lg:hidden">
         <Sidebar isOpen={sidebarOpen} onClose={closeSidebar} />
       </div>
 
-      {/* Main Content - Full width on mobile, right column on desktop */}
+      {/* Main Content */}
       <main className="lg:col-start-2 lg:row-start-2 overflow-hidden">
         <div className="h-full p-2">
-          <div className="bg-white/70 dark:bg-gray-800/70 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 dark:border-gray-700/30 h-full  overflow-auto">
+          <div
+            className="h-full overflow-auto rounded-2xl custom-scrollbar"
+            style={{
+              backgroundColor: "var(--color-surface)",
+              border: "1px solid var(--color-border)",
+              boxShadow: `0 2px 6px var(--color-shadow-light)`,
+              color: "var(--color-text-primary)",
+            }}
+          >
             {children}
           </div>
         </div>
       </main>
 
-      {/* Footer - Spans full width on mobile, right column on desktop */}
+      {/* Footer */}
       <div className="lg:col-start-2 lg:row-start-3 m-2">
         <Footer />
       </div>

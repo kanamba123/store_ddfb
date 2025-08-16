@@ -2,7 +2,6 @@
 
 import { useVariantsProductByStore } from "@/hooks/apis/useProducts";
 import { useAuth } from "@/contexts/AuthContext";
-import { VariantsProduct } from "@/types/VariantsProduct";
 import Link from "next/link";
 import ProductList from "./ProductList";
 
@@ -18,28 +17,38 @@ export default function ProductsPage() {
     isError,
   } = useVariantsProductByStore(Number(user?.store?.id));
 
-  
   return (
-    <div className="space-y-6 p-2 dark:bg-gray-900 dark:text-gray-200">
-      <div className="flex justify-end mb-4">
+    <div className="min-h-screen p-4 space-y-6 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] dark:bg-[var(--color-bg-dark)] dark:text-[var(--color-text-light)] transition-colors duration-200">
+      
+      {/* Bouton Ajouter un produit */}
+      <div className="flex justify-end">
         <Link
           href="/dashboard/products/create"
-          className="bg-indigo-600 text-white px-4 py-1 rounded-md hover:bg-indigo-700 transition dark:bg-indigo-700 dark:hover:bg-indigo-600"
+          className="px-4 py-2 rounded-md font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] transition-colors duration-200 dark:bg-[var(--color-primary-dark)] dark:hover:bg-[var(--color-primary)]"
         >
           + Ajouter un produit
         </Link>
       </div>
 
-      {isLoading ? (<div>Loading products...</div>) : isError ? (<div>Error loading products</div>) : (
-        <ProductList
-          products={data?.pages.flatMap(page => page.data || []) || []}
-          fetchNextPage={fetchNextPage}
-          hasNextPage={hasNextPage}
-          isFetchingNextPage={isFetchingNextPage}
-        />
-      )
-      }
-
+      {/* Liste des produits */}
+      <div className="space-y-4">
+        {isLoading ? (
+          <div className="text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)]">
+            Chargement des produits...
+          </div>
+        ) : isError ? (
+          <div className="text-red-500 dark:text-red-400">
+            Une erreur est survenue lors du chargement des produits
+          </div>
+        ) : (
+          <ProductList
+            products={data?.pages.flatMap((page) => page.data || []) || []}
+            fetchNextPage={fetchNextPage}
+            hasNextPage={hasNextPage}
+            isFetchingNextPage={isFetchingNextPage}
+          />
+        )}
+      </div>
     </div>
   );
 }
