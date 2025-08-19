@@ -1,0 +1,60 @@
+name: Deploy Project
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "22.9.0"
+
+      - name: Install dependencies
+        run: npm install --force
+
+      - name: Build for production
+        run: npm run build
+
+      - name: Debug HOST
+        run: echo $HOST
+        env:
+          HOST: ${{ secrets.HOST }}
+
+      - name: Deploy to VPS
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          DEPLOYMENT_DIRECTORY: /var/www/html/store_ddfb
+        run: |
+          echo "Deploying to $HOST"
+          sshpass -p "$PASSWORD" rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no" ./ "$USERNAME@$HOST:$DEPLOYMENT_DIRECTORY"
+
+      - name: Rebuild and restart app on VPS
+        env:
+          HOST: ${{ secrets.HOST }}
+          USERNAME: ${{ secrets.USERNAME }}
+          PASSWORD: ${{ secrets.PASSWORD }}
+          DEPLOYMENT_DIRECTORY: /var/www/html/store_ddfb
+        run: |
+          echo "Running post-deploy commands on VPS"
+          sshpass -p "$PASSWORD" ssh -o StrictHostKeyChecking=no "$USERNAME@$HOST" "
+            cd $DEPLOYMENT_DIRECTORY &&
+            npm install --force &&
+            npm run build &&
+            /root/.nvm/versions/node/v23.6.1/bin/pm2 reload ecosystem.config.js  || 
+            /root/.nvm/versions/node/v23.6.1/bin/pm2 start ecosystem.config.js --env production &&
+            /root/.nvm/versions/node/v23.6.1/bin/pm2 save
+          "
