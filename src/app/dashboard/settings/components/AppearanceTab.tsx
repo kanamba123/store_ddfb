@@ -1,4 +1,9 @@
+"use client";
+
 import { Palette } from "lucide-react";
+import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import i18n from '@/app/i18n';
 
 interface AppearanceTabProps {
   settings: {
@@ -12,6 +17,35 @@ export default function AppearanceTab({
   settings,
   handleChange,
 }: AppearanceTabProps) {
+  const themeContext = useTheme();
+  const languageContext = useLanguage();
+
+  const changeTheme = themeContext?.changeTheme || ((theme: string) => {
+    console.warn("ThemeContext not available");
+    localStorage.setItem("theme", theme);
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  });
+
+  const changeLanguage = languageContext?.changeLanguage || ((lang: string) => {
+    console.warn("LanguageContext not available");
+    localStorage.setItem("language", lang);
+    document.documentElement.lang = lang;
+    
+    // Synchroniser avec i18next même si le contexte n'est pas disponible
+    i18n.changeLanguage(lang);
+  });
+
+  const handleThemeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    handleChange(e);
+    changeTheme(e.target.value);
+  };
+
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const newLanguage = e.target.value;
+    handleChange(e);
+    changeLanguage(newLanguage);
+  };
+
   return (
     <div className="space-y-6">
       <h2 className="text-lg font-semibold text-gray-800 dark:text-white flex items-center gap-2">
@@ -26,7 +60,7 @@ export default function AppearanceTab({
         <select
           name="theme"
           value={settings.theme}
-          onChange={handleChange}
+          onChange={handleThemeChange}
           className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         >
           <option value="system">Système</option>
@@ -42,11 +76,12 @@ export default function AppearanceTab({
         <select
           name="language"
           value={settings.language}
-          onChange={handleChange}
+          onChange={handleLanguageChange}
           className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         >
-          <option value="fr">Français</option>
           <option value="en">English</option>
+          <option value="fr">Français</option>
+          <option value="kr">Ikirundi</option>
           <option value="es">Español</option>
           <option value="de">Deutsch</option>
         </select>

@@ -1,0 +1,52 @@
+{
+  "common": {
+    "requiredField": "This field is required",
+    "chooseOption": "-- Choose --"
+  },
+  "uploadVariantForm": {
+    "title": "Add Product Variant",
+    "successMessage": "✅ Variant submitted successfully!",
+    "labels": {
+      "store": "Product store",
+      "variantName": "Variant name",
+      "variantType": "Variant type",
+      "description": "Description",
+      "product": "Product",
+      "purchasePrice": "Purchase price",
+      "specifications": "Specifications",
+      "images": "Images"
+    },
+    "placeholders": {
+      "variantName": "Variant name",
+      "description": "Detailed product description...",
+      "purchasePrice": "Ex: 1200.00",
+      "specificationName": "Specification name",
+      "specificationValue": "Value"
+    },
+    "options": {
+      "product": "Product",
+      "accessory": "Accessory"
+    },
+    "buttons": {
+      "submitting": "⏳ Submitting...",
+      "submit": "✅ Submit Variant"
+    },
+    "errors": {
+      "failedLoadProducts": "Failed to load products",
+      "submissionFailed": "❌ Submission failed. Please check the fields.",
+      "imageUploadError": "Error uploading images:",
+      "imageUploadFailed": "❌ Error uploading images. Please try again."
+    }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "sales": "Sales",
+    "analytics": "Analytics",
+    "orders": "Orders",
+    "reports": "Reports",
+    "settings": "Settings",
+    "dashboardPro": "Pro Dashboard",
+    "userProfile": "User Profile"
+  }
+}

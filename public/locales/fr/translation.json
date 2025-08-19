@@ -1,0 +1,14 @@
+{
+  
+  "sidebar": {
+    "dashboard": "Tableau de bord",
+    "products": "Produits",
+    "sales": "Ventes",
+    "analytics": "Analytiques",
+    "orders": "Commandes",
+    "reports": "Rapports",
+    "settings": "Paramètres",
+    "dashboardPro": "Dashboard Pro",
+    "userProfile": "Profil utilisateur"
+  }
+}

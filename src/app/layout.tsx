@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 import PageTransitionLoader from "@/components/PageTransitionLoader";
+import InternationalizationProvider from "@/components/InternationalizationProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -72,7 +73,6 @@ export const metadata: Metadata = {
     "google-site-verification": "dD8UWR2jFPLfVHce9jDMnjQGgCo3YnSr3883R_0VULQ",
     "fb:app_id": "617888837240926",
   },
-
 };
 
 export default function RootLayout({
@@ -86,8 +86,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <PageTransitionLoader />
-          <main>{children}</main>
+          <InternationalizationProvider>
+            <PageTransitionLoader />
+            <main>{children}</main>
+          </InternationalizationProvider>
         </Providers>
       </body>
     </html>

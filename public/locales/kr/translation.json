@@ -1,0 +1,52 @@
+{
+  "common": {
+    "requiredField": "Iki kibanza kirakenewe",
+    "chooseOption": "-- Hitamwo --"
+  },
+  "uploadVariantForm": {
+    "title": "Ongerako ubundi bwoko bw'igicuruzwa",
+    "successMessage": "✅ Ubundi bwoko bwashizweko neza!",
+    "labels": {
+      "store": "Iduka ry'igicuruzwa",
+      "variantName": "Izina ry'ubundi bwoko",
+      "variantType": "Ubwoko",
+      "description": "Insiguro",
+      "product": "Igicuruzwa",
+      "purchasePrice": "Igiciro co kugura",
+      "specifications": "Ibisobanuro vy'ibikoresho",
+      "images": "Amashusho"
+    },
+    "placeholders": {
+      "variantName": "Izina ry'ubundi bwoko",
+      "description": "Insiguro irambuye y'igicuruzwa...",
+      "purchasePrice": "Urugero: 1200.00",
+      "specificationName": "Izina ry'igisobanuro",
+      "specificationValue": "Agaciro"
+    },
+    "options": {
+      "product": "Igicuruzwa",
+      "accessory": "Ikindi kinyongera"
+    },
+    "buttons": {
+      "submitting": "⏳ Biriko birungikwa...",
+      "submit": "✅ Shiramwo ubundi bwoko"
+    },
+    "errors": {
+      "failedLoadProducts": "Ntivyashobotse kurungika ibicuruzwa",
+      "submissionFailed": "❌ Kurungika vyaranse. Raba neza ibisabwa.",
+      "imageUploadError": "Ikosa mu kurungika amashusho:",
+      "imageUploadFailed": "❌ Ikosa mu kurungika amashusho. Gerageza wongere."
+    }
+  },
+  "sidebar": {
+    "dashboard": "Ibibanza vy'ingenzi",
+    "products": "Ibicuruzwa",
+    "sales": "Ugurisha",
+    "analytics": "Isesengura",
+    "orders": "Amabwirizwa",
+    "reports": "Amakuru",
+    "settings": "Igenamiterere",
+    "dashboardPro": "Ibibanza vy'ingenzi Pro",
+    "userProfile": "Umwidondoro w'umukoresha"
+  }
+}

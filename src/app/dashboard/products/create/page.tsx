@@ -11,6 +11,7 @@ import { StoreData } from "@/types/registration"
 import { uploadMultipleImagesToFirebase } from "@/services/uploadMultipleImagesToFirebase"
 import SearchableSelect from "@/components/ui/SearchableSelect"
 import Image from "next/image"
+import { useTranslation } from 'react-i18next';
 
 interface Specification {
   key: string
@@ -70,6 +71,7 @@ export default function UploadVariantForm() {
   const [previews, setPreviews] = useState<string[]>([])
   const [specifications, setSpecifications] = useState<Record<string, string>>({})
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
+  const { t } = useTranslation();
 
   const {
     register,
@@ -103,11 +105,11 @@ export default function UploadVariantForm() {
         const dataProduct = await fetchProductCategories()
         setData(dataProduct)
       } catch (error) {
-        console.error("Failed to load products", error)
+        console.error(t('uploadVariantForm.errors.failedLoadProducts'), error)
       }
     }
     loadProduct()
-  }, [])
+  }, [t])
 
   const handleImageChange = useCallback((files: File[]) => {
     setUploadedFiles(files);
@@ -150,7 +152,7 @@ export default function UploadVariantForm() {
         },
         onError: (error) => {
           console.error(error);
-          setError("❌ Échec de l'envoi. Vérifiez les champs.");
+          setError(t('uploadVariantForm.errors.submissionFailed'));
         },
         onSettled: () => {
           setSubmitting(false);
@@ -158,8 +160,8 @@ export default function UploadVariantForm() {
       });
 
     } catch (uploadError) {
-      console.error("Error uploading images:", uploadError);
-      setError("❌ Erreur lors de l'upload des images. Veuillez réessayer.");
+      console.error(t('uploadVariantForm.errors.imageUploadError'), uploadError);
+      setError(t('uploadVariantForm.errors.imageUploadFailed'));
       setSubmitting(false);
     }
   };
@@ -168,23 +170,22 @@ export default function UploadVariantForm() {
     <div className="max-w-7xl mx-auto p-4 sm:p-6 bg-white dark:bg-gray-900 shadow-md dark:shadow-lg rounded-lg text-gray-800 dark:text-gray-100">
       {submitted && (
         <p className="text-green-600 dark:text-green-400 text-center mt-10">
-          ✅ Variante soumise avec succès !
+          {t('uploadVariantForm.successMessage')}
         </p>
       )}
 
-      <h1 className="text-xl font-bold mb-4 text-center">Ajouter une Variante de Produit</h1>
+      <h1 className="text-xl font-bold mb-4 text-center">{t('uploadVariantForm.title')}</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* Magasin */}
-       
-         <Controller
-            name="storeId"
-            control={control}
-            rules={{ required: true }}
-            render={({ field, fieldState }) => (
-              <div>
+        <Controller
+          name="storeId"
+          control={control}
+          rules={{ required: true }}
+          render={({ field, fieldState }) => (
+            <div>
               <SearchableSelect
-                label="Magasin du produit *"
+                label={t('uploadVariantForm.labels.store') + ' *'}
                 options={store.map((store: StoreData) => ({
                   value: String(store.id),
                   label: store.storeName
@@ -194,21 +195,21 @@ export default function UploadVariantForm() {
                 required
               />
               {fieldState.error && (
-                <span className="text-red-500 text-sm">Ce champ est requis</span>
+                <span className="text-red-500 text-sm">{t('common.requiredField')}</span>
               )}
-              </div>
-            )}
-          />
+            </div>
+          )}
+        />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Nom de la variante */}
           <Input
-            label="Nom de la variante *"
-            placeholder="Nom de la variante"
+            label={t('uploadVariantForm.labels.variantName') + ' *'}
+            placeholder={t('uploadVariantForm.placeholders.variantName')}
             {...register("variantProductName", { required: true })}
           />
           {errors.variantProductName && (
-            <span className="text-red-500 text-sm">Ce champ est requis</span>
+            <span className="text-red-500 text-sm">{t('common.requiredField')}</span>
           )}
 
           {/* Type de variante */}
@@ -217,11 +218,11 @@ export default function UploadVariantForm() {
             control={control}
             render={({ field }) => (
               <Select
-                label="Type de variante"
+                label={t('uploadVariantForm.labels.variantType')}
                 options={[
-                  { value: '', label: '-- Choisir --' },
-                  { value: 'product', label: 'Product' },
-                  { value: 'accessory', label: 'Accessory' }
+                  { value: '', label: t('common.chooseOption') },
+                  { value: 'product', label: t('uploadVariantForm.options.product') },
+                  { value: 'accessory', label: t('uploadVariantForm.options.accessory') }
                 ]}
                 {...field}
               />
@@ -230,12 +231,12 @@ export default function UploadVariantForm() {
 
           {/* Description */}
           <div className="sm:col-span-2">
-            <label className="block mb-1 font-medium">Description</label>
+            <label className="block mb-1 font-medium">{t('uploadVariantForm.labels.description')}</label>
             <textarea
               {...register("description")}
               className={inputClass}
               rows={2}
-              placeholder="Description détaillée du produit..."
+              placeholder={t('uploadVariantForm.placeholders.description')}
             />
           </div>
 
@@ -245,7 +246,7 @@ export default function UploadVariantForm() {
             rules={{ required: true }}
             render={({ field, fieldState }) => (
               <SearchableSelect
-                label="Produit *"
+                label={t('uploadVariantForm.labels.product') + ' *'}
                 options={data.map(product => ({
                   value: String(product.id),
                   label: product.productName
@@ -257,29 +258,30 @@ export default function UploadVariantForm() {
             )}
           />
 
-
           {/* Prix d'achat */}
           <Input
-            label="Prix d'achat"
+            label={t('uploadVariantForm.labels.purchasePrice')}
             type="number"
             step="0.01"
-            placeholder="Ex: 1200.00"
+            placeholder={t('uploadVariantForm.placeholders.purchasePrice')}
             {...register("purchasePrice")}
           />
         </div>
 
         {/* Spécifications */}
         <div>
-          <label className="block mb-2 font-medium">Spécifications</label>
+          <label className="block mb-2 font-medium">{t('uploadVariantForm.labels.specifications')}</label>
           <AddKeyValuePairs
-            keyPlaceholder="Nom de la spécification"
-            valuePlaceholder="Valeur"
-            onAdd={handleSpecificationsChange} title={""} />
+            keyPlaceholder={t('uploadVariantForm.placeholders.specificationName')}
+            valuePlaceholder={t('uploadVariantForm.placeholders.specificationValue')}
+            onAdd={handleSpecificationsChange} 
+            title={t('uploadVariantForm.labels.specifications')} 
+          />
         </div>
 
         {/* Images */}
         <div>
-          <label className="block mb-1 font-medium">Images</label>
+          <label className="block mb-1 font-medium">{t('uploadVariantForm.labels.images')}</label>
           <ImageUploader onImagesChange={handleImageChange} />
           <div className="flex flex-wrap gap-2 mt-2">
             {previews.map((src, i) => (
@@ -303,7 +305,7 @@ export default function UploadVariantForm() {
           className={`w-full bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white py-3 rounded-lg shadow-md transition-all duration-200 font-medium ${submitting ? 'opacity-50 cursor-not-allowed' : ''
             }`}
         >
-          {submitting ? '⏳ Envoi en cours...' : '✅ Soumettre la Variante'}
+          {submitting ? t('uploadVariantForm.buttons.submitting') : t('uploadVariantForm.buttons.submit')}
         </button>
 
         {/* Message d'erreur */}

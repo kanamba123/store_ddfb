@@ -15,62 +15,64 @@ import {
 import { FaUsers } from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
 import { getInitials } from "../utils/getInitials";
-
-const sidebarLinks = [
-  {
-    label: "Dashboard",
-    href: "/dashboard",
-    icon: LayoutDashboard,
-    color: "from-blue-500 to-cyan-500",
-    darkColor: "from-blue-600 to-cyan-600",
-  },
-  {
-    label: "Produits",
-    href: "/dashboard/products",
-    icon: ShoppingCart,
-    color: "from-orange-400 to-yellow-400",
-    darkColor: "from-orange-500 to-yellow-500",
-  },
-  {
-    label: "Sales",
-    href: "/dashboard/sales",
-    icon: FaUsers,
-    color: "from-purple-500 to-pink-500",
-    darkColor: "from-purple-600 to-pink-600",
-  },
-  {
-    label: "Analytics",
-    href: "/dashboard/analytics",
-    icon: BarChart3,
-    color: "from-green-500 to-emerald-500",
-    darkColor: "from-green-600 to-emerald-600",
-  },
-  {
-    label: "Commandes",
-    href: "/dashboard/orders",
-    icon: ShoppingCart,
-    color: "from-yellow-500 to-orange-500",
-    darkColor: "from-yellow-600 to-orange-600",
-  },
-  {
-    label: "Rapports",
-    href: "/dashboard/reports",
-    icon: FileText,
-    color: "from-indigo-500 to-purple-500",
-    darkColor: "from-indigo-600 to-purple-600",
-  },
-  {
-    label: "Paramètres",
-    href: "/dashboard/settings",
-    icon: Settings,
-    color: "from-red-500 to-pink-500",
-    darkColor: "from-red-600 to-pink-600",
-  },
-];
+import { useTranslation } from 'react-i18next';
 
 export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
   const { user } = useAuth();
+  const { t } = useTranslation();
+
+  const sidebarLinks = [
+    {
+      label: t('sidebar.dashboard'),
+      href: "/dashboard",
+      icon: LayoutDashboard,
+      color: "from-blue-500 to-cyan-500",
+      darkColor: "from-blue-600 to-cyan-600",
+    },
+    {
+      label: t('sidebar.products'),
+      href: "/dashboard/products",
+      icon: ShoppingCart,
+      color: "from-orange-400 to-yellow-400",
+      darkColor: "from-orange-500 to-yellow-500",
+    },
+    {
+      label: t('sidebar.sales'),
+      href: "/dashboard/sales",
+      icon: FaUsers,
+      color: "from-purple-500 to-pink-500",
+      darkColor: "from-purple-600 to-pink-600",
+    },
+    {
+      label: t('sidebar.analytics'),
+      href: "/dashboard/analytics",
+      icon: BarChart3,
+      color: "from-green-500 to-emerald-500",
+      darkColor: "from-green-600 to-emerald-600",
+    },
+    {
+      label: t('sidebar.orders'),
+      href: "/dashboard/orders",
+      icon: ShoppingCart,
+      color: "from-yellow-500 to-orange-500",
+      darkColor: "from-yellow-600 to-orange-600",
+    },
+    {
+      label: t('sidebar.reports'),
+      href: "/dashboard/reports",
+      icon: FileText,
+      color: "from-indigo-500 to-purple-500",
+      darkColor: "from-indigo-600 to-purple-600",
+    },
+    {
+      label: t('sidebar.settings'),
+      href: "/dashboard/settings",
+      icon: Settings,
+      color: "from-red-500 to-pink-500",
+      darkColor: "from-red-600 to-pink-600",
+    },
+  ];
 
   return (
     <>
@@ -104,7 +106,7 @@ export default function Sidebar({ isOpen, onClose }) {
                   {user?.store?.storeName}
                 </h2>
                 <p className="text-xs text-[var(--color-text-secondary)]">
-                  Dashboard Pro
+                  {t('sidebar.dashboardPro', 'Dashboard Pro')}
                 </p>
               </div>
             </div>
