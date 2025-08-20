@@ -19,6 +19,10 @@ import { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { getInitials } from "../utils/getInitials";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useLanguage } from "@/contexts/LanguageContext";
+import i18n from '@/app/i18n';
+import ListLanguage from "@/constants/ListLanguage";
+
 
 export default function Navbar({ onToggleSidebar }) {
   const pathname = usePathname();
@@ -28,6 +32,30 @@ export default function Navbar({ onToggleSidebar }) {
   const [mounted, setMounted] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const { logout, user } = useAuth();
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const languageRef = useRef(null);
+  const languageContext = useLanguage();
+
+
+
+
+  const changeLanguage = languageContext?.changeLanguage || ((lang) => {
+    console.warn("LanguageContext not available");
+    localStorage.setItem("language", lang);
+    document.documentElement.lang = lang;
+
+    // i18next expects a string
+    i18n.changeLanguage(lang);
+  });
+
+
+  const [currentLang, setCurrentLang] = useState(ListLanguage[0]);
+
+  const handleLanguageChange = (lang) => {
+    changeLanguage(lang.code); // pass the string, not the object
+    setCurrentLang(lang);
+  };
+
 
   const profileRef = useRef(null);
   const notificationRef = useRef(null);
@@ -75,9 +103,8 @@ export default function Navbar({ onToggleSidebar }) {
 
             {/* Brand (mobile only) */}
             <div
-              className={`lg:hidden flex items-center space-x-2 transition-all duration-200 ${
-                isSearchOpen ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
-              }`}
+              className={`lg:hidden flex items-center space-x-2 transition-all duration-200 ${isSearchOpen ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
+                }`}
             >
               <div className="w-8 h-8 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] rounded-lg flex items-center justify-center">
                 <span className=" font-bold text-sm">W</span>
@@ -89,9 +116,8 @@ export default function Navbar({ onToggleSidebar }) {
 
             {/* Search bar */}
             <div
-              className={`relative transition-all duration-200 ${
-                isSearchOpen ? "flex-1" : "hidden md:flex"
-              }`}
+              className={`relative transition-all duration-200 ${isSearchOpen ? "flex-1" : "hidden md:flex"
+                }`}
             >
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Search className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--color-text-secondary)]" />
@@ -120,9 +146,8 @@ export default function Navbar({ onToggleSidebar }) {
             {/* Search toggle (mobile) */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className={`md:hidden p-2 rounded-xl hover:bg-[var(--color-bg-secondary)]/50  transition-colors ${
-                isSearchOpen ? "hidden" : "block"
-              }`}
+              className={`md:hidden p-2 rounded-xl hover:bg-[var(--color-bg-secondary)]/50  transition-colors ${isSearchOpen ? "hidden" : "block"
+                }`}
             >
               <Search className="w-5 h-5 text-[var(--color-text-secondary)] " />
             </button>
@@ -130,9 +155,8 @@ export default function Navbar({ onToggleSidebar }) {
 
           {/* Right section */}
           <div
-            className={`flex items-center space-x-2 sm:space-x-3 ${
-              isSearchOpen ? "hidden md:flex" : "flex"
-            }`}
+            className={`flex items-center space-x-2 sm:space-x-3 ${isSearchOpen ? "hidden md:flex" : "flex"
+              }`}
           >
             {/* Theme toggle */}
             <button
@@ -194,6 +218,42 @@ export default function Navbar({ onToggleSidebar }) {
                       Voir toutes les notifications
                     </Link>
                   </div>
+                </div>
+              )}
+            </div>
+
+            {/* Language selector */}
+            <div className="relative" ref={languageRef}>
+              <button
+                onClick={() => {
+                  setIsLanguageOpen(!isLanguageOpen);
+                  setIsProfileOpen(false);
+                  setIsNotificationOpen(false);
+                }}
+                className="flex items-center space-x-1 p-2 rounded-xl hover:bg-[var(--color-bg-secondary)]/50 transition-colors"
+              >
+                <span className="text-sm">{currentLang.flag}</span>
+                <span className="hidden sm:block text-[var(--color-text-secondary)]">
+                  {currentLang.code.toUpperCase()}
+                </span>
+                <ChevronDown className="w-3 h-3 text-[var(--color-text-secondary)]" />
+              </button>
+
+              {isLanguageOpen && (
+                <div className="absolute right-0 mt-2 w-36 bg-[var(--color-bg-primary)]/90 backdrop-blur-xl rounded-xl shadow-2xl border border-[var(--color-border)] z-50">
+                  {ListLanguage.map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => {
+                        handleLanguageChange(lang);
+                        setIsLanguageOpen(false);
+                      }}
+                      className="w-full flex items-center space-x-2 p-2 sm:p-3 rounded-lg hover:bg-[var(--color-bg-secondary)]/50 transition-colors text-[var(--color-text-primary)]"
+                    >
+                      <span>{lang.flag}</span>
+                      <span className="text-sm">{lang.label}</span>
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
