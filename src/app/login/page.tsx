@@ -85,9 +85,8 @@ export default function LoginPage() {
       }
 
       // Set cookie
-      document.cookie = `authToken=${data.token}; path=/; max-age=${
-        60 * 60 * 24 * 7
-      }; Secure; SameSite=Strict`;
+      document.cookie = `authToken=${data.token}; path=/; max-age=${60 * 60 * 24 * 7
+        }; Secure; SameSite=Strict`;
 
       await login(data.token, data.user);
 
@@ -133,9 +132,8 @@ export default function LoginPage() {
 
       if (event.data.token) {
         popup?.close();
-        document.cookie = `authToken=${event.data.token}; path=/; max-age=${
-          60 * 60 * 24 * 7
-        }; Secure; SameSite=Strict`;
+        document.cookie = `authToken=${event.data.token}; path=/; max-age=${60 * 60 * 24 * 7
+          }; Secure; SameSite=Strict`;
         login(event.data.token, event.data.user);
 
         if (redirectUrl) {
@@ -190,9 +188,8 @@ export default function LoginPage() {
         throw new Error(data.message || "Échec de la connexion biométrique.");
       }
 
-      document.cookie = `authToken=${data.token}; path=/; max-age=${
-        60 * 60 * 24 * 7
-      }; Secure; SameSite=Strict`;
+      document.cookie = `authToken=${data.token}; path=/; max-age=${60 * 60 * 24 * 7
+        }; Secure; SameSite=Strict`;
       await login(data.token, data.user);
 
       if (redirectUrl) {
@@ -209,32 +206,28 @@ export default function LoginPage() {
 
   return (
     <div
-      className={`min-h-screen flex items-center justify-center px-4 transition-colors duration-300 ${
-        darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
-      }`}
+      className={`min-h-screen flex items-center justify-center px-4 transition-colors duration-300 ${darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
+        }`}
     >
       <div
-        className={`w-full max-w-md rounded-xl shadow-md p-6 space-y-6 transition-colors duration-300 ${
-          darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
-        } border`}
+        className={`w-full max-w-md rounded-xl shadow-md p-6 space-y-6 transition-colors duration-300 ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+          } border`}
       >
         <h2 className="text-2xl font-bold text-center">Connexion</h2>
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <label
-              className={`block text-sm font-medium ${
-                darkMode ? "text-gray-300" : "text-gray-700"
-              }`}
+              className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"
+                }`}
             >
               Email
             </label>
             <div className="relative mt-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <FaEnvelope
-                  className={`h-5 w-5 ${
-                    darkMode ? "text-gray-400" : "text-gray-500"
-                  }`}
+                  className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"
+                    }`}
                 />
               </div>
               <input
@@ -242,11 +235,10 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300 ${
-                  darkMode
-                    ? "bg-gray-700 border-gray-600 text-white focus:border-blue-400"
-                    : "border-gray-300 focus:border-blue-400"
-                } border`}
+                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300 ${darkMode
+                  ? "bg-gray-700 border-gray-600 text-white focus:border-blue-400"
+                  : "border-gray-300 focus:border-blue-400"
+                  } border`}
                 placeholder="votre@email.com"
               />
             </div>
@@ -254,18 +246,16 @@ export default function LoginPage() {
 
           <div>
             <label
-              className={`block text-sm font-medium ${
-                darkMode ? "text-gray-300" : "text-gray-700"
-              }`}
+              className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"
+                }`}
             >
               Mot de passe
             </label>
             <div className="relative mt-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <FaLock
-                  className={`h-5 w-5 ${
-                    darkMode ? "text-gray-400" : "text-gray-500"
-                  }`}
+                  className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"
+                    }`}
                 />
               </div>
               <input
@@ -273,11 +263,10 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300 ${
-                  darkMode
-                    ? "bg-gray-700 border-gray-600 text-white focus:border-blue-400"
-                    : "border-gray-300 focus:border-blue-400"
-                } border`}
+                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300 ${darkMode
+                  ? "bg-gray-700 border-gray-600 text-white focus:border-blue-400"
+                  : "border-gray-300 focus:border-blue-400"
+                  } border`}
                 placeholder="••••••••"
               />
               <button
@@ -287,15 +276,13 @@ export default function LoginPage() {
               >
                 {showPassword ? (
                   <FaEyeSlash
-                    className={`h-5 w-5 ${
-                      darkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
+                    className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"
+                      }`}
                   />
                 ) : (
                   <FaEye
-                    className={`h-5 w-5 ${
-                      darkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
+                    className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"
+                      }`}
                   />
                 )}
               </button>
@@ -303,11 +290,10 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={handleForgotPassword}
-              className={`mt-2 text-sm ${
-                darkMode
-                  ? "text-blue-400 hover:text-blue-300"
-                  : "text-blue-600 hover:text-blue-800"
-              } underline`}
+              className={`mt-2 text-sm ${darkMode
+                ? "text-blue-400 hover:text-blue-300"
+                : "text-blue-600 hover:text-blue-800"
+                } underline`}
             >
               Mot de passe oublié ?
             </button>
@@ -321,37 +307,33 @@ export default function LoginPage() {
                 type="checkbox"
                 checked={acceptedTerms}
                 onChange={(e) => setAcceptedTerms(e.target.checked)}
-                className={`focus:ring-blue-500 h-4 w-4 rounded ${
-                  darkMode ? "bg-gray-700 border-gray-600" : "border-gray-300"
-                }`}
+                className={`focus:ring-blue-500 h-4 w-4 rounded ${darkMode ? "bg-gray-700 border-gray-600" : "border-gray-300"
+                  }`}
               />
             </div>
             <div className="ml-3 text-sm">
               <label
                 htmlFor="terms"
-                className={`font-light ${
-                  darkMode ? "text-gray-300" : "text-gray-700"
-                }`}
+                className={`font-light ${darkMode ? "text-gray-300" : "text-gray-700"
+                  }`}
               >
                 J'accepte les{" "}
                 <Link
                   href="/terms-of-service"
-                  className={`underline ${
-                    darkMode
-                      ? "text-blue-400 hover:text-blue-300"
-                      : "text-blue-600 hover:text-blue-800"
-                  }`}
+                  className={`underline ${darkMode
+                    ? "text-blue-400 hover:text-blue-300"
+                    : "text-blue-600 hover:text-blue-800"
+                    }`}
                 >
                   Conditions Générales
                 </Link>{" "}
                 et la{" "}
                 <Link
                   href="/privacy-policy"
-                  className={`underline ${
-                    darkMode
-                      ? "text-blue-400 hover:text-blue-300"
-                      : "text-blue-600 hover:text-blue-800"
-                  }`}
+                  className={`underline ${darkMode
+                    ? "text-blue-400 hover:text-blue-300"
+                    : "text-blue-600 hover:text-blue-800"
+                    }`}
                 >
                   Politique de Confidentialité
                 </Link>
@@ -366,27 +348,25 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading || !acceptedTerms}
-            className={`w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition ${
-              loading || !acceptedTerms ? "opacity-50 cursor-not-allowed" : ""
-            } ${darkMode ? "hover:bg-blue-500" : ""}`}
+            className={`w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition ${loading || !acceptedTerms ? "opacity-50 cursor-not-allowed" : ""
+              } ${darkMode ? "hover:bg-blue-500" : ""}`}
           >
             {loading ? "Connexion..." : "Se connecter"}
           </button>
         </form>
 
         {fingerprintAvailable && (
-          <div className="space-y-3">
+          <div className="flex justify-center mt-2">
             <button
               onClick={handleFingerprintLogin}
               disabled={loading}
-              className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg border font-medium transition ${
-                darkMode
-                  ? "bg-gray-700 border-gray-600 hover:bg-gray-600 text-white"
-                  : "bg-white border-gray-300 hover:bg-gray-50 text-gray-700"
-              }`}
+              className={`flex items-center gap-2 text-sm underline transition ${darkMode
+                ? "text-blue-400 hover:text-blue-300"
+                : "text-blue-600 hover:text-blue-800"
+                }`}
             >
               <FaFingerprint className="text-blue-500" />
-              Se connecter avec empreinte
+              Utiliser l'empreinte digitale
             </button>
           </div>
         )}
@@ -394,16 +374,14 @@ export default function LoginPage() {
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div
-              className={`w-full border-t ${
-                darkMode ? "border-gray-700" : "border-gray-300"
-              }`}
+              className={`w-full border-t ${darkMode ? "border-gray-700" : "border-gray-300"
+                }`}
             ></div>
           </div>
           <div className="relative flex justify-center text-sm">
             <span
-              className={`px-2 ${
-                darkMode ? "bg-gray-800 text-gray-400" : "bg-white text-gray-500"
-              }`}
+              className={`px-2 ${darkMode ? "bg-gray-800 text-gray-400" : "bg-white text-gray-500"
+                }`}
             >
               Ou continuer avec
             </span>
@@ -413,11 +391,10 @@ export default function LoginPage() {
         <div className="space-y-3">
           <button
             onClick={handleGoogleLogin}
-            className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg border font-medium transition ${
-              darkMode
-                ? "bg-gray-700 border-gray-600 hover:bg-gray-600 text-white"
-                : "bg-white border-gray-300 hover:bg-gray-50 text-gray-700"
-            }`}
+            className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg border font-medium transition ${darkMode
+              ? "bg-gray-700 border-gray-600 hover:bg-gray-600 text-white"
+              : "bg-white border-gray-300 hover:bg-gray-50 text-gray-700"
+              }`}
           >
             <FaGoogle className="text-red-500" />
             Se connecter avec Google
@@ -425,25 +402,22 @@ export default function LoginPage() {
         </div>
 
         <p
-          className={`text-sm text-center ${
-            darkMode ? "text-gray-400" : "text-gray-600"
-          }`}
+          className={`text-sm text-center ${darkMode ? "text-gray-400" : "text-gray-600"
+            }`}
         >
           Pas encore de compte ?{" "}
           <Link
             href="/register"
-            className={`text-blue-500 hover:underline ${
-              darkMode ? "hover:text-blue-400" : ""
-            }`}
+            className={`text-blue-500 hover:underline ${darkMode ? "hover:text-blue-400" : ""
+              }`}
           >
             Créer un compte
           </Link>
         </p>
 
         <div
-          className={`text-xs text-center pt-2 ${
-            darkMode ? "text-gray-500" : "text-gray-400"
-          }`}
+          className={`text-xs text-center pt-2 ${darkMode ? "text-gray-500" : "text-gray-400"
+            }`}
         >
           <p>Démo : admin@example.com / 123456</p>
         </div>
