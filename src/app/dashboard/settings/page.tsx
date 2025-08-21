@@ -1,7 +1,9 @@
 "use client";
 
-import {  useState } from "react";
+import { useState } from "react";
 import { User, Palette, Lock, Shield, Bell } from "lucide-react";
+import { useTranslation } from "react-i18next";
+
 import ProfileTab from "./components/ProfileTab";
 import AppearanceTab from "./components/AppearanceTab";
 import SecurityTab from "./components/SecurityTab";
@@ -11,11 +13,12 @@ import SaveButton from "./components/SaveButton";
 import { InputChangeEvent } from "@/types/events";
 
 export default function SettingsPage() {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState("profile");
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  // Shared state for all tabs
+  // Shared state
   const [settings, setSettings] = useState({
     name: "John Doe",
     email: "john@example.com",
@@ -48,7 +51,7 @@ export default function SettingsPage() {
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     setIsSaving(false);
-    setMessage("Paramètres sauvegardés avec succès !");
+    setMessage(t("settings.saveSuccess"));
 
     // Apply theme
     if (settings.theme === "dark") {
@@ -65,17 +68,17 @@ export default function SettingsPage() {
   };
 
   const tabs = [
-    { id: "profile", icon: User, label: "Profil" },
-    { id: "appearance", icon: Palette, label: "Apparence" },
-    { id: "security", icon: Lock, label: "Sécurité" },
-    { id: "privacy", icon: Shield, label: "Confidentialité" },
-    { id: "notifications", icon: Bell, label: "Notifications" },
+    { id: "profile", icon: User, label: t("settings.tabs.profile") },
+    { id: "appearance", icon: Palette, label: t("settings.tabs.appearance") },
+    { id: "security", icon: Lock, label: t("settings.tabs.security") },
+    { id: "privacy", icon: Shield, label: t("settings.tabs.privacy") },
+    { id: "notifications", icon: Bell, label: t("settings.tabs.notifications") },
   ];
 
   return (
-    <div className="p-4 max-w-9xl mx-auto bg-[var(--color-bg-primary)] ">
+    <div className="p-4 max-w-9xl mx-auto bg-[var(--color-bg-primary)]">
       <h1 className="text-2xl font-bold mb-6 text-[var(--color-text-primary)]">
-        Paramètres
+        {t("settings.title")}
       </h1>
 
       {/* Tab Navigation */}
@@ -98,9 +101,7 @@ export default function SettingsPage() {
 
       {/* Tab Content */}
       <div className="bg-[var(--color-bg-primary)] p-2 rounded-xl shadow-sm dark:shadow-none border dark:border-gray-700">
-        {activeTab === "profile" && (
-          <ProfileTab handleChange={handleChange} />
-        )}
+        {activeTab === "profile" && <ProfileTab handleChange={handleChange} />}
 
         {activeTab === "appearance" && (
           <AppearanceTab settings={settings} handleChange={handleChange} />

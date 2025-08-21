@@ -48,5 +48,26 @@
     "exampleProduct": "Chaussure Nike Air Max",
     "newOrder": "Nouvelle commande passée par",
     "newUser": "Nouvel utilisateur enregistré"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "saveSuccess": "Paramètres sauvegardés avec succès !",
+    "tabs": {
+      "profile": "Profil",
+      "appearance": "Apparence",
+      "security": "Sécurité",
+      "privacy": "Confidentialité",
+      "notifications": "Notifications"
+    }
+  },
+  "security": {
+    "twoFactor": "Authentification à deux facteurs",
+    "twoFactorDesc": "Ajoutez une couche de sécurité supplémentaire",
+    "biometric": "Authentification biométrique",
+    "biometricDesc": "Utilisez votre empreinte digitale ou reconnaissance faciale",
+    "changePassword": "Changer le mot de passe",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le nouveau mot de passe"
   }
 }

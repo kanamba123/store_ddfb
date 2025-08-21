@@ -87,5 +87,25 @@
     "exampleProduct": "Inkweto za Nike Air Max",
     "newOrder": "Itegeko rishasha ryashizweko na",
     "newUser": "Umukoresha mushasha yiyandikishije"
+  },
+ "settings": {
+    "title": "Igenamiterere",
+    "saveSuccess": "Amagenamiterere yabitswe neza!",
+    "tabs": {
+      "profile": "Umwidondoro",
+      "appearance": "Isura",
+      "security": "Umutekano",
+      "privacy": "Ivyibanga",
+      "notifications": "Amatangazo"
+    }
+  },"security": {
+    "twoFactor": "Ukwemeza mu nzira zibiri",
+    "twoFactorDesc": "Shiraho urwego rw’inyongera rw’umutekano",
+    "biometric": "Ukwemeza ukoresheje kibiometrike",
+    "biometricDesc": "Koresha urutoke rwawe canke ishusho y’amaso",
+    "changePassword": "Hindura ijambo ry'ibanga",
+    "currentPassword": "Ijambo ry'ibanga risanzwe",
+    "newPassword": "Ijambo ry'ibanga rishasha",
+    "confirmPassword": "Emeza ijambo ry'ibanga rishasha"
   }
 }

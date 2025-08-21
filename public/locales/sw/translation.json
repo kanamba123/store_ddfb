@@ -48,5 +48,25 @@
     "exampleProduct": "Viatu vya Nike Air Max",
     "newOrder": "Agizo jipya limewekwa na",
     "newUser": "Mtumiaji mpya amesajiliwa"
+  },
+   "settings": {
+    "title": "Mipangilio",
+    "saveSuccess": "Mipangilio imehifadhiwa kwa mafanikio!",
+    "tabs": {
+      "profile": "Wasifu",
+      "appearance": "Mwonekano",
+      "security": "Usalama",
+      "privacy": "Faragha",
+      "notifications": "Arifa"
+    }
+  },"security": {
+    "twoFactor": "Uthibitishaji wa hatua mbili",
+    "twoFactorDesc": "Ongeza safu ya ziada ya usalama",
+    "biometric": "Uthibitishaji wa kibiometria",
+    "biometricDesc": "Tumia alama ya kidole au utambuzi wa uso",
+    "changePassword": "Badilisha nenosiri",
+    "currentPassword": "Nenosiri la sasa",
+    "newPassword": "Nenosiri jipya",
+    "confirmPassword": "Thibitisha nenosiri jipya"
   }
 }

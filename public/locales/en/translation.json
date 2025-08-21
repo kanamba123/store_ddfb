@@ -87,5 +87,26 @@
     "exampleProduct": "Nike Air Max Shoes",
     "newOrder": "New order placed by",
     "newUser": "New user registered"
+  },
+  "settings": {
+    "title": "Settings",
+    "saveSuccess": "Settings saved successfully!",
+    "tabs": {
+      "profile": "Profile",
+      "appearance": "Appearance",
+      "security": "Security",
+      "privacy": "Privacy",
+      "notifications": "Notifications"
+    }
+  },
+  "security": {
+    "twoFactor": "Two-Factor Authentication",
+    "twoFactorDesc": "Add an extra layer of security",
+    "biometric": "Biometric Authentication",
+    "biometricDesc": "Use your fingerprint or facial recognition",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password"
   }
 }
