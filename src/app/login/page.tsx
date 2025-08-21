@@ -415,12 +415,6 @@ export default function LoginPage() {
           </Link>
         </p>
 
-        <div
-          className={`text-xs text-center pt-2 ${darkMode ? "text-gray-500" : "text-gray-400"
-            }`}
-        >
-          <p>Démo : admin@example.com / 123456</p>
-        </div>
       </div>
     </div>
   );
