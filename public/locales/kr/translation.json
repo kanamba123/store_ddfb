@@ -38,6 +38,20 @@
       "imageUploadFailed": "❌ Ikosa mu kurungika amashusho. Gerageza wongere."
     }
   },
+  "sidebar": {
+    "dashboard": "Ibiro vy'ibanze",
+    "products": "Ibikoresho",
+    "sales": "Ugurisha",
+    "analytics": "Isesengura",
+    "orders": "Amabwirizwa",
+    "payments": "Amadeni",
+    "promotions": "Ubukangurambaga",
+    "reports": "Raporo",
+    "support_customers": "Gufasha abakiriya",
+    "settings": "Amagenamiterere",
+    "dashboardPro": "Ibiro vy'ibanze Pro",
+    "userProfile": "Umwidondoro w'umukoresha"
+  },
   "navbar": {
     "searchPlaceholder": "Rondera...",
     "notifications": "Amatangazo",
