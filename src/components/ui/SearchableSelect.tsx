@@ -52,7 +52,7 @@ const SearchableSelect: React.FC<SelectProps> = ({
       <div className="relative">
         <input
           type="text"
-          className="w-full p-2 border rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+          className="w-full p-2 border rounded-lg bg-[var(--color-bg-primary)] focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
           value={isOpen ? searchTerm : selectedOption?.label || ''}
           onChange={(e) => {
             if (!isOpen) setIsOpen(true);
@@ -71,7 +71,7 @@ const SearchableSelect: React.FC<SelectProps> = ({
 
       {/* Liste des options */}
       {isOpen && (
-        <div className="absolute z-10 w-full mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-auto">
+        <div className="absolute z-10 w-full mt-1 bg-[var(--color-bg-primary)] border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-auto">
           {filteredOptions.length > 0 ? (
             filteredOptions.map((option) => (
               <div
@@ -97,7 +97,7 @@ const SearchableSelect: React.FC<SelectProps> = ({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)} // transforme event en string
-        className="hidden"
+        className="hidden "
         required={required}
       >
         {options.map(opt => (

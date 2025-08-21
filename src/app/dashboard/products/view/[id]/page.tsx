@@ -158,7 +158,7 @@ const ProductDetailBackoffice = () => {
       <div className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] flex items-center justify-center p-4">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-300">Chargement du produit...</p>
+          <p className="text-[var(--color-text-primary)]">Chargement du produit...</p>
         </div>
       </div>
     );
@@ -198,7 +198,7 @@ const ProductDetailBackoffice = () => {
                 <span className="hidden sm:inline">Retour à la liste</span>
               </button>
               <div className="h-6 w-px bg-gray-300 dark:bg-gray-600 hidden sm:block"></div>
-              <h1 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">
+              <h1 className="text-base sm:text-lg font-semibold text-[var(--color-text-primary)]">
                 Détail du Produit
               </h1>
             </div>
@@ -243,13 +243,13 @@ const ProductDetailBackoffice = () => {
       {/* Modal QR Code */}
       {showQR && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={() => setShowQR(false)}>
-          <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
+          <div className="bg-[var(--color-bg-primary)] p-4 sm:p-6 rounded-2xl shadow-xl w-full max-w-sm" onClick={e => e.stopPropagation()}>
             <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">QR Code Produit</h3>
+              <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">QR Code Produit</h3>
               <div className="flex justify-center mb-4 p-2 sm:p-4 bg-white rounded-lg">
                 <img src={variant.qrCode} alt="QR Code" className="w-48 h-48" />
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+              <p className="text-sm text-[var(--color-text-primary)] mb-4">
                 Code produit: <span className="font-mono font-medium">{variant.productCode}</span>
               </p>
               <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
@@ -275,12 +275,12 @@ const ProductDetailBackoffice = () => {
       {/* Modal Suppression */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-2xl shadow-xl w-full max-w-md">
+          <div className="bg-[var(--color-bg-primary)] p-4 sm:p-6 rounded-2xl shadow-xl w-full max-w-md">
             <div className="text-center">
               <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900/30 mb-4">
                 <AlertCircle className="h-6 w-6 text-red-600 dark:text-red-400" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+              <h3 className="text-lg font-medium text-[var(--color-text-primary)] mb-2">
                 Supprimer le produit
               </h3>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
@@ -309,43 +309,43 @@ const ProductDetailBackoffice = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Stats Cards */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 mb-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
+          <div className="bg-[var(--color-bg-primary)] rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
             <div className="flex items-center">
               <div className="p-1 sm:p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
                 <Package className="w-4 sm:w-6 h-4 sm:h-6 text-blue-600 dark:text-blue-400" />
               </div>
               <div className="ml-2 sm:ml-4">
-                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300">ID Produit</p>
-                <p className="text-sm sm:text-2xl font-bold text-gray-900 dark:text-white">#{variant.id}</p>
+                <p className="text-xs sm:text-sm font-medium text-[var(--color-text-primary)]">ID Produit</p>
+                <p className="text-sm sm:text-2xl font-bold text-[var(--color-text-primary)]">#{variant.id}</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
+          <div className="bg-[var(--color-bg-primary)] rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
             <div className="flex items-center">
               <div className="p-1 sm:p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
                 <Tag className="w-4 sm:w-6 h-4 sm:h-6 text-green-600 dark:text-green-400" />
               </div>
               <div className="ml-2 sm:ml-4">
-                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300">Code Produit</p>
-                <p className="text-xs sm:text-xl font-mono font-bold text-gray-900 dark:text-white truncate">{variant.productCode}</p>
+                <p className="text-xs sm:text-sm font-medium text-[var(--color-text-primary)]">Code Produit</p>
+                <p className="text-xs sm:text-xl font-mono font-bold text-[var(--color-text-primary)] truncate">{variant.productCode}</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
+          <div className="bg-[var(--color-bg-primary)] rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
             <div className="flex items-center">
               <div className="p-1 sm:p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
                 <BarChart3 className="w-4 sm:w-6 h-4 sm:h-6 text-purple-600 dark:text-purple-400" />
               </div>
               <div className="ml-2 sm:ml-4">
-                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300">Prix</p>
-                <p className="text-sm sm:text-2xl font-bold text-gray-900 dark:text-white">{formatPrice(variant.recommendedPrice)}</p>
+                <p className="text-xs sm:text-sm font-medium text-[var(--color-text-primary)]">Prix</p>
+                <p className="text-sm sm:text-2xl font-bold text-[var(--color-text-primary)]">{formatPrice(variant.recommendedPrice)}</p>
               </div>
             </div>
           </div>
           
-          <div className="bg-white dark:bg-gray-800 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
+          <div className="bg-[var(--color-bg-primary)] rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
             <div className="flex items-center">
               <div className="p-1 sm:p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
                 {variant.isDisplay ? 
@@ -354,7 +354,7 @@ const ProductDetailBackoffice = () => {
                 }
               </div>
               <div className="ml-2 sm:ml-4">
-                <p className="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-300">Statut</p>
+                <p className="text-xs sm:text-sm font-medium text-[var(--color-text-primary)]">Statut</p>
                 <p className={`text-xs sm:text-xl font-bold ${variant.isDisplay ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
                   {variant.isDisplay ? 'Visible' : 'Masqué'}
                 </p>
@@ -366,8 +366,8 @@ const ProductDetailBackoffice = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {/* Images Gallery */}
           <div className="space-y-3 sm:space-y-4">
-            <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">Galerie d'images</h3>
+            <div className="bg-[var(--color-bg-primary)] rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm">
+              <h3 className="text-base sm:text-lg font-semibold text-[var(--color-text-primary)] mb-3 sm:mb-4">Galerie d'images</h3>
               
               <div className="relative group mb-3 sm:mb-4">
                 <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg sm:rounded-xl overflow-hidden">
@@ -412,18 +412,18 @@ const ProductDetailBackoffice = () => {
 
           {/* Product Info */}
           <div className="space-y-3 sm:space-y-4">
-            <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">Informations générales</h3>
+            <div className="bg-[var(--color-bg-primary)] rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm">
+              <h3 className="text-base sm:text-lg font-semibold text-[var(--color-text-primary)] mb-3 sm:mb-4">Informations générales</h3>
               
               <div className="space-y-3 sm:space-y-4">
                 <div>
                   <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Nom du produit</label>
-                  <p className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-white">{variant.variantProductName}</p>
+                  <p className="text-sm sm:text-lg font-semibold text-[var(--color-text-primary)]">{variant.variantProductName}</p>
                 </div>
                 
                 <div>
                   <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Catégorie</label>
-                  <p className="text-gray-900 dark:text-white text-sm sm:text-base">{variant.Product.productName}</p>
+                  <p className="text-[var(--color-text-primary)] text-sm sm:text-base">{variant.Product.productName}</p>
                 </div>
                 
                 <div>
@@ -439,8 +439,8 @@ const ProductDetailBackoffice = () => {
                 </div>
                 
                 <div>
-                  <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Slug URL</label>
-                  <p className="text-gray-600 dark:text-gray-300 font-mono text-xs sm:text-sm bg-gray-50 dark:bg-gray-700 px-2 py-1 rounded truncate">
+                  <label className="text-xs sm:text-sm font-medium ">Slug URL</label>
+                  <p className="text-[var(--color-text-primary)] font-mono text-xs sm:text-sm  px-2 py-1 rounded truncate">
                     {variant.slug}
                   </p>
                 </div>
@@ -448,12 +448,12 @@ const ProductDetailBackoffice = () => {
             </div>
             
             {/* Description */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4">Description</h3>
+            <div className="bg-[var(--color-bg-primary)] rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm">
+              <h3 className="text-base sm:text-lg font-semibold text-[var(--color-text-primary)] mb-3 sm:mb-4">Description</h3>
               {variant.description ? (
-                <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base leading-relaxed">{variant.description}</p>
+                <p className="text-[var(--color-text-primary)] text-sm sm:text-base leading-relaxed">{variant.description}</p>
               ) : variant.Product.description?.fr ? (
-                <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base leading-relaxed">{variant.Product.description.fr}</p>
+                <p className="text-[var(--color-text-primary)] text-sm sm:text-base leading-relaxed">{variant.Product.description.fr}</p>
               ) : (
                 <p className="text-gray-400 italic text-sm sm:text-base">Aucune description disponible</p>
               )}
@@ -463,23 +463,23 @@ const ProductDetailBackoffice = () => {
 
         {/* Specifications */}
         <div className="mt-6 sm:mt-8">
-          <div className="bg-white dark:bg-gray-800 rounded-xl sm:rounded-2xl shadow-sm overflow-hidden">
+          <div className="bg-[var(--color-bg-primary)] rounded-xl sm:rounded-2xl shadow-sm overflow-hidden">
             <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Spécifications techniques</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-[var(--color-text-primary)]">Spécifications techniques</h3>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-0">
               {specificationsArray.map((spec, index) => (
                 <div
                   key={index}
                   className={`p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700 ${
-                    index % 2 === 0 ? 'sm:border-r bg-gray-50/50 dark:bg-gray-700/30' : 'bg-white dark:bg-gray-800'
+                    index % 2 === 0 ? 'sm:border-r bg-gray-50/50 dark:bg-gray-700/30' : 'bg-[var(--color-bg-primary)]'
                   } ${index >= specificationsArray.length - (specificationsArray.length % 2 === 0 ? 2 : 1) ? 'border-b-0' : ''}`}
                 >
                   <div className="flex justify-between items-start">
-                    <dt className="font-medium text-gray-600 dark:text-gray-300 flex-shrink-0 mr-2 sm:mr-4 text-xs sm:text-sm">
+                    <dt className="font-medium text-[var(--color-text-primary)] flex-shrink-0 mr-2 sm:mr-4 text-xs sm:text-sm">
                       {spec.key}
                     </dt>
-                    <dd className="font-medium text-gray-900 dark:text-white text-right text-xs sm:text-sm break-all">
+                    <dd className="font-medium text-[var(--color-text-primary)] text-right text-xs sm:text-sm break-all">
                       {spec.value}
                     </dd>
                   </div>

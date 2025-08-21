@@ -71,8 +71,8 @@ const AddKeyValuePairs: React.FC<AddKeyValuePairsProps> = ({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md dark:shadow-lg p-1 mb-4 transition-colors duration-200">
-      <h5 className="text-lg font-medium mb-4 text-gray-800 dark:text-gray-100">
+    <div className="bg-[var(--color-bg-primary)] rounded-lg shadow-md dark:shadow-lg p-1 mb-4 transition-colors duration-200">
+      <h5 className="text-lg font-medium mb-4 text-[var(--color-text-primary)]">
         {title}
       </h5>
 
@@ -98,7 +98,7 @@ const AddKeyValuePairs: React.FC<AddKeyValuePairsProps> = ({
               errors.key
                 ? "border-red-500 focus:ring-red-200 dark:focus:ring-red-900"
                 : "border-gray-300 dark:border-gray-600 focus:ring-blue-200 dark:focus:ring-blue-900"
-            } bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:ring-2 focus:outline-none`}
+            } text-[var(--color-text-primary)] bg-[var(--color-bg-primary)] focus:ring-2 focus:outline-none`}
           />
           {errors.key && (
             <p className="mt-1 text-sm text-red-500 dark:text-red-400">
@@ -120,7 +120,7 @@ const AddKeyValuePairs: React.FC<AddKeyValuePairsProps> = ({
               errors.value
                 ? "border-red-500 focus:ring-red-200 dark:focus:ring-red-900"
                 : "border-gray-300 dark:border-gray-600 focus:ring-blue-200 dark:focus:ring-blue-900"
-            } bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 focus:ring-2 focus:outline-none`}
+            } text-[var(--color-text-primary)] bg-[var(--color-bg-primary)] focus:ring-2 focus:outline-none`}
           />
           {errors.value && (
             <p className="mt-1 text-sm text-red-500 dark:text-red-400">
@@ -132,7 +132,7 @@ const AddKeyValuePairs: React.FC<AddKeyValuePairsProps> = ({
         <button
           type="button"
           onClick={addItem}
-          className="flex items-center justify-center bg-blue-500 hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg transition-colors duration-200 shadow-sm whitespace-nowrap"
+          className="flex items-center justify-center bg-[var(--color-action-add)]  hover:bg-[var(--color-action-add-hover)] text-white px-4 py-2.5 rounded-lg transition-colors duration-200 shadow-sm whitespace-nowrap"
         >
           <Add className="mr-1.5" size={18} />
           {!isSmallScreen && "Ajouter"}

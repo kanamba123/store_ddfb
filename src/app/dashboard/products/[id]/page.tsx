@@ -43,7 +43,7 @@ const parseSpecifications = (specs: any): Specification[] => {
   })
 }
 
-const inputClass = "w-full border dark:border-gray-600 p-2 rounded bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+const inputClass = "w-full border dark:border-gray-600 p-2 rounded  focus:ring-2 focus:ring-blue-500 focus:border-transparent"
 
 const Input = ({ label, ...props }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) => (
   <div>

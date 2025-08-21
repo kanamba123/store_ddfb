@@ -32,7 +32,7 @@ interface VariantFormData {
   bulkInput?: string
 }
 
-const inputClass = "w-full border dark:border-gray-600 p-2 rounded-lg bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+const inputClass = "w-full border dark:border-gray-600 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
 
 const Input = ({ label, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string }) => (
   <div>
@@ -51,12 +51,13 @@ const Select = ({
 } & React.SelectHTMLAttributes<HTMLSelectElement>) => (
   <div>
     <label className="block mb-1 font-medium">{label}</label>
-    <select {...props} className={inputClass}>
+    <select {...props} className={`${inputClass} bg-[var(--color-bg-primary)] `}>
       {options.map(opt => (
         <option key={opt.value} value={opt.value}>
           {opt.label}
         </option>
       ))}
+      
     </select>
   </div>
 )
@@ -167,7 +168,7 @@ export default function UploadVariantForm() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 sm:p-6 bg-white dark:bg-gray-900 shadow-md dark:shadow-lg rounded-lg text-gray-800 dark:text-gray-100">
+    <div className="max-w-7xl mx-auto p-4 sm:p-6 bg-[var(--color-bg-primary)]  shadow-md dark:shadow-lg rounded-lg text-[var(--color-text-primary)] ">
       {submitted && (
         <p className="text-green-600 dark:text-green-400 text-center mt-10">
           {t('uploadVariantForm.successMessage')}
@@ -216,9 +217,11 @@ export default function UploadVariantForm() {
           <Controller
             name="variantType"
             control={control}
+            
             render={({ field }) => (
               <Select
                 label={t('uploadVariantForm.labels.variantType')}
+                className="bg-[var(--color-bg-primary)]"
                 options={[
                   { value: '', label: t('common.chooseOption') },
                   { value: 'product', label: t('uploadVariantForm.options.product') },
@@ -275,7 +278,7 @@ export default function UploadVariantForm() {
             keyPlaceholder={t('uploadVariantForm.placeholders.specificationName')}
             valuePlaceholder={t('uploadVariantForm.placeholders.specificationValue')}
             onAdd={handleSpecificationsChange} 
-            title={t('uploadVariantForm.labels.specifications')} 
+            title=""
           />
         </div>
 

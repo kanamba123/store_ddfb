@@ -47,7 +47,7 @@ const ImageUploader = ({ onImagesChange }: ImageUploaderProps) => {
         multiple
         accept="image/*"
         onChange={handleImageChange}
-        className="block w-full p-2 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        className="block w-full p-2 text-sm  border border-gray-300 rounded-lg cursor-pointer text-[var(--color-text-primary)] bg-[var(--color-bg-primary)] dark:border-gray-600 dark:placeholder-gray-400  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
       />
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mt-4">
@@ -67,7 +67,7 @@ const ImageUploader = ({ onImagesChange }: ImageUploaderProps) => {
             />
             <button
               type="button"
-              className="absolute top-1 right-1 bg-black/60 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-black/80 transition-colors duration-200 ease-in-out"
+              className="absolute top-1 right-1 text-[var(--color-text-primary)] bg-[var(--color-bg-primary)] rounded-full w-6 h-6 flex items-center justify-center hover:bg-black/80 transition-colors duration-200 ease-in-out"
               onClick={() => removeImage(index)}
               aria-label={`Remove image ${index + 1}`}
             >
