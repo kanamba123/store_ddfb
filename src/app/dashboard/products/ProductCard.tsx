@@ -88,7 +88,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div onClick={() => {
             handleRowClick(product)
         }
-        } className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-2 space-y-3">
+        } className="bg-[var(--color-bg-primary)] rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-2 space-y-2">
             {/* Header avec image et nom */}
             <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0">
@@ -115,7 +115,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                     <h3 className="font-medium text-gray-900 dark:text-white truncate">
                         {product.variantProductName}
                     </h3>
-                    <p className="text-sm text-gray-500 dark:text-gray-400 truncate">
+                    <p className="text-sm text-[var(--color-text-secondary)] truncate">
                         {product?.Product?.productName}
                     </p>
                     <div className="flex items-center justify-between mt-2">
@@ -136,7 +136,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
             {/* Description */}
             <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
-                <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                <p className="text-sm text-[var(--color-text-primary)] line-clamp-2">
                     {product?.Product?.description?.fr ||
                         product?.Product?.description?.en ||
                         "Aucune description"}
@@ -148,7 +148,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 <Link
                     href={`/dashboard/products/${product.id}`}
                     onClick={(e) => e.stopPropagation()}
-                    className="flex-1 bg-indigo-50 text-indigo-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-indigo-100 dark:bg-indigo-900/50 dark:text-indigo-400 dark:hover:bg-indigo-900/70 transition-colors flex items-center justify-center"
+                    className="flex-1  text-indigo-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-indigo-100  dark:text-indigo-400 dark:hover:bg-indigo-900/70 transition-colors flex items-center justify-center"
                 >
                     <svg
                         className="w-4 h-4"
@@ -170,7 +170,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                         e.stopPropagation();
                     }
                     }
-                    className="flex-1 bg-blue-50 text-blue-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-blue-100 dark:bg-blue-900/50 dark:text-blue-400 dark:hover:bg-blue-900/70 transition-colors flex items-center justify-center"
+                    className="flex-1  text-blue-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-blue-100  dark:text-blue-400 dark:hover:bg-blue-900/70 transition-colors flex items-center justify-center"
                 >
                     <svg
                         className="w-4 h-4"
@@ -191,7 +191,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                         handleShare(product)
                         e.stopPropagation();
                     }
-                    } className="flex-1 bg-red-50 text-red-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-red-100 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-900/70 transition-colors flex items-center justify-center">
+                    } className="flex-1  text-red-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-red-100  dark:text-red-400 dark:hover:bg-red-900/70 transition-colors flex items-center justify-center">
                     <svg
                         className="w-4 h-4"
                         fill="none"

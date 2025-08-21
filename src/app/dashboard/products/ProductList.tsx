@@ -205,7 +205,7 @@ export default function ProductList({
                   onClick={() => handleRowClick(product)}
                   className={`cursor-pointer transition-colors ${selectedProductId === product.id
                     ? "bg-indigo-100 dark:bg-indigo-900"
-                    : "hover:bg-gray-100 dark:hover:bg-gray-700"
+                    : "hover:bg-[var(--color-bg-secondary)]"
                     }`}
                 >
                   <td className="px-6 py-4">
@@ -240,7 +240,7 @@ export default function ProductList({
                     <Link
                       href={`/dashboard/products/${product.id}`}
                       onClick={(e) => e.stopPropagation()}
-                      className="bg-indigo-50 text-indigo-600 p-2 rounded-md hover:bg-indigo-100 dark:bg-indigo-900/50 dark:text-indigo-400 dark:hover:bg-indigo-900/70"
+                      className=" text-indigo-600 p-2 rounded-md hover:bg-indigo-100  dark:text-indigo-400 dark:hover:bg-indigo-900/70"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
@@ -258,7 +258,7 @@ export default function ProductList({
                         e.stopPropagation();
                         handleShare(product);
                       }}
-                      className="bg-blue-50 text-blue-600 p-2 rounded-md hover:bg-blue-100 dark:bg-blue-900/50 dark:text-blue-400 dark:hover:bg-blue-900/70"
+                      className=" text-blue-600 p-2 rounded-md hover:bg-blue-100  dark:text-blue-400 dark:hover:bg-blue-900/70"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
@@ -276,7 +276,7 @@ export default function ProductList({
                         e.stopPropagation();
                         handleDelete(product.id);
                       }}
-                      className="bg-red-50 text-red-600 p-2 rounded-md hover:bg-red-100 dark:bg-red-900/50 dark:text-red-400 dark:hover:bg-red-900/70"
+                      className=" text-red-600 p-2 rounded-md hover:bg-red-100  dark:text-red-400 dark:hover:bg-red-900/70"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path
