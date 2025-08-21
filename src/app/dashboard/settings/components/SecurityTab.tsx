@@ -4,7 +4,6 @@ import { Lock, Fingerprint, Key } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import axios from "axios";
-import { useAuth } from "@/contexts/AuthContext"; 
 
 interface SecurityTabProps {
   settings: {
@@ -19,14 +18,13 @@ interface SecurityTabProps {
 
 export default function SecurityTab({ settings, handleChange }: SecurityTabProps) {
   const { t } = useTranslation();
-  const { user, token, isAuthenticated } = useAuth(); 
-
   const [bioMessage, setBioMessage] = useState<string | null>(null);
   const [serverMessage, setServerMessage] = useState<string | null>(null);
 
+  const token = "FAKE_JWT_TOKEN"; // à récupérer après login
+
   // ✅ Toggle 2FA
   const handleToggle2FA = async (checked: boolean) => {
-    if (!token) return;
     try {
       const res = await axios.post(
         "http://localhost:4000/api/security/toggle-2fa",
@@ -38,71 +36,107 @@ export default function SecurityTab({ settings, handleChange }: SecurityTabProps
           ? "Two-factor authentication enabled ✅"
           : "Two-factor authentication disabled ❌"
       );
-    } catch {
+    } catch (err) {
       setServerMessage("Error updating 2FA ❌");
     }
   };
 
   // ✅ Config biométrie (WebAuthn)
- const handleBiometricSetup = async () => {
-  if (!isAuthenticated || !user || !token) {
-    setBioMessage("Vous devez être connecté pour activer la biométrie ❌");
-    return;
-  }
+  const handleBiometricSetup = async () => {
+    try {
+      setBioMessage(null);
 
-  try {
-    setBioMessage(null);
+      const challenge = new Uint8Array(32);
+      crypto.getRandomValues(challenge);
 
-    // Challenge aléatoire
-    const challenge = new Uint8Array(32);
-    crypto.getRandomValues(challenge);
-
-    const publicKey: PublicKeyCredentialCreationOptions = {
-      challenge,
-      rp: { name: "win2cop" },
-      user: {
-        id: new TextEncoder().encode(user.id), // convertir string -> Uint8Array
-        name: user.email,
-        displayName: user.name,
-      },
-      pubKeyCredParams: [{ type: "public-key", alg: -7 }],
-      authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
-      timeout: 60000,
-      attestation: "direct",
-    };
-
-    const credential = (await navigator.credentials.create({ publicKey })) as PublicKeyCredential;
-
-    if (credential) {
-      // Convertir en format JSON sérialisable
-      const cred = {
-        id: credential.id,
-        rawId: Array.from(new Uint8Array(credential.rawId)),
-        type: credential.type,
-        response: {
-          attestationObject: Array.from(new Uint8Array((credential.response as any).attestationObject)),
-          clientDataJSON: Array.from(new Uint8Array((credential.response as any).clientDataJSON)),
-        }
+      const publicKey: PublicKeyCredentialCreationOptions = {
+        challenge,
+        rp: { name: "MyApp" },
+        user: {
+          id: Uint8Array.from("123456789", (c) => c.charCodeAt(0)),
+          name: "john@example.com",
+          displayName: "John Doe",
+        },
+        pubKeyCredParams: [{ type: "public-key", alg: -7 }],
+        authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
+        timeout: 60000,
+        attestation: "direct",
       };
 
-      await axios.post(
-        "http://localhost:4000/api/security/register-webauthn",
-        { credential: cred, userId: user.id },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const credential = (await navigator.credentials.create({ publicKey })) as PublicKeyCredential;
 
-      setBioMessage("Biometric setup successful ✅");
+      if (credential) {
+        await axios.post(
+          "http://localhost:4000/api/security/register-webauthn",
+          { credential },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        setBioMessage("Biometric setup successful ✅");
+      }
+    } catch (error) {
+      console.error(error);
+      setBioMessage("Biometric setup failed ❌");
     }
-  } catch (error) {
-    console.error(error);
-    setBioMessage("Biometric setup failed ❌");
-  }
-};
+  };
 
+  // const handleBiometricSetup = async () => {
+  //   if (!isAuthenticated || !user || !token) {
+  //     setBioMessage("Vous devez être connecté pour activer la biométrie ❌");
+  //     return;
+  //   }
+
+  //   try {
+  //     setBioMessage(null);
+
+  //     // Challenge aléatoire
+  //     const challenge = new Uint8Array(32);
+  //     crypto.getRandomValues(challenge);
+
+  //     const publicKey: PublicKeyCredentialCreationOptions = {
+  //       challenge,
+  //       rp: { name: "win2cop" },
+  //       user: {
+  //         id: new TextEncoder().encode(user.id), // convertir string -> Uint8Array
+  //         name: user.email,
+  //         displayName: user.name,
+  //       },
+  //       pubKeyCredParams: [{ type: "public-key", alg: -7 }],
+  //       authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
+  //       timeout: 60000,
+  //       attestation: "direct",
+  //     };
+
+  //     const credential = (await navigator.credentials.create({ publicKey })) as PublicKeyCredential;
+
+  //     if (credential) {
+  //       // Convertir en format JSON sérialisable
+  //       const cred = {
+  //         id: credential.id,
+  //         rawId: Array.from(new Uint8Array(credential.rawId)),
+  //         type: credential.type,
+  //         response: {
+  //           attestationObject: Array.from(new Uint8Array((credential.response as any).attestationObject)),
+  //           clientDataJSON: Array.from(new Uint8Array((credential.response as any).clientDataJSON)),
+  //         }
+  //       };
+
+  //       await axios.post(
+  //         "http://localhost:4000/api/security/register-webauthn",
+  //         { credential: cred, userId: user.id },
+  //         { headers: { Authorization: `Bearer ${token}` } }
+  //       );
+
+  //       setBioMessage("Biometric setup successful ✅");
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     setBioMessage("Biometric setup failed ❌");
+  //   }
+  // };
 
   // ✅ Changer le mot de passe
   const handleChangePassword = async () => {
-    if (!token) return;
     try {
       if (settings.newPassword !== settings.confirmPassword) {
         setServerMessage("Passwords do not match ❌");
