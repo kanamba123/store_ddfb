@@ -129,73 +129,77 @@ export default function LoginPage() {
     });
   };
 
-  const handleFingerprintLogin = async () => {
-    try {
-      setLoading(true);
-      setErrorMsg("");
+ const handleFingerprintLogin = async () => {
+  try {
+    setLoading(true);
+    setErrorMsg("");
 
-      const userId = localStorage.getItem("fingerprintUserId");
-      if (!userId) throw new Error(t("LoginPage.errors.noFingerprintUser"));
+    const userId = localStorage.getItem("fingerprintUserId");
+    if (!userId) throw new Error(t("LoginPage.errors.noFingerprintUser"));
 
-      // Récupérer les passkeys enregistrées pour cet utilisateur
-      const { credentials } = await fetch(`${API_URL}/security/get-webauthn-credentials/${userId}`).then(r => r.json());
-      if (!credentials || credentials.length === 0) throw new Error(t("LoginPage.errors.noFingerprintUser"));
+    // Récupérer les passkeys enregistrées pour cet utilisateur
+    const { credentials } = await fetch(`${API_URL}/security/get-webauthn-credentials/${userId}`).then(r => r.json());
+    if (!credentials || credentials.length === 0) throw new Error(t("LoginPage.errors.noFingerprintUser"));
 
-      const allowCredentials = credentials.map((c: any) => ({
-        id: new Uint8Array(c.rawId), // Convertir Array -> Uint8Array
-        type: "public-key",
-        transports: ["internal"],
-      }));
+    const allowCredentials = credentials.map((c: any) => ({
+      id: new Uint8Array(c.rawId), // Array -> Uint8Array
+      type: "public-key" as const,
+      transports: ["internal"] as const,
+    }));
 
-      // Challenge aléatoire
-      const challenge = new Uint8Array(32);
-      window.crypto.getRandomValues(challenge);
+    // Challenge aléatoire
+    const challenge = new Uint8Array(32);
+    window.crypto.getRandomValues(challenge);
 
-      const assertion = await navigator.credentials.get({
-        publicKey: {
-          challenge,
-          allowCredentials,
-          userVerification: "required",
-          timeout: 60000,
-        },
-      });
+    // ⚠️ Cast en PublicKeyCredential
+    const assertion = (await navigator.credentials.get({
+      publicKey: {
+        challenge,
+        allowCredentials,
+        userVerification: "required",
+        timeout: 60000,
+      },
+    })) as PublicKeyCredential | null;
 
-      if (!assertion) throw new Error(t("LoginPage.errors.fingerprintFailed"));
+    if (!assertion) throw new Error(t("LoginPage.errors.fingerprintFailed"));
 
-      // Convertir assertion pour le backend
-      const credential = {
-        id: assertion.id,
-        rawId: Array.from(new Uint8Array(assertion.rawId)),
-        type: assertion.type,
-        response: {
-          authenticatorData: Array.from(new Uint8Array((assertion.response as any).authenticatorData)),
-          clientDataJSON: Array.from(new Uint8Array((assertion.response as any).clientDataJSON)),
-          signature: Array.from(new Uint8Array((assertion.response as any).signature)),
-          userHandle: assertion.response.userHandle ? Array.from(new Uint8Array(assertion.response.userHandle)) : null,
-        }
-      };
+    // Convertir assertion pour le backend
+    const credential = {
+      id: assertion.id,
+      rawId: Array.from(new Uint8Array(assertion.rawId)),
+      type: assertion.type,
+      response: {
+        authenticatorData: Array.from(new Uint8Array((assertion.response as AuthenticatorAssertionResponse).authenticatorData)),
+        clientDataJSON: Array.from(new Uint8Array((assertion.response as AuthenticatorAssertionResponse).clientDataJSON)),
+        signature: Array.from(new Uint8Array((assertion.response as AuthenticatorAssertionResponse).signature)),
+        userHandle: (assertion.response as AuthenticatorAssertionResponse).userHandle
+          ? Array.from(new Uint8Array((assertion.response as AuthenticatorAssertionResponse).userHandle!))
+          : null,
+      }
+    };
 
-      // Envoyer au backend pour vérifier et obtenir le token
-      const res = await fetch(`${API_URL}/ownerstores/fingerprint-login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, credential }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || t("LoginPage.errors.fingerprintFailed"));
+    // Envoyer au backend pour vérification
+    const res = await fetch(`${API_URL}/ownerstores/fingerprint-login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId, credential }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || t("LoginPage.errors.fingerprintFailed"));
 
-      document.cookie = `authToken=${data.token}; path=/; max-age=${60 * 60 * 24 * 7}; Secure; SameSite=Strict`;
-      await login(data.token, data.user);
+    document.cookie = `authToken=${data.token}; path=/; max-age=${60 * 60 * 24 * 7}; Secure; SameSite=Strict`;
+    await login(data.token, data.user);
 
-      if (redirectUrl) window.location.href = redirectUrl;
-      else router.push("/dashboard");
+    if (redirectUrl) window.location.href = redirectUrl;
+    else router.push("/dashboard");
 
-    } catch (err: any) {
-      setErrorMsg(err.message || t("LoginPage.errors.fingerprintFailed"));
-    } finally {
-      setLoading(false);
-    }
-  };
+  } catch (err: any) {
+    setErrorMsg(err.message || t("LoginPage.errors.fingerprintFailed"));
+  } finally {
+    setLoading(false);
+  }
+};
+
 
 
   return (
