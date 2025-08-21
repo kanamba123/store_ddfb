@@ -183,7 +183,7 @@ export default function EditVariantForm() {
   }
 
   return (
-    <div className="max-w-7xl mx-auto p-4 sm:p-6 mt-10 bg-white dark:bg-gray-900 shadow-md dark:shadow-lg rounded-lg text-gray-800 dark:text-gray-100">
+    <div className="max-w-7xl mx-auto p-4 sm:p-6 mt-10 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] shadow-md dark:shadow-lg rounded-lg ">
       {submitted && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl text-center">
