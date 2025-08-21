@@ -18,7 +18,7 @@ export default function ProductsPage() {
   } = useVariantsProductByStore(Number(user?.store?.id));
 
   return (
-    <div className="min-h-screen p-4 space-y-6 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] transition-colors duration-200">
+    <div className="min-h-screen p-2 space-y-6 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] transition-colors duration-200">
       
       {/* Bouton Ajouter un produit */}
       <div className="flex justify-end">
