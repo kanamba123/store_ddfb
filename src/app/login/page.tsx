@@ -6,7 +6,14 @@ import Link from "next/link";
 import { useRedirectContext } from "@/contexts/RedirectProvider";
 import { API_URL } from "@/config/API";
 import { useAuth } from "@/contexts/AuthContext";
-import { FaEnvelope, FaLock, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
+import {
+  FaEnvelope,
+  FaLock,
+  FaGoogle,
+  FaEye,
+  FaEyeSlash,
+  FaFingerprint,
+} from "react-icons/fa";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,15 +26,20 @@ export default function LoginPage() {
   const [darkMode, setDarkMode] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [fingerprintAvailable, setFingerprintAvailable] = useState(false);
 
   useEffect(() => {
-    // Check for user's preferred color scheme
+    // Vérifier si WebAuthn est dispo
+    if (window.PublicKeyCredential) {
+      setFingerprintAvailable(true);
+    }
+
+    // Thème sombre clair
     const isDarkMode =
       window.matchMedia &&
       window.matchMedia("(prefers-color-scheme: dark)").matches;
     setDarkMode(isDarkMode);
 
-    // Listen for changes in color scheme preference
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handler = (e: MediaQueryListEvent) => setDarkMode(e.matches);
     mediaQuery.addEventListener("change", handler);
@@ -48,12 +60,14 @@ export default function LoginPage() {
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+
     if (!acceptedTerms) {
-      setErrorMsg("Vous devez accepter les conditions d'utilisation pour vous connecter.");
+      setErrorMsg(
+        "Vous devez accepter les conditions d'utilisation pour vous connecter."
+      );
       return;
     }
-    
+
     setLoading(true);
     setErrorMsg("");
 
@@ -70,10 +84,15 @@ export default function LoginPage() {
         throw new Error(data.message || "Erreur lors de la connexion.");
       }
 
-      // Set cookie en plus du localStorage
-      document.cookie = `authToken=${data.token}; path=/; max-age=${60 * 60 * 24 * 7}; Secure; SameSite=Strict`;
-      
+      // Set cookie
+      document.cookie = `authToken=${data.token}; path=/; max-age=${
+        60 * 60 * 24 * 7
+      }; Secure; SameSite=Strict`;
+
       await login(data.token, data.user);
+
+      // Sauvegarder un identifiant pour WebAuthn
+      localStorage.setItem("fingerprintUserId", data.user.id);
 
       if (redirectUrl) {
         window.location.href = redirectUrl;
@@ -92,47 +111,101 @@ export default function LoginPage() {
   };
 
   const handleGoogleLogin = () => {
-  const width = 500;
-  const height = 600;
-  const left = window.screen.width / 2 - width / 2;
-  const top = window.screen.height / 2 - height / 2;
+    const width = 500;
+    const height = 600;
+    const left = window.screen.width / 2 - width / 2;
+    const top = window.screen.height / 2 - height / 2;
 
-  const popup = window.open(
-    "https://api.win2cop.com/api/auth/google",
-    "googleAuth",
-    `width=${width},height=${height},top=${top},left=${left}`
-  );
+    const popup = window.open(
+      "https://api.win2cop.com/api/auth/google",
+      "googleAuth",
+      `width=${width},height=${height},top=${top},left=${left}`
+    );
 
-  // Vérifier régulièrement si la popup est fermée
-  const checkPopup = setInterval(() => {
-    if (!popup || popup.closed) {
-      clearInterval(checkPopup);
-      // Ici vous pourriez vérifier si l'utilisateur est connecté
-      // ou afficher un message
-    }
-  }, 1000);
+    const checkPopup = setInterval(() => {
+      if (!popup || popup.closed) {
+        clearInterval(checkPopup);
+      }
+    }, 1000);
 
-  // Écouter les messages du popup (si votre API le supporte)
-  window.addEventListener("message", (event) => {
-    // Vérifier l'origine du message pour la sécurité
-    if (event.origin !== "https://api.win2cop.com") return;
+    window.addEventListener("message", (event) => {
+      if (event.origin !== "https://api.win2cop.com") return;
 
-    if (event.data.token) {
-      // Fermer le popup
-      popup?.close();
-      
-      // Traiter le token reçu
-      document.cookie = `authToken=${event.data.token}; path=/; max-age=${60 * 60 * 24 * 7}; Secure; SameSite=Strict`;
-      login(event.data.token, event.data.user);
-      
+      if (event.data.token) {
+        popup?.close();
+        document.cookie = `authToken=${event.data.token}; path=/; max-age=${
+          60 * 60 * 24 * 7
+        }; Secure; SameSite=Strict`;
+        login(event.data.token, event.data.user);
+
+        if (redirectUrl) {
+          window.location.href = redirectUrl;
+        } else {
+          router.push("/dashboard");
+        }
+      }
+    });
+  };
+
+  const handleFingerprintLogin = async () => {
+    try {
+      setLoading(true);
+      setErrorMsg("");
+
+      const userId = localStorage.getItem("fingerprintUserId");
+      if (!userId) {
+        throw new Error(
+          "Aucun utilisateur enregistré pour l'authentification biométrique."
+        );
+      }
+
+      // Simuler challenge WebAuthn
+      const challenge = new Uint8Array(32);
+      window.crypto.getRandomValues(challenge);
+
+      const credential = await navigator.credentials.get({
+        publicKey: {
+          challenge,
+          timeout: 60000,
+          userVerification: "required",
+          allowCredentials: [],
+        },
+      });
+
+      if (!credential) {
+        throw new Error("Échec de l'authentification par empreinte.");
+      }
+
+      // Ici tu dois envoyer credential.id et authenticatorData au backend
+      // Pour cette démo on suppose que tout est bon
+      const res = await fetch(`${API_URL}/ownerstores/fingerprint-login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Échec de la connexion biométrique.");
+      }
+
+      document.cookie = `authToken=${data.token}; path=/; max-age=${
+        60 * 60 * 24 * 7
+      }; Secure; SameSite=Strict`;
+      await login(data.token, data.user);
+
       if (redirectUrl) {
         window.location.href = redirectUrl;
       } else {
         router.push("/dashboard");
       }
+    } catch (err: any) {
+      setErrorMsg(err.message || "Erreur d'authentification biométrique.");
+    } finally {
+      setLoading(false);
     }
-  });
-};
+  };
 
   return (
     <div
@@ -158,7 +231,11 @@ export default function LoginPage() {
             </label>
             <div className="relative mt-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaEnvelope className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"}`} />
+                <FaEnvelope
+                  className={`h-5 w-5 ${
+                    darkMode ? "text-gray-400" : "text-gray-500"
+                  }`}
+                />
               </div>
               <input
                 type="email"
@@ -174,7 +251,7 @@ export default function LoginPage() {
               />
             </div>
           </div>
-          
+
           <div>
             <label
               className={`block text-sm font-medium ${
@@ -185,7 +262,11 @@ export default function LoginPage() {
             </label>
             <div className="relative mt-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaLock className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"}`} />
+                <FaLock
+                  className={`h-5 w-5 ${
+                    darkMode ? "text-gray-400" : "text-gray-500"
+                  }`}
+                />
               </div>
               <input
                 type={showPassword ? "text" : "password"}
@@ -205,9 +286,17 @@ export default function LoginPage() {
                 className="absolute inset-y-0 right-0 pr-3 flex items-center"
               >
                 {showPassword ? (
-                  <FaEyeSlash className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"}`} />
+                  <FaEyeSlash
+                    className={`h-5 w-5 ${
+                      darkMode ? "text-gray-400" : "text-gray-500"
+                    }`}
+                  />
                 ) : (
-                  <FaEye className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"}`} />
+                  <FaEye
+                    className={`h-5 w-5 ${
+                      darkMode ? "text-gray-400" : "text-gray-500"
+                    }`}
+                  />
                 )}
               </button>
             </div>
@@ -215,7 +304,9 @@ export default function LoginPage() {
               type="button"
               onClick={handleForgotPassword}
               className={`mt-2 text-sm ${
-                darkMode ? "text-blue-400 hover:text-blue-300" : "text-blue-600 hover:text-blue-800"
+                darkMode
+                  ? "text-blue-400 hover:text-blue-300"
+                  : "text-blue-600 hover:text-blue-800"
               } underline`}
             >
               Mot de passe oublié ?
@@ -246,7 +337,9 @@ export default function LoginPage() {
                 <Link
                   href="/terms-of-service"
                   className={`underline ${
-                    darkMode ? "text-blue-400 hover:text-blue-300" : "text-blue-600 hover:text-blue-800"
+                    darkMode
+                      ? "text-blue-400 hover:text-blue-300"
+                      : "text-blue-600 hover:text-blue-800"
                   }`}
                 >
                   Conditions Générales
@@ -255,7 +348,9 @@ export default function LoginPage() {
                 <Link
                   href="/privacy-policy"
                   className={`underline ${
-                    darkMode ? "text-blue-400 hover:text-blue-300" : "text-blue-600 hover:text-blue-800"
+                    darkMode
+                      ? "text-blue-400 hover:text-blue-300"
+                      : "text-blue-600 hover:text-blue-800"
                   }`}
                 >
                   Politique de Confidentialité
@@ -279,12 +374,37 @@ export default function LoginPage() {
           </button>
         </form>
 
+        {fingerprintAvailable && (
+          <div className="space-y-3">
+            <button
+              onClick={handleFingerprintLogin}
+              disabled={loading}
+              className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg border font-medium transition ${
+                darkMode
+                  ? "bg-gray-700 border-gray-600 hover:bg-gray-600 text-white"
+                  : "bg-white border-gray-300 hover:bg-gray-50 text-gray-700"
+              }`}
+            >
+              <FaFingerprint className="text-blue-500" />
+              Se connecter avec empreinte
+            </button>
+          </div>
+        )}
+
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className={`w-full border-t ${darkMode ? "border-gray-700" : "border-gray-300"}`}></div>
+            <div
+              className={`w-full border-t ${
+                darkMode ? "border-gray-700" : "border-gray-300"
+              }`}
+            ></div>
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className={`px-2 ${darkMode ? "bg-gray-800 text-gray-400" : "bg-white text-gray-500"}`}>
+            <span
+              className={`px-2 ${
+                darkMode ? "bg-gray-800 text-gray-400" : "bg-white text-gray-500"
+              }`}
+            >
               Ou continuer avec
             </span>
           </div>
