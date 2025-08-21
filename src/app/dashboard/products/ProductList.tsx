@@ -152,7 +152,7 @@ export default function ProductList({
           placeholder="Rechercher un produit..."
           value={filterText}
           onChange={(e) => setFilterText(e.target.value)}
-          className="flex-grow px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:placeholder-gray-400"
+          className="flex-grow px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] dark:border-gray-700  dark:placeholder-gray-400"
         />
       </div>
 
@@ -186,8 +186,8 @@ export default function ProductList({
           className="overflow-x-auto overflow-y-auto max-h-[60vh]"
           ref={desktopScrollContainerRef}
         >
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead className="bg-gray-50 dark:bg-gray-800">
+          <table className="min-w-full divide-y divide-gray-200 ">
+            <thead className="bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
               <tr>
                 <th className="px-6 py-3">Image</th>
                 <th className="px-6 py-3">Nom</th>

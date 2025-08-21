@@ -35,7 +35,7 @@ export default function ProfileTab({ handleChange }: StoreProfileTabProps) {
   return (
     <div className="container mx-auto ">
       {/* Summary View */}
-      <div className="bg-white dark:bg-gray-800 p-2 rounded-xl shadow-sm dark:shadow-none border dark:border-gray-700">
+      <div className="bg-[var(--color-bg-primary)] p-2 rounded-xl shadow-sm dark:shadow-none  ">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">{store?.storeName}</h2>
           <button

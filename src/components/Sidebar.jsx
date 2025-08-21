@@ -59,6 +59,20 @@ export default function Sidebar({ isOpen, onClose }) {
       darkColor: "from-yellow-600 to-orange-600",
     },
     {
+      label: t('sidebar.payments'),
+      href: "/dashboard/payments",
+      icon: ShoppingCart,
+      color: "from-yellow-500 to-orange-500",
+      darkColor: "from-yellow-600 to-orange-600",
+    },
+    {
+      label: t('sidebar.promotions'),
+      href: "/dashboard/promotions",
+      icon: ShoppingCart,
+      color: "from-yellow-500 to-orange-500",
+      darkColor: "from-yellow-600 to-orange-600",
+    },
+    {
       label: t('sidebar.reports'),
       href: "/dashboard/reports",
       icon: FileText,

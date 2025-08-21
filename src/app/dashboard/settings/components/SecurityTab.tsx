@@ -17,7 +17,7 @@ export default function SecurityTab({
 }: SecurityTabProps) {
   return (
     <div className="space-y-6">
-      <h2 className="text-lg font-semibold text-gray-800 dark:text-white flex items-center gap-2">
+      <h2 className="text-lg font-semibold  flex items-center gap-2">
         <Lock size={18} />
         Sécurité
       </h2>
@@ -25,7 +25,7 @@ export default function SecurityTab({
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <h3 className="text-sm font-medium ">
               Authentification à deux facteurs
             </h3>
             <p className="text-xs text-gray-500 dark:text-gray-400">
@@ -40,17 +40,17 @@ export default function SecurityTab({
               onChange={handleChange}
               className="sr-only peer"
             />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            <div className="w-11 h-6  peer-focus:outline-none rounded-full peer  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
           </label>
         </div>
 
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1">
+            <h3 className="text-sm font-medium  flex items-center gap-1">
               <Fingerprint size={16} />
               Authentification biométrique
             </h3>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
+            <p className="text-xs ">
               Utilisez votre empreinte digitale ou reconnaissance faciale
             </p>
           </div>
@@ -62,19 +62,19 @@ export default function SecurityTab({
               onChange={handleChange}
               className="sr-only peer"
             />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            <div className="w-11 h-6  peer-focus:outline-none rounded-full peer  peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
           </label>
         </div>
 
         <div className="pt-4 border-t dark:border-gray-700">
-          <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3 flex items-center gap-1">
+          <h3 className="text-sm font-medium  mb-3 flex items-center gap-1">
             <Key size={16} />
             Changer le mot de passe
           </h3>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium  mb-1">
                 Mot de passe actuel
               </label>
               <input
@@ -82,12 +82,12 @@ export default function SecurityTab({
                 type="password"
                 value={settings.currentPassword}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200  dark:border-gray-600 dark:text-white"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium  mb-1">
                 Nouveau mot de passe
               </label>
               <input
@@ -95,12 +95,12 @@ export default function SecurityTab({
                 type="password"
                 value={settings.newPassword}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200  dark:border-gray-600 dark:text-white"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium  mb-1">
                 Confirmer le nouveau mot de passe
               </label>
               <input
@@ -108,7 +108,7 @@ export default function SecurityTab({
                 type="password"
                 value={settings.confirmPassword}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200  dark:border-gray-600 dark:text-white"
               />
             </div>
           </div>

@@ -48,20 +48,20 @@ export default function AppearanceTab({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-lg font-semibold text-gray-800 dark:text-white flex items-center gap-2">
+      <h2 className="text-lg font-semibold text-[var(--color-text-primary)] flex items-center gap-2">
         <Palette size={18} />
         Apparence
       </h2>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">
           Thème
         </label>
         <select
           name="theme"
           value={settings.theme}
           onChange={handleThemeChange}
-          className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          className="w-full px-4 py-2 bg-[var(--color-bg-primary)] border rounded-lg focus:ring focus:ring-blue-200 "
         >
           <option value="system">Système</option>
           <option value="light">Clair</option>
@@ -70,14 +70,14 @@ export default function AppearanceTab({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-[var(--color-text-primary)] mb-1">
           Langue
         </label>
         <select
           name="language"
           value={settings.language}
           onChange={handleLanguageChange}
-          className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+          className="w-full px-4 py-2 bg-[var(--color-bg-primary)] border rounded-lg focus:ring focus:ring-blue-200 "
         >
           <option value="en">English</option>
           <option value="fr">Français</option>

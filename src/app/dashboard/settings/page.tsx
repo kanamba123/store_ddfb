@@ -73,8 +73,8 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="p-4 max-w-9xl mx-auto dark:bg-gray-900 ">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800 dark:text-white">
+    <div className="p-4 max-w-9xl mx-auto bg-[var(--color-bg-primary)] ">
+      <h1 className="text-2xl font-bold mb-6 text-[var(--color-text-primary)]">
         Paramètres
       </h1>
 
@@ -97,7 +97,7 @@ export default function SettingsPage() {
       </div>
 
       {/* Tab Content */}
-      <div className="bg-white dark:bg-gray-800 p-2 rounded-xl shadow-sm dark:shadow-none border dark:border-gray-700">
+      <div className="bg-[var(--color-bg-primary)] p-2 rounded-xl shadow-sm dark:shadow-none border dark:border-gray-700">
         {activeTab === "profile" && (
           <ProfileTab handleChange={handleChange} />
         )}

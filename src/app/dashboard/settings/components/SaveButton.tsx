@@ -14,7 +14,7 @@ export default function SaveButton({
       <button
         onClick={handleSave}
         disabled={isSaving}
-        className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white py-3 rounded-lg font-medium transition disabled:opacity-50 flex items-center justify-center"
+        className="w-full bg-primary  dark:bg-secondary  text-[var(--color-text-primary)] py-3 rounded-lg font-medium transition disabled:opacity-50 flex items-center justify-center"
       >
         {isSaving ? (
           <>

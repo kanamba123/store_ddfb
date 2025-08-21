@@ -44,7 +44,10 @@
     "sales": "Sales",
     "analytics": "Analytics",
     "orders": "Orders",
+    "payments": "Payments",
+    "promotions": "Promotions",
     "reports": "Reports",
+    "support_customers": "Supports customers",
     "settings": "Settings",
     "dashboardPro": "Pro Dashboard",
     "userProfile": "User Profile"
