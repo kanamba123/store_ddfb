@@ -2,7 +2,6 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
   Menu,
   Bell,
@@ -25,7 +24,6 @@ import ListLanguage from "@/constants/ListLanguage";
 
 
 export default function Navbar({ onToggleSidebar }) {
-  const pathname = usePathname();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -101,19 +99,7 @@ export default function Navbar({ onToggleSidebar }) {
               <Menu className="w-5 h-5 sm:w-6 sm:h-6 " />
             </button>
 
-            {/* Brand (mobile only) */}
-            <div
-              className={`lg:hidden flex items-center space-x-2 transition-all duration-200 ${isSearchOpen ? "opacity-0 w-0 overflow-hidden" : "opacity-100"
-                }`}
-            >
-              <div className="w-8 h-8 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] rounded-lg flex items-center justify-center">
-                <span className=" font-bold text-sm">W</span>
-              </div>
-              <span className="text-lg font-bold  hidden sm:block">
-                {user?.store?.storeName}
-              </span>
-            </div>
-
+        
             {/* Search bar */}
             <div
               className={`relative transition-all duration-200 ${isSearchOpen ? "flex-1" : "hidden md:flex"
