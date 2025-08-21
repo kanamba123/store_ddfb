@@ -4,7 +4,6 @@ import { Lock, Fingerprint, Key } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import axios from "axios";
-import { useAuth } from "@/contexts/AuthContext";
 
 interface SecurityTabProps {
   settings: {
@@ -21,8 +20,8 @@ export default function SecurityTab({ settings, handleChange }: SecurityTabProps
   const { t } = useTranslation();
   const [bioMessage, setBioMessage] = useState<string | null>(null);
   const [serverMessage, setServerMessage] = useState<string | null>(null);
-  const { user, token, isAuthenticated } = useAuth();
 
+  const token = "FAKE_JWT_TOKEN"; // à récupérer après login
 
   // ✅ Toggle 2FA
   const handleToggle2FA = async (checked: boolean) => {
@@ -44,26 +43,19 @@ export default function SecurityTab({ settings, handleChange }: SecurityTabProps
 
   // ✅ Config biométrie (WebAuthn)
   const handleBiometricSetup = async () => {
-
-    if (!isAuthenticated || !user || !token) {
-      setBioMessage("Vous devez être connecté pour activer la biométrie ❌");
-      return;
-    }
-
     try {
       setBioMessage(null);
 
       const challenge = new Uint8Array(32);
       crypto.getRandomValues(challenge);
 
-
       const publicKey: PublicKeyCredentialCreationOptions = {
         challenge,
         rp: { name: "MyApp" },
         user: {
-          id: new TextEncoder().encode(user?.id) ||Uint8Array.from("123456789", (c) => c.charCodeAt(0)), 
-          name: user?.email ||"john@example.com",
-          displayName: user?.name||"John Doe",
+          id: Uint8Array.from("123456789", (c) => c.charCodeAt(0)),
+          name: "john@example.com",
+          displayName: "John Doe",
         },
         pubKeyCredParams: [{ type: "public-key", alg: -7 }],
         authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
@@ -87,8 +79,6 @@ export default function SecurityTab({ settings, handleChange }: SecurityTabProps
       setBioMessage("Biometric setup failed ❌");
     }
   };
-
-
 
   // const handleBiometricSetup = async () => {
   //   if (!isAuthenticated || !user || !token) {
@@ -144,9 +134,6 @@ export default function SecurityTab({ settings, handleChange }: SecurityTabProps
   //     setBioMessage("Biometric setup failed ❌");
   //   }
   // };
-
-
-
 
   // ✅ Changer le mot de passe
   const handleChangePassword = async () => {
