@@ -49,7 +49,7 @@
     "newOrder": "Agizo jipya limewekwa na",
     "newUser": "Mtumiaji mpya amesajiliwa"
   },
-   "settings": {
+  "settings": {
     "title": "Mipangilio",
     "saveSuccess": "Mipangilio imehifadhiwa kwa mafanikio!",
     "tabs": {
@@ -59,7 +59,8 @@
       "privacy": "Faragha",
       "notifications": "Arifa"
     }
-  },"security": {
+  },
+  "security": {
     "twoFactor": "Uthibitishaji wa hatua mbili",
     "twoFactorDesc": "Ongeza safu ya ziada ya usalama",
     "biometric": "Uthibitishaji wa kibiometria",
@@ -68,5 +69,29 @@
     "currentPassword": "Nenosiri la sasa",
     "newPassword": "Nenosiri jipya",
     "confirmPassword": "Thibitisha nenosiri jipya"
+  },
+  "LoginPage": {
+    "title": "Ingia",
+    "email": "Barua pepe",
+    "emailPlaceholder": "barua@pepemako.com",
+    "password": "Nenosiri",
+    "forgotPassword": "Umesahau nenosiri?",
+    "accept": "Nakubali",
+    "terms": "Masharti ya Huduma",
+    "and": "na",
+    "privacy": "Sera ya Faragha",
+    "login": "Ingia",
+    "loading": "Ingia kwa sasa...",
+    "fingerprint": "Tumia alama ya kidole",
+    "orContinue": "Au endelea na",
+    "google": "Ingia kwa Google",
+    "noAccount": "Bado huna akaunti?",
+    "createAccount": "Tengeneza akaunti",
+    "errors": {
+      "mustAcceptTerms": "Lazima ukubali masharti ya matumizi ili kuingia.",
+      "loginFailed": "Kuingia kumeshindikana.",
+      "noFingerprintUser": "Hakuna mtumiaji aliyesajiliwa kwa uthibitishaji wa kibayometri.",
+      "fingerprintFailed": "Uthibitishaji wa alama ya kidole umeshindikana."
+    }
   }
 }

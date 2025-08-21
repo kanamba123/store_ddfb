@@ -69,5 +69,29 @@
     "currentPassword": "Mot de passe actuel",
     "newPassword": "Nouveau mot de passe",
     "confirmPassword": "Confirmer le nouveau mot de passe"
+  },
+  "LoginPage": {
+    "title": "Connexion",
+    "email": "Email",
+    "emailPlaceholder": "votre@email.com",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "accept": "J'accepte les",
+    "terms": "Conditions Générales",
+    "and": "et la",
+    "privacy": "Politique de Confidentialité",
+    "login": "Se connecter",
+    "loading": "Connexion...",
+    "fingerprint": "Utiliser l'empreinte digitale",
+    "orContinue": "Ou continuer avec",
+    "google": "Se connecter avec Google",
+    "noAccount": "Pas encore de compte ?",
+    "createAccount": "Créer un compte",
+    "errors": {
+      "mustAcceptTerms": "Vous devez accepter les conditions d'utilisation pour vous connecter.",
+      "loginFailed": "Erreur lors de la connexion.",
+      "noFingerprintUser": "Aucun utilisateur enregistré pour l'authentification biométrique.",
+      "fingerprintFailed": "Échec de l'authentification par empreinte."
+    }
   }
 }

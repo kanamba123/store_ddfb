@@ -14,8 +14,10 @@ import {
   FaEyeSlash,
   FaFingerprint,
 } from "react-icons/fa";
+import { useTranslation } from 'react-i18next';
 
 export default function LoginPage() {
+  const { t } = useTranslation();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,21 +31,16 @@ export default function LoginPage() {
   const [fingerprintAvailable, setFingerprintAvailable] = useState(false);
 
   useEffect(() => {
-    // Vérifier si WebAuthn est dispo
     if (window.PublicKeyCredential) {
       setFingerprintAvailable(true);
     }
-
-    // Thème sombre clair
     const isDarkMode =
       window.matchMedia &&
       window.matchMedia("(prefers-color-scheme: dark)").matches;
     setDarkMode(isDarkMode);
-
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     const handler = (e: MediaQueryListEvent) => setDarkMode(e.matches);
     mediaQuery.addEventListener("change", handler);
-
     return () => mediaQuery.removeEventListener("change", handler);
   }, []);
 
@@ -62,9 +59,7 @@ export default function LoginPage() {
     e.preventDefault();
 
     if (!acceptedTerms) {
-      setErrorMsg(
-        "Vous devez accepter les conditions d'utilisation pour vous connecter."
-      );
+      setErrorMsg(t("errors.mustAcceptTerms"));
       return;
     }
 
@@ -79,18 +74,11 @@ export default function LoginPage() {
       });
 
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message || t("errors.loginFailed"));
 
-      if (!res.ok) {
-        throw new Error(data.message || "Erreur lors de la connexion.");
-      }
-
-      // Set cookie
       document.cookie = `authToken=${data.token}; path=/; max-age=${60 * 60 * 24 * 7
         }; Secure; SameSite=Strict`;
-
       await login(data.token, data.user);
-
-      // Sauvegarder un identifiant pour WebAuthn
       localStorage.setItem("fingerprintUserId", data.user.id);
 
       if (redirectUrl) {
@@ -99,7 +87,7 @@ export default function LoginPage() {
         router.push("/dashboard");
       }
     } catch (err: any) {
-      setErrorMsg(err.message || "Échec de la connexion.");
+      setErrorMsg(err.message || t("errors.loginFailed"));
     } finally {
       setLoading(false);
     }
@@ -122,20 +110,16 @@ export default function LoginPage() {
     );
 
     const checkPopup = setInterval(() => {
-      if (!popup || popup.closed) {
-        clearInterval(checkPopup);
-      }
+      if (!popup || popup.closed) clearInterval(checkPopup);
     }, 1000);
 
     window.addEventListener("message", (event) => {
       if (event.origin !== "https://api.win2cop.com") return;
-
       if (event.data.token) {
         popup?.close();
         document.cookie = `authToken=${event.data.token}; path=/; max-age=${60 * 60 * 24 * 7
           }; Secure; SameSite=Strict`;
         login(event.data.token, event.data.user);
-
         if (redirectUrl) {
           window.location.href = redirectUrl;
         } else {
@@ -149,18 +133,11 @@ export default function LoginPage() {
     try {
       setLoading(true);
       setErrorMsg("");
-
       const userId = localStorage.getItem("fingerprintUserId");
-      if (!userId) {
-        throw new Error(
-          "Aucun utilisateur enregistré pour l'authentification biométrique."
-        );
-      }
+      if (!userId) throw new Error(t("errors.noFingerprintUser"));
 
-      // Simuler challenge WebAuthn
       const challenge = new Uint8Array(32);
       window.crypto.getRandomValues(challenge);
-
       const credential = await navigator.credentials.get({
         publicKey: {
           challenge,
@@ -169,24 +146,15 @@ export default function LoginPage() {
           allowCredentials: [],
         },
       });
+      if (!credential) throw new Error(t("errors.fingerprintFailed"));
 
-      if (!credential) {
-        throw new Error("Échec de l'authentification par empreinte.");
-      }
-
-      // Ici tu dois envoyer credential.id et authenticatorData au backend
-      // Pour cette démo on suppose que tout est bon
       const res = await fetch(`${API_URL}/ownerstores/fingerprint-login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId }),
       });
-
       const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || "Échec de la connexion biométrique.");
-      }
+      if (!res.ok) throw new Error(data.message || t("errors.fingerprintFailed"));
 
       document.cookie = `authToken=${data.token}; path=/; max-age=${60 * 60 * 24 * 7
         }; Secure; SameSite=Strict`;
@@ -198,7 +166,7 @@ export default function LoginPage() {
         router.push("/dashboard");
       }
     } catch (err: any) {
-      setErrorMsg(err.message || "Erreur d'authentification biométrique.");
+      setErrorMsg(err.message || t('errors.fingerprintFailed'));
     } finally {
       setLoading(false);
     }
@@ -206,28 +174,33 @@ export default function LoginPage() {
 
   return (
     <div
-      className={`min-h-screen flex items-center justify-center px-4 transition-colors duration-300 ${darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
-        }`}
+      className={`min-h-screen flex items-center justify-center px-4 transition-colors duration-300 ${
+        darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
+      }`}
     >
       <div
-        className={`w-full max-w-md rounded-xl shadow-md p-6 space-y-6 transition-colors duration-300 ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
-          } border`}
+        className={`w-full max-w-md rounded-xl shadow-md p-6 space-y-6 transition-colors duration-300 ${
+          darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+        } border`}
       >
-        <h2 className="text-2xl font-bold text-center">Connexion</h2>
+        <h2 className="text-2xl font-bold text-center">{t('LoginPage.title')}</h2>
 
         <form onSubmit={handleLogin} className="space-y-4">
+          {/* Email */}
           <div>
             <label
-              className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"
-                }`}
+              className={`block text-sm font-medium ${
+                darkMode ? "text-gray-300" : "text-gray-700"
+              }`}
             >
-              Email
+              {t('LoginPage.email')}
             </label>
             <div className="relative mt-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <FaEnvelope
-                  className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
+                  className={`h-5 w-5 ${
+                    darkMode ? "text-gray-400" : "text-gray-500"
+                  }`}
                 />
               </div>
               <input
@@ -235,27 +208,31 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300 ${darkMode
-                  ? "bg-gray-700 border-gray-600 text-white focus:border-blue-400"
-                  : "border-gray-300 focus:border-blue-400"
-                  } border`}
-                placeholder="votre@email.com"
+                placeholder={t('LoginPage.emailPlaceholder')}
+                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300 ${
+                  darkMode
+                    ? "bg-gray-700 border-gray-600 text-white focus:border-blue-400"
+                    : "border-gray-300 focus:border-blue-400"
+                } border`}
               />
             </div>
           </div>
 
+          {/* Password */}
           <div>
             <label
-              className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"
-                }`}
+              className={`block text-sm font-medium ${
+                darkMode ? "text-gray-300" : "text-gray-700"
+              }`}
             >
-              Mot de passe
+              {t('LoginPage.password')}
             </label>
             <div className="relative mt-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <FaLock
-                  className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
+                  className={`h-5 w-5 ${
+                    darkMode ? "text-gray-400" : "text-gray-500"
+                  }`}
                 />
               </div>
               <input
@@ -263,11 +240,12 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300 ${darkMode
-                  ? "bg-gray-700 border-gray-600 text-white focus:border-blue-400"
-                  : "border-gray-300 focus:border-blue-400"
-                  } border`}
                 placeholder="••••••••"
+                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300 ${
+                  darkMode
+                    ? "bg-gray-700 border-gray-600 text-white focus:border-blue-400"
+                    : "border-gray-300 focus:border-blue-400"
+                } border`}
               />
               <button
                 type="button"
@@ -276,13 +254,15 @@ export default function LoginPage() {
               >
                 {showPassword ? (
                   <FaEyeSlash
-                    className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"
-                      }`}
+                    className={`h-5 w-5 ${
+                      darkMode ? "text-gray-400" : "text-gray-500"
+                    }`}
                   />
                 ) : (
                   <FaEye
-                    className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"
-                      }`}
+                    className={`h-5 w-5 ${
+                      darkMode ? "text-gray-400" : "text-gray-500"
+                    }`}
                   />
                 )}
               </button>
@@ -290,55 +270,56 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={handleForgotPassword}
-              className={`mt-2 text-sm ${darkMode
-                ? "text-blue-400 hover:text-blue-300"
-                : "text-blue-600 hover:text-blue-800"
-                } underline`}
+              className={`mt-2 text-sm underline ${
+                darkMode
+                  ? "text-blue-400 hover:text-blue-300"
+                  : "text-blue-600 hover:text-blue-800"
+              }`}
             >
-              Mot de passe oublié ?
+              {t('LoginPage.forgotPassword')}
             </button>
           </div>
 
+          {/* Terms */}
           <div className="flex items-start">
-            <div className="flex items-center h-5">
-              <input
-                id="terms"
-                name="terms"
-                type="checkbox"
-                checked={acceptedTerms}
-                onChange={(e) => setAcceptedTerms(e.target.checked)}
-                className={`focus:ring-blue-500 h-4 w-4 rounded ${darkMode ? "bg-gray-700 border-gray-600" : "border-gray-300"
-                  }`}
-              />
-            </div>
-            <div className="ml-3 text-sm">
-              <label
-                htmlFor="terms"
-                className={`font-light ${darkMode ? "text-gray-300" : "text-gray-700"
-                  }`}
+            <input
+              id="terms"
+              type="checkbox"
+              checked={acceptedTerms}
+              onChange={(e) => setAcceptedTerms(e.target.checked)}
+              className={`focus:ring-blue-500 h-4 w-4 rounded ${
+                darkMode ? "bg-gray-700 border-gray-600" : "border-gray-300"
+              }`}
+            />
+            <label
+              htmlFor="terms"
+              className={`ml-3 text-sm font-light ${
+                darkMode ? "text-gray-300" : "text-gray-700"
+              }`}
+            >
+              {t('LoginPage.accept')}{" "}
+              <Link
+                href="/terms-of-service"
+                className={`underline ${
+                  darkMode
+                    ? "text-blue-400 hover:text-blue-300"
+                    : "text-blue-600 hover:text-blue-800"
+                }`}
               >
-                J'accepte les{" "}
-                <Link
-                  href="/terms-of-service"
-                  className={`underline ${darkMode
+                {t("terms")}
+              </Link>{" "}
+              {t('LoginPage.and')}{" "}
+              <Link
+                href="/privacy-policy"
+                className={`underline ${
+                  darkMode
                     ? "text-blue-400 hover:text-blue-300"
                     : "text-blue-600 hover:text-blue-800"
-                    }`}
-                >
-                  Conditions Générales
-                </Link>{" "}
-                et la{" "}
-                <Link
-                  href="/privacy-policy"
-                  className={`underline ${darkMode
-                    ? "text-blue-400 hover:text-blue-300"
-                    : "text-blue-600 hover:text-blue-800"
-                    }`}
-                >
-                  Politique de Confidentialité
-                </Link>
-              </label>
-            </div>
+                }`}
+              >
+                {t('.LoginPage.privacy')}
+              </Link>
+            </label>
           </div>
 
           {errorMsg && (
@@ -348,10 +329,11 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading || !acceptedTerms}
-            className={`w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition ${loading || !acceptedTerms ? "opacity-50 cursor-not-allowed" : ""
-              } ${darkMode ? "hover:bg-blue-500" : ""}`}
+            className={`w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition ${
+              loading || !acceptedTerms ? "opacity-50 cursor-not-allowed" : ""
+            } ${darkMode ? "hover:bg-blue-500" : ""}`}
           >
-            {loading ? "Connexion..." : "Se connecter"}
+            {loading ? t('LoginPage.loading') : t('LoginPage.login')}
           </button>
         </form>
 
@@ -360,61 +342,71 @@ export default function LoginPage() {
             <button
               onClick={handleFingerprintLogin}
               disabled={loading}
-              className={`flex items-center gap-2 text-sm underline transition ${darkMode
-                ? "text-blue-400 hover:text-blue-300"
-                : "text-blue-600 hover:text-blue-800"
-                }`}
+              className={`flex items-center gap-2 text-sm underline ${
+                darkMode
+                  ? "text-blue-400 hover:text-blue-300"
+                  : "text-blue-600 hover:text-blue-800"
+              }`}
             >
               <FaFingerprint className="text-blue-500" />
-              Utiliser l'empreinte digitale
+              {t('LoginPage.fingerprint')}
             </button>
           </div>
         )}
 
+        {/* Divider */}
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div
-              className={`w-full border-t ${darkMode ? "border-gray-700" : "border-gray-300"
-                }`}
+              className={`w-full border-t ${
+                darkMode ? "border-gray-700" : "border-gray-300"
+              }`}
             ></div>
           </div>
           <div className="relative flex justify-center text-sm">
             <span
-              className={`px-2 ${darkMode ? "bg-gray-800 text-gray-400" : "bg-white text-gray-500"
-                }`}
+              className={`px-2 ${
+                darkMode
+                  ? "bg-gray-800 text-gray-400"
+                  : "bg-white text-gray-500"
+              }`}
             >
-              Ou continuer avec
+              {t('LoginPage.orContinue')}
             </span>
           </div>
         </div>
 
+        {/* Google */}
         <div className="space-y-3">
           <button
             onClick={handleGoogleLogin}
-            className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg border font-medium transition ${darkMode
-              ? "bg-gray-700 border-gray-600 hover:bg-gray-600 text-white"
-              : "bg-white border-gray-300 hover:bg-gray-50 text-gray-700"
-              }`}
+            className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg border font-medium transition ${
+              darkMode
+                ? "bg-gray-700 border-gray-600 hover:bg-gray-600 text-white"
+                : "bg-white border-gray-300 hover:bg-gray-50 text-gray-700"
+            }`}
           >
             <FaGoogle className="text-red-500" />
-            Se connecter avec Google
+            {t('LoginPage.google')}
           </button>
         </div>
 
+        {/* Register */}
         <p
-          className={`text-sm text-center ${darkMode ? "text-gray-400" : "text-gray-600"
-            }`}
+          className={`text-sm text-center ${
+            darkMode ? "text-gray-400" : "text-gray-600"
+          }`}
         >
-          Pas encore de compte ?{" "}
+          {t('LoginPage.noAccount')}{" "}
           <Link
             href="/register"
-            className={`text-blue-500 hover:underline ${darkMode ? "hover:text-blue-400" : ""
-              }`}
+            className={`text-blue-500 hover:underline ${
+              darkMode ? "hover:text-blue-400" : ""
+            }`}
           >
-            Créer un compte
+            {t('LoginPage.createAccount')}
           </Link>
         </p>
-
       </div>
     </div>
   );

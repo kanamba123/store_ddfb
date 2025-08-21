@@ -88,7 +88,7 @@
     "newOrder": "Itegeko rishasha ryashizweko na",
     "newUser": "Umukoresha mushasha yiyandikishije"
   },
- "settings": {
+  "settings": {
     "title": "Igenamiterere",
     "saveSuccess": "Amagenamiterere yabitswe neza!",
     "tabs": {
@@ -98,7 +98,8 @@
       "privacy": "Ivyibanga",
       "notifications": "Amatangazo"
     }
-  },"security": {
+  },
+  "security": {
     "twoFactor": "Ukwemeza mu nzira zibiri",
     "twoFactorDesc": "Shiraho urwego rw’inyongera rw’umutekano",
     "biometric": "Ukwemeza ukoresheje kibiometrike",
@@ -107,5 +108,29 @@
     "currentPassword": "Ijambo ry'ibanga risanzwe",
     "newPassword": "Ijambo ry'ibanga rishasha",
     "confirmPassword": "Emeza ijambo ry'ibanga rishasha"
+  },
+  "LoginPage": {
+    "title": "Injira",
+    "email": "Imeyili",
+    "emailPlaceholder": "imeyili@yawe.com",
+    "password": "Ijambo ry'ibanga",
+    "forgotPassword": "Wibagiwe ijambo ry'ibanga?",
+    "accept": "Nemera",
+    "terms": "Amategeko y'ikoreshwa",
+    "and": "n'ay",
+    "privacy": "Politiki y'Ibanga",
+    "login": "Injira",
+    "loading": "Kwinjira...",
+    "fingerprint": "Koresha ikimenyetso c’akiganza",
+    "orContinue": "Cana komeza na",
+    "google": "Injira ukoresheje Google",
+    "noAccount": "Uratanguye konti?",
+    "createAccount": "Hanga konti",
+    "errors": {
+      "mustAcceptTerms": "Ugomba kwemera amategeko yo gukoresha kugira ngo winjire.",
+      "loginFailed": "Kwinjira kwabaye ikibazo.",
+      "noFingerprintUser": "Nta mukoresha yanditse kuri biometrics.",
+      "fingerprintFailed": "Kwinjira ukoresheje ikimenyetso c’akiganza kwabaye ikibazo."
+    }
   }
 }

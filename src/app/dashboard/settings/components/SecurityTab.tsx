@@ -4,6 +4,7 @@ import { Lock, Fingerprint, Key } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import axios from "axios";
+import { useAuth } from "@/contexts/AuthContext"; 
 
 interface SecurityTabProps {
   settings: {
@@ -18,13 +19,14 @@ interface SecurityTabProps {
 
 export default function SecurityTab({ settings, handleChange }: SecurityTabProps) {
   const { t } = useTranslation();
+  const { user, token, isAuthenticated } = useAuth(); 
+
   const [bioMessage, setBioMessage] = useState<string | null>(null);
   const [serverMessage, setServerMessage] = useState<string | null>(null);
 
-  const token = "FAKE_JWT_TOKEN"; // à récupérer après login
-
   // ✅ Toggle 2FA
   const handleToggle2FA = async (checked: boolean) => {
+    if (!token) return;
     try {
       const res = await axios.post(
         "http://localhost:4000/api/security/toggle-2fa",
@@ -36,13 +38,18 @@ export default function SecurityTab({ settings, handleChange }: SecurityTabProps
           ? "Two-factor authentication enabled ✅"
           : "Two-factor authentication disabled ❌"
       );
-    } catch (err) {
+    } catch {
       setServerMessage("Error updating 2FA ❌");
     }
   };
 
   // ✅ Config biométrie (WebAuthn)
   const handleBiometricSetup = async () => {
+    if (!isAuthenticated || !user || !token) {
+      setBioMessage("Vous devez être connecté pour activer la biométrie ❌");
+      return;
+    }
+
     try {
       setBioMessage(null);
 
@@ -53,9 +60,9 @@ export default function SecurityTab({ settings, handleChange }: SecurityTabProps
         challenge,
         rp: { name: "MyApp" },
         user: {
-          id: Uint8Array.from("123456789", (c) => c.charCodeAt(0)),
-          name: "john@example.com",
-          displayName: "John Doe",
+          id: Uint8Array.from(user.id, (c) => c.charCodeAt(0)),
+          name: user.email, 
+          displayName: user.name, 
         },
         pubKeyCredParams: [{ type: "public-key", alg: -7 }],
         authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
@@ -68,7 +75,7 @@ export default function SecurityTab({ settings, handleChange }: SecurityTabProps
       if (credential) {
         await axios.post(
           "http://localhost:4000/api/security/register-webauthn",
-          { credential },
+          { credential, userId: user.id }, 
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -82,6 +89,7 @@ export default function SecurityTab({ settings, handleChange }: SecurityTabProps
 
   // ✅ Changer le mot de passe
   const handleChangePassword = async () => {
+    if (!token) return;
     try {
       if (settings.newPassword !== settings.confirmPassword) {
         setServerMessage("Passwords do not match ❌");
