@@ -44,48 +44,61 @@ export default function SecurityTab({ settings, handleChange }: SecurityTabProps
   };
 
   // ✅ Config biométrie (WebAuthn)
-  const handleBiometricSetup = async () => {
-    if (!isAuthenticated || !user || !token) {
-      setBioMessage("Vous devez être connecté pour activer la biométrie ❌");
-      return;
-    }
+ const handleBiometricSetup = async () => {
+  if (!isAuthenticated || !user || !token) {
+    setBioMessage("Vous devez être connecté pour activer la biométrie ❌");
+    return;
+  }
 
-    try {
-      setBioMessage(null);
+  try {
+    setBioMessage(null);
 
-      const challenge = new Uint8Array(32);
-      crypto.getRandomValues(challenge);
+    // Challenge aléatoire
+    const challenge = new Uint8Array(32);
+    crypto.getRandomValues(challenge);
 
-      const publicKey: PublicKeyCredentialCreationOptions = {
-        challenge,
-        rp: { name: "MyApp" },
-        user: {
-          id: Uint8Array.from(user.id, (c) => c.charCodeAt(0)),
-          name: user.email, 
-          displayName: user?.name, 
-        },
-        pubKeyCredParams: [{ type: "public-key", alg: -7 }],
-        authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
-        timeout: 60000,
-        attestation: "direct",
+    const publicKey: PublicKeyCredentialCreationOptions = {
+      challenge,
+      rp: { name: "win2cop" },
+      user: {
+        id: new TextEncoder().encode(user.id), // convertir string -> Uint8Array
+        name: user.email,
+        displayName: user.name,
+      },
+      pubKeyCredParams: [{ type: "public-key", alg: -7 }],
+      authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
+      timeout: 60000,
+      attestation: "direct",
+    };
+
+    const credential = (await navigator.credentials.create({ publicKey })) as PublicKeyCredential;
+
+    if (credential) {
+      // Convertir en format JSON sérialisable
+      const cred = {
+        id: credential.id,
+        rawId: Array.from(new Uint8Array(credential.rawId)),
+        type: credential.type,
+        response: {
+          attestationObject: Array.from(new Uint8Array((credential.response as any).attestationObject)),
+          clientDataJSON: Array.from(new Uint8Array((credential.response as any).clientDataJSON)),
+        }
       };
 
-      const credential = (await navigator.credentials.create({ publicKey })) as PublicKeyCredential;
+      await axios.post(
+        "http://localhost:4000/api/security/register-webauthn",
+        { credential: cred, userId: user.id },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-      if (credential) {
-        await axios.post(
-          "http://localhost:4000/api/security/register-webauthn",
-          { credential, userId: user.id }, 
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-
-        setBioMessage("Biometric setup successful ✅");
-      }
-    } catch (error) {
-      console.error(error);
-      setBioMessage("Biometric setup failed ❌");
+      setBioMessage("Biometric setup successful ✅");
     }
-  };
+  } catch (error) {
+    console.error(error);
+    setBioMessage("Biometric setup failed ❌");
+  }
+};
+
 
   // ✅ Changer le mot de passe
   const handleChangePassword = async () => {
