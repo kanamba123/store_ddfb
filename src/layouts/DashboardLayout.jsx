@@ -34,9 +34,8 @@ export default function DashboardLayout({ children }) {
       <main className="lg:col-start-2 lg:row-start-2 overflow-hidden">
         <div className="h-full p-2">
           <div
-            className="h-full overflow-auto rounded-2xl custom-scrollbar"
+            className="h-full overflow-auto rounded-2xl custom-scrollbar "
             style={{
-              backgroundColor: "var(--color-surface)",
               border: "1px solid var(--color-border)",
               boxShadow: `0 2px 6px var(--color-shadow-light)`,
               color: "var(--color-text-primary)",

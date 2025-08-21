@@ -11,7 +11,7 @@ export default function Footer() {
           
           {/* Left section */}
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 text-center sm:text-left">
+            <p className="text-xs sm:text-sm  text-center sm:text-left">
               © {new Date().getFullYear()} Win2Cop. Tous droits réservés.
             </p>
             
@@ -20,7 +20,7 @@ export default function Footer() {
                 <Link
                   key={item}
                   href={`/${item}`}
-                  className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors whitespace-nowrap"
+                  className="text-xs  hover:text-gray-700 dark:hover:text-gray-300 transition-colors whitespace-nowrap"
                 >
                   {item === "docs" ? "Documentation" : item.charAt(0).toUpperCase() + item.slice(1)}
                 </Link>
@@ -33,14 +33,14 @@ export default function Footer() {
             {/* System status */}
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 dark:bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-xs text-gray-500 dark:text-gray-400 whitespace-nowrap">
+              <span className="text-xs  whitespace-nowrap">
                 Système opérationnel
               </span>
             </div>
 
             {/* Version */}
             <div className="hidden sm:flex">
-              <span className="text-xs text-gray-400 dark:text-gray-500 whitespace-nowrap">
+              <span className="text-xs  dark:text-gray-500 whitespace-nowrap">
                 v2.1.0
               </span>
             </div>
@@ -54,7 +54,7 @@ export default function Footer() {
               <Link
                 key={item}
                 href={`/${item}`}
-                className="text-xs text-gray-500  hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+                className="text-xs   hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
               >
                 {item === "docs" ? "Docs" : item.charAt(0).toUpperCase() + item.slice(1)}
               </Link>

@@ -36,5 +36,17 @@
     "ago5min": "Dakika 5 zilizopita",
     "ago1hour": "Saa 1 iliyopita",
     "viewAll": "Tazama taarifa zote"
+  },
+  "dashboard": {
+    "welcome": "Karibu kwenye dashibodi yako",
+    "totalOrders": "Jumla ya Oda",
+    "activeUsers": "Watumiaji Hai",
+    "productsInStock": "Bidhaa zilizopo",
+    "alerts": "Tahadhari",
+    "recentActivity": "Shughuli za Hivi Karibuni",
+    "newProduct": "Bidhaa mpya imeongezwa",
+    "exampleProduct": "Viatu vya Nike Air Max",
+    "newOrder": "Agizo jipya limewekwa na",
+    "newUser": "Mtumiaji mpya amesajiliwa"
   }
 }

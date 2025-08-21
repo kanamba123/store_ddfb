@@ -59,14 +59,14 @@ export default function OrdersPage() {
   };
 
   return (
-    <div className="p-6 dark:bg-gray-900 ">
-      <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
+    <div className="p-6 bg-[var(--color-bg-primary)] ">
+      <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-4">
         Commandes
       </h1>
 
-      <div className="overflow-x-auto bg-white dark:bg-gray-800 shadow-md rounded-xl border dark:border-gray-700">
+      <div className="overflow-x-auto  shadow-md rounded-xl border">
         <table className="min-w-full table-auto">
-          <thead className="bg-gray-100 dark:bg-gray-700 text-left text-sm font-semibold text-gray-700 dark:text-gray-300">
+          <thead className="bg-[var(--color-bg-primary)] text-left text-sm font-semibold text-[var(--color-text-primary)]">
             <tr>
               <th className="px-4 py-3">ID</th>
               <th className="px-4 py-3">Client</th>
@@ -75,25 +75,25 @@ export default function OrdersPage() {
               <th className="px-4 py-3">Total</th>
             </tr>
           </thead>
-          <tbody className="text-sm text-gray-600 dark:text-gray-400">
+          <tbody className="text-sm ">
             {orders.map((order) => (
               <tr
                 key={order.id}
                 className="border-t dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50"
               >
-                <td className="px-4 py-3 font-medium dark:text-gray-300">
+                <td className="px-4 py-3 font-medium">
                   {order.id}
                 </td>
-                <td className="px-4 py-3 dark:text-gray-300">
+                <td className="px-4 py-3">
                   {order.customer}
                 </td>
-                <td className="px-4 py-3 dark:text-gray-300">{order.date}</td>
+                <td className="px-4 py-3">{order.date}</td>
                 <td className="px-4 py-3">
                   <span className={getStatusClasses(order.status)}>
                     {order.status}
                   </span>
                 </td>
-                <td className="px-4 py-3 font-semibold dark:text-gray-300">
+                <td className="px-4 py-3 font-semibold">
                   {order.total.toFixed(2)} €
                 </td>
               </tr>

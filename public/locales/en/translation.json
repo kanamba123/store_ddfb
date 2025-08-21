@@ -75,5 +75,17 @@
     "ago5min": "5 minutes ago",
     "ago1hour": "1 hour ago",
     "viewAll": "View all notifications"
+  },
+  "dashboard": {
+    "welcome": "Welcome to your dashboard",
+    "totalOrders": "Total Orders",
+    "activeUsers": "Active Users",
+    "productsInStock": "Products in Stock",
+    "alerts": "Alerts",
+    "recentActivity": "Recent Activity",
+    "newProduct": "New product added",
+    "exampleProduct": "Nike Air Max Shoes",
+    "newOrder": "New order placed by",
+    "newUser": "New user registered"
   }
 }

@@ -65,12 +65,12 @@ export default function AnalyticsPage() {
   }, []);
 
   return (
-    <div className="p-6 dark:bg-gray-900 ">
-      <h1 className="text-3xl font-bold mb-8 text-gray-800 dark:text-white">
+    <div className="p-6 bg-[var(--color-bg-primary)] ">
+      <h1 className="text-3xl font-bold mb-8 text-[var(--color-text-primary)]">
         Analytics
       </h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+      <div className="grid grid-cols-1  md:grid-cols-4 gap-6 mb-12">
         <StatCard label="Utilisateurs" value={stats.users.toLocaleString()} />
         <StatCard label="Sessions" value={stats.sessions.toLocaleString()} />
         <StatCard label="Taux de rebond" value={`${stats.bounceRate}%`} />
@@ -80,8 +80,8 @@ export default function AnalyticsPage() {
         />
       </div>
 
-      <section className="bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-none p-6 border dark:border-gray-700">
-        <h2 className="text-xl font-semibold mb-4 dark:text-gray-200">
+      <section className="bg-[var(--color-bg-primary)] rounded-lg shadow dark:shadow-none p-6 border dark:border-gray-700">
+        <h2 className="text-xl font-semibold mb-4 text-[var(--color-text-primary)]">
           Tendance des utilisateurs (7 derniers jours)
         </h2>
         {userTrend.length === 0 ? (
@@ -135,9 +135,9 @@ export default function AnalyticsPage() {
 
 function StatCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow dark:shadow-none p-5 flex flex-col items-center justify-center border dark:border-gray-700">
+    <div className="bg-[var(--color-bg-primary)] rounded-lg shadow dark:shadow-none p-5 flex flex-col items-center justify-center border dark:border-gray-700">
       <p className="text-gray-500 dark:text-gray-400 text-sm">{label}</p>
-      <p className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">
+      <p className="mt-2 text-2xl font-bold text-[var(--color-text-primary)]">
         {value}
       </p>
     </div>

@@ -36,5 +36,17 @@
     "ago5min": "Il y a 5 minutes",
     "ago1hour": "Il y a 1 heure",
     "viewAll": "Voir toutes les notifications"
+  },
+  "dashboard": {
+    "welcome": "Bienvenue sur votre tableau de bord",
+    "totalOrders": "Total Commandes",
+    "activeUsers": "Utilisateurs actifs",
+    "productsInStock": "Produits en stock",
+    "alerts": "Alertes",
+    "recentActivity": "Activité récente",
+    "newProduct": "Nouveau produit ajouté",
+    "exampleProduct": "Chaussure Nike Air Max",
+    "newOrder": "Nouvelle commande passée par",
+    "newUser": "Nouvel utilisateur enregistré"
   }
 }

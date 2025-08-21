@@ -61,5 +61,17 @@
     "ago5min": "Imitwe 5 iheze",
     "ago1hour": "Isaha 1 iheze",
     "viewAll": "Raba amatangazo yose"
+  },
+  "dashboard": {
+    "welcome": "Urakaza neza ku biro vy'ibanze vyawe",
+    "totalOrders": "Amabwirizwa yose",
+    "activeUsers": "Abakoresha bakiri ku murongo",
+    "productsInStock": "Ibicuruzwa biri mu bubiko",
+    "alerts": "Amaburo",
+    "recentActivity": "Ibikorwa vyiheruka",
+    "newProduct": "Igicuruzwa gishasha cashizweko",
+    "exampleProduct": "Inkweto za Nike Air Max",
+    "newOrder": "Itegeko rishasha ryashizweko na",
+    "newUser": "Umukoresha mushasha yiyandikishije"
   }
 }

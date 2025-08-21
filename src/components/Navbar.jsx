@@ -1,4 +1,3 @@
-// components/Navbar.jsx
 "use client";
 
 import Link from "next/link";
@@ -42,8 +41,6 @@ export default function Navbar({ onToggleSidebar }) {
     console.warn("LanguageContext not available");
     localStorage.setItem("language", lang);
     document.documentElement.lang = lang;
-
-    // i18next expects a string
     i18n.changeLanguage(lang);
   });
 
@@ -51,7 +48,7 @@ export default function Navbar({ onToggleSidebar }) {
   const [currentLang, setCurrentLang] = useState(ListLanguage[0]);
 
   const handleLanguageChange = (lang) => {
-    changeLanguage(lang.code); // pass the string, not the object
+    changeLanguage(lang.code); 
     setCurrentLang(lang);
   };
 
@@ -185,7 +182,7 @@ export default function Navbar({ onToggleSidebar }) {
                   <div className="max-h-64 overflow-y-auto">
                     <div className="p-2 sm:p-3 hover:bg-[var(--color-bg-secondary)]/50 cursor-pointer border-b border-[var(--color-border)]/50">
                       <p className="text-xs sm:text-sm font-medium text-[var(--color-text-secondary)]">
-                        {t("notifications.newUser")} {/* 👈 clé à créer dans ton JSON */}
+                        {t("notifications.newUser")} 
                       </p>
                       <p className="text-xs text-[var(--color-text-secondary)] mt-1">
                         {t("notifications.ago5min")}
