@@ -39,14 +39,17 @@
     }
   },
   "sidebar": {
-    "dashboard": "Ibibanza vy'ingenzi",
-    "products": "Ibicuruzwa",
+    "dashboard": "Ibiro vy'ibanze",
+    "products": "Ibikoresho",
     "sales": "Ugurisha",
     "analytics": "Isesengura",
     "orders": "Amabwirizwa",
-    "reports": "Amakuru",
-    "settings": "Igenamiterere",
-    "dashboardPro": "Ibibanza vy'ingenzi Pro",
+    "payments": "Amadeni",
+    "promotions": "Ubukangurambaga",
+    "reports": "Raporo",
+    "support_customers": "Gufasha abakiriya",
+    "settings": "Amagenamiterere",
+    "dashboardPro": "Ibiro vy'ibanze Pro",
     "userProfile": "Umwidondoro w'umukoresha"
   }
 }

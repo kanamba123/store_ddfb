@@ -1,0 +1,16 @@
+{
+  "sidebar": {
+    "dashboard": "Dashibodi",
+    "products": "Bidhaa",
+    "sales": "Mauzo",
+    "analytics": "Takwimu",
+    "orders": "Oda",
+    "payments": "Malipo",
+    "promotions": "Promosheni",
+    "reports": "Ripoti",
+    "support_customers": "Msaada kwa wateja",
+    "settings": "Mipangilio",
+    "dashboardPro": "Dashibodi Pro",
+    "userProfile": "Profaili ya mtumiaji"
+  }
+}
