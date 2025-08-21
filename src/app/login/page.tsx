@@ -129,87 +129,60 @@ export default function LoginPage() {
     });
   };
 
- const handleFingerprintLogin = async () => {
-  try {
-    setLoading(true);
-    setErrorMsg("");
+  const handleFingerprintLogin = async () => {
+    try {
+      setLoading(true);
+      setErrorMsg("");
+      const userId = localStorage.getItem("fingerprintUserId");
+      if (!userId) throw new Error(t("errors.noFingerprintUser"));
 
-    const userId = localStorage.getItem("fingerprintUserId");
-    if (!userId) throw new Error(t("LoginPage.errors.noFingerprintUser"));
+      const challenge = new Uint8Array(32);
+      window.crypto.getRandomValues(challenge);
+      const credential = await navigator.credentials.get({
+        publicKey: {
+          challenge,
+          timeout: 60000,
+          userVerification: "required",
+          allowCredentials: [],
+        },
+      });
+      if (!credential) throw new Error(t("errors.fingerprintFailed"));
 
-    // Récupérer les passkeys enregistrées pour cet utilisateur
-    const { credentials } = await fetch(`${API_URL}/security/get-webauthn-credentials/${userId}`).then(r => r.json());
-    if (!credentials || credentials.length === 0) throw new Error(t("LoginPage.errors.noFingerprintUser"));
+      const res = await fetch(`${API_URL}/ownerstores/fingerprint-login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
+      
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || t("errors.fingerprintFailed"));
 
-    const allowCredentials = credentials.map((c: any) => ({
-      id: new Uint8Array(c.rawId), // Array -> Uint8Array
-      type: "public-key" as const,
-      transports: ["internal"] as const,
-    }));
+      document.cookie = `authToken=${data.token}; path=/; max-age=${60 * 60 * 24 * 7
+        }; Secure; SameSite=Strict`;
+      await login(data.token, data.user);
 
-    // Challenge aléatoire
-    const challenge = new Uint8Array(32);
-    window.crypto.getRandomValues(challenge);
-
-    // ⚠️ Cast en PublicKeyCredential
-    const assertion = (await navigator.credentials.get({
-      publicKey: {
-        challenge,
-        allowCredentials,
-        userVerification: "required",
-        timeout: 60000,
-      },
-    })) as PublicKeyCredential | null;
-
-    if (!assertion) throw new Error(t("LoginPage.errors.fingerprintFailed"));
-
-    // Convertir assertion pour le backend
-    const credential = {
-      id: assertion.id,
-      rawId: Array.from(new Uint8Array(assertion.rawId)),
-      type: assertion.type,
-      response: {
-        authenticatorData: Array.from(new Uint8Array((assertion.response as AuthenticatorAssertionResponse).authenticatorData)),
-        clientDataJSON: Array.from(new Uint8Array((assertion.response as AuthenticatorAssertionResponse).clientDataJSON)),
-        signature: Array.from(new Uint8Array((assertion.response as AuthenticatorAssertionResponse).signature)),
-        userHandle: (assertion.response as AuthenticatorAssertionResponse).userHandle
-          ? Array.from(new Uint8Array((assertion.response as AuthenticatorAssertionResponse).userHandle!))
-          : null,
+      if (redirectUrl) {
+        window.location.href = redirectUrl;
+      } else {
+        router.push("/dashboard");
       }
-    };
-
-    // Envoyer au backend pour vérification
-    const res = await fetch(`${API_URL}/ownerstores/fingerprint-login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId, credential }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || t("LoginPage.errors.fingerprintFailed"));
-
-    document.cookie = `authToken=${data.token}; path=/; max-age=${60 * 60 * 24 * 7}; Secure; SameSite=Strict`;
-    await login(data.token, data.user);
-
-    if (redirectUrl) window.location.href = redirectUrl;
-    else router.push("/dashboard");
-
-  } catch (err: any) {
-    setErrorMsg(err.message || t("LoginPage.errors.fingerprintFailed"));
-  } finally {
-    setLoading(false);
-  }
-};
-
-
+    } catch (err: any) {
+      setErrorMsg(err.message || t('errors.fingerprintFailed'));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div
-      className={`min-h-screen flex items-center justify-center px-4 transition-colors duration-300 ${darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
-        }`}
+      className={`min-h-screen flex items-center justify-center px-4 transition-colors duration-300 ${
+        darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-800"
+      }`}
     >
       <div
-        className={`w-full max-w-md rounded-xl shadow-md p-6 space-y-6 transition-colors duration-300 ${darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
-          } border`}
+        className={`w-full max-w-md rounded-xl shadow-md p-6 space-y-6 transition-colors duration-300 ${
+          darkMode ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+        } border`}
       >
         <h2 className="text-2xl font-bold text-center">{t('LoginPage.title')}</h2>
 
@@ -217,16 +190,18 @@ export default function LoginPage() {
           {/* Email */}
           <div>
             <label
-              className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"
-                }`}
+              className={`block text-sm font-medium ${
+                darkMode ? "text-gray-300" : "text-gray-700"
+              }`}
             >
               {t('LoginPage.email')}
             </label>
             <div className="relative mt-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <FaEnvelope
-                  className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
+                  className={`h-5 w-5 ${
+                    darkMode ? "text-gray-400" : "text-gray-500"
+                  }`}
                 />
               </div>
               <input
@@ -235,10 +210,11 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder={t('LoginPage.emailPlaceholder')}
-                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300 ${darkMode
-                  ? "bg-gray-700 border-gray-600 text-white focus:border-blue-400"
-                  : "border-gray-300 focus:border-blue-400"
-                  } border`}
+                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300 ${
+                  darkMode
+                    ? "bg-gray-700 border-gray-600 text-white focus:border-blue-400"
+                    : "border-gray-300 focus:border-blue-400"
+                } border`}
               />
             </div>
           </div>
@@ -246,16 +222,18 @@ export default function LoginPage() {
           {/* Password */}
           <div>
             <label
-              className={`block text-sm font-medium ${darkMode ? "text-gray-300" : "text-gray-700"
-                }`}
+              className={`block text-sm font-medium ${
+                darkMode ? "text-gray-300" : "text-gray-700"
+              }`}
             >
               {t('LoginPage.password')}
             </label>
             <div className="relative mt-1">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <FaLock
-                  className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"
-                    }`}
+                  className={`h-5 w-5 ${
+                    darkMode ? "text-gray-400" : "text-gray-500"
+                  }`}
                 />
               </div>
               <input
@@ -264,10 +242,11 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="••••••••"
-                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300 ${darkMode
-                  ? "bg-gray-700 border-gray-600 text-white focus:border-blue-400"
-                  : "border-gray-300 focus:border-blue-400"
-                  } border`}
+                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300 ${
+                  darkMode
+                    ? "bg-gray-700 border-gray-600 text-white focus:border-blue-400"
+                    : "border-gray-300 focus:border-blue-400"
+                } border`}
               />
               <button
                 type="button"
@@ -276,13 +255,15 @@ export default function LoginPage() {
               >
                 {showPassword ? (
                   <FaEyeSlash
-                    className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"
-                      }`}
+                    className={`h-5 w-5 ${
+                      darkMode ? "text-gray-400" : "text-gray-500"
+                    }`}
                   />
                 ) : (
                   <FaEye
-                    className={`h-5 w-5 ${darkMode ? "text-gray-400" : "text-gray-500"
-                      }`}
+                    className={`h-5 w-5 ${
+                      darkMode ? "text-gray-400" : "text-gray-500"
+                    }`}
                   />
                 )}
               </button>
@@ -290,10 +271,11 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={handleForgotPassword}
-              className={`mt-2 text-sm underline ${darkMode
-                ? "text-blue-400 hover:text-blue-300"
-                : "text-blue-600 hover:text-blue-800"
-                }`}
+              className={`mt-2 text-sm underline ${
+                darkMode
+                  ? "text-blue-400 hover:text-blue-300"
+                  : "text-blue-600 hover:text-blue-800"
+              }`}
             >
               {t('LoginPage.forgotPassword')}
             </button>
@@ -306,31 +288,35 @@ export default function LoginPage() {
               type="checkbox"
               checked={acceptedTerms}
               onChange={(e) => setAcceptedTerms(e.target.checked)}
-              className={`focus:ring-blue-500 h-4 w-4 rounded ${darkMode ? "bg-gray-700 border-gray-600" : "border-gray-300"
-                }`}
+              className={`focus:ring-blue-500 h-4 w-4 rounded ${
+                darkMode ? "bg-gray-700 border-gray-600" : "border-gray-300"
+              }`}
             />
             <label
               htmlFor="terms"
-              className={`ml-3 text-sm font-light ${darkMode ? "text-gray-300" : "text-gray-700"
-                }`}
+              className={`ml-3 text-sm font-light ${
+                darkMode ? "text-gray-300" : "text-gray-700"
+              }`}
             >
               {t('LoginPage.accept')}{" "}
               <Link
                 href="/terms-of-service"
-                className={`underline ${darkMode
-                  ? "text-blue-400 hover:text-blue-300"
-                  : "text-blue-600 hover:text-blue-800"
-                  }`}
+                className={`underline ${
+                  darkMode
+                    ? "text-blue-400 hover:text-blue-300"
+                    : "text-blue-600 hover:text-blue-800"
+                }`}
               >
                 {t("terms")}
               </Link>{" "}
               {t('LoginPage.and')}{" "}
               <Link
                 href="/privacy-policy"
-                className={`underline ${darkMode
-                  ? "text-blue-400 hover:text-blue-300"
-                  : "text-blue-600 hover:text-blue-800"
-                  }`}
+                className={`underline ${
+                  darkMode
+                    ? "text-blue-400 hover:text-blue-300"
+                    : "text-blue-600 hover:text-blue-800"
+                }`}
               >
                 {t('.LoginPage.privacy')}
               </Link>
@@ -344,8 +330,9 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading || !acceptedTerms}
-            className={`w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition ${loading || !acceptedTerms ? "opacity-50 cursor-not-allowed" : ""
-              } ${darkMode ? "hover:bg-blue-500" : ""}`}
+            className={`w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition ${
+              loading || !acceptedTerms ? "opacity-50 cursor-not-allowed" : ""
+            } ${darkMode ? "hover:bg-blue-500" : ""}`}
           >
             {loading ? t('LoginPage.loading') : t('LoginPage.login')}
           </button>
@@ -356,10 +343,11 @@ export default function LoginPage() {
             <button
               onClick={handleFingerprintLogin}
               disabled={loading}
-              className={`flex items-center gap-2 text-sm underline ${darkMode
-                ? "text-blue-400 hover:text-blue-300"
-                : "text-blue-600 hover:text-blue-800"
-                }`}
+              className={`flex items-center gap-2 text-sm underline ${
+                darkMode
+                  ? "text-blue-400 hover:text-blue-300"
+                  : "text-blue-600 hover:text-blue-800"
+              }`}
             >
               <FaFingerprint className="text-blue-500" />
               {t('LoginPage.fingerprint')}
@@ -371,16 +359,18 @@ export default function LoginPage() {
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <div
-              className={`w-full border-t ${darkMode ? "border-gray-700" : "border-gray-300"
-                }`}
+              className={`w-full border-t ${
+                darkMode ? "border-gray-700" : "border-gray-300"
+              }`}
             ></div>
           </div>
           <div className="relative flex justify-center text-sm">
             <span
-              className={`px-2 ${darkMode
-                ? "bg-gray-800 text-gray-400"
-                : "bg-white text-gray-500"
-                }`}
+              className={`px-2 ${
+                darkMode
+                  ? "bg-gray-800 text-gray-400"
+                  : "bg-white text-gray-500"
+              }`}
             >
               {t('LoginPage.orContinue')}
             </span>
@@ -391,10 +381,11 @@ export default function LoginPage() {
         <div className="space-y-3">
           <button
             onClick={handleGoogleLogin}
-            className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg border font-medium transition ${darkMode
-              ? "bg-gray-700 border-gray-600 hover:bg-gray-600 text-white"
-              : "bg-white border-gray-300 hover:bg-gray-50 text-gray-700"
-              }`}
+            className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg border font-medium transition ${
+              darkMode
+                ? "bg-gray-700 border-gray-600 hover:bg-gray-600 text-white"
+                : "bg-white border-gray-300 hover:bg-gray-50 text-gray-700"
+            }`}
           >
             <FaGoogle className="text-red-500" />
             {t('LoginPage.google')}
@@ -403,14 +394,16 @@ export default function LoginPage() {
 
         {/* Register */}
         <p
-          className={`text-sm text-center ${darkMode ? "text-gray-400" : "text-gray-600"
-            }`}
+          className={`text-sm text-center ${
+            darkMode ? "text-gray-400" : "text-gray-600"
+          }`}
         >
           {t('LoginPage.noAccount')}{" "}
           <Link
             href="/register"
-            className={`text-blue-500 hover:underline ${darkMode ? "hover:text-blue-400" : ""
-              }`}
+            className={`text-blue-500 hover:underline ${
+              darkMode ? "hover:text-blue-400" : ""
+            }`}
           >
             {t('LoginPage.createAccount')}
           </Link>
