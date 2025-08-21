@@ -62,7 +62,7 @@ export default function SecurityTab({ settings, handleChange }: SecurityTabProps
         user: {
           id: Uint8Array.from(user.id, (c) => c.charCodeAt(0)),
           name: user.email, 
-          displayName: user.name, 
+          displayName: user?.name, 
         },
         pubKeyCredParams: [{ type: "public-key", alg: -7 }],
         authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
