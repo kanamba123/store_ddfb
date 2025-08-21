@@ -38,18 +38,28 @@
       "imageUploadFailed": "❌ Ikosa mu kurungika amashusho. Gerageza wongere."
     }
   },
-  "sidebar": {
-    "dashboard": "Ibiro vy'ibanze",
-    "products": "Ibikoresho",
-    "sales": "Ugurisha",
-    "analytics": "Isesengura",
-    "orders": "Amabwirizwa",
-    "payments": "Amadeni",
-    "promotions": "Ubukangurambaga",
-    "reports": "Raporo",
-    "support_customers": "Gufasha abakiriya",
+  "navbar": {
+    "searchPlaceholder": "Rondera...",
+    "notifications": "Amatangazo",
+    "profile": "Umwidondoro",
     "settings": "Amagenamiterere",
-    "dashboardPro": "Ibiro vy'ibanze Pro",
-    "userProfile": "Umwidondoro w'umukoresha"
+    "logout": "Gusohoka",
+    "language": "Ururimi",
+    "theme": {
+      "light": "Uburyo bw’urumuri",
+      "dark": "Uburyo bw’ijoro"
+    },
+    "languageOptions": {
+      "en": "Icongereza",
+      "fr": "Igifaransa",
+      "es": "Ihesipanya"
+    }
+  },
+  "notifications": {
+    "newUser": "Umukoresha mushasha yiyandikishije",
+    "systemUpdate": "Ivugururwa rya sisiteme",
+    "ago5min": "Imitwe 5 iheze",
+    "ago1hour": "Isaha 1 iheze",
+    "viewAll": "Raba amatangazo yose"
   }
 }

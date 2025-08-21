@@ -20,6 +20,7 @@ import { getInitials } from "../utils/getInitials";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import i18n from '@/app/i18n';
+import { useTranslation } from 'react-i18next';
 import ListLanguage from "@/constants/ListLanguage";
 
 
@@ -33,7 +34,7 @@ export default function Navbar({ onToggleSidebar }) {
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
   const languageRef = useRef(null);
   const languageContext = useLanguage();
-
+  const { t } = useTranslation();
 
 
 
@@ -99,7 +100,7 @@ export default function Navbar({ onToggleSidebar }) {
               <Menu className="w-5 h-5 sm:w-6 sm:h-6 " />
             </button>
 
-        
+
             {/* Search bar */}
             <div
               className={`relative transition-all duration-200 ${isSearchOpen ? "flex-1" : "hidden md:flex"
@@ -110,7 +111,7 @@ export default function Navbar({ onToggleSidebar }) {
               </div>
               <input
                 type="text"
-                placeholder="Rechercher..."
+                placeholder={t('navbar.searchPlaceholder', 'Rechercher...')}
                 className="w-full md:w-64 lg:w-80 pl-9 sm:pl-10 pr-10 sm:pr-4 py-2 
                   bg-[var(--color-bg-secondary)]/50 
                   border border-[var(--color-border)] rounded-xl 
@@ -173,39 +174,45 @@ export default function Navbar({ onToggleSidebar }) {
               {/* Notifications dropdown */}
               {isNotificationOpen && (
                 <div className="absolute right-0 mt-2 w-72 sm:w-80 text-[var(--color-text-secondary)] bg-[var(--color-bg-primary)]/90  backdrop-blur-xl rounded-xl shadow-2xl border border-[var(--color-border)] z-50 max-h-96 overflow-hidden">
+                  {/* Header */}
                   <div className="p-3 sm:p-4 border-b border-[var(--color-border)]">
-                    <h3 className="font-semibold  text-sm sm:text-base">
-                      Notifications
+                    <h3 className="font-semibold text-sm sm:text-base">
+                      {t("navbar.notifications")}
                     </h3>
                   </div>
+
+                  {/* Notification List */}
                   <div className="max-h-64 overflow-y-auto">
-                    <div className="p-2 sm:p-3 hover:bg-[var(--color-bg-secondary)]/50  cursor-pointer border-b border-[var(--color-border)]/50">
+                    <div className="p-2 sm:p-3 hover:bg-[var(--color-bg-secondary)]/50 cursor-pointer border-b border-[var(--color-border)]/50">
                       <p className="text-xs sm:text-sm font-medium text-[var(--color-text-secondary)]">
-                        Nouveau utilisateur inscrit
+                        {t("notifications.newUser")} {/* 👈 clé à créer dans ton JSON */}
                       </p>
                       <p className="text-xs text-[var(--color-text-secondary)] mt-1">
-                        Il y a 5 minutes
+                        {t("notifications.ago5min")}
                       </p>
                     </div>
-                    <div className="p-2 sm:p-3 hover:bg-[var(--color-bg-secondary)]/50  cursor-pointer border-b border-[var(--color-border)]/50">
-                      <p className="text-xs sm:text-sm font-medium ">
-                        Mise à jour système
+                    <div className="p-2 sm:p-3 hover:bg-[var(--color-bg-secondary)]/50 cursor-pointer border-b border-[var(--color-border)]/50">
+                      <p className="text-xs sm:text-sm font-medium">
+                        {t("notifications.systemUpdate")}
                       </p>
                       <p className="text-xs text-[var(--color-text-secondary)] mt-1">
-                        Il y a 1 heure
+                        {t("notifications.ago1hour")}
                       </p>
                     </div>
                   </div>
+
+                  {/* Footer */}
                   <div className="p-2 sm:p-3 border-t border-[var(--color-border)]">
                     <Link
                       href="/notifications"
                       className="text-xs sm:text-sm text-[var(--color-primary-dark)] hover:text-[var(--color-primary-light)] font-medium"
                     >
-                      Voir toutes les notifications
+                      {t("notifications.viewAll")}
                     </Link>
                   </div>
                 </div>
               )}
+
             </div>
 
             {/* Language selector */}
@@ -279,7 +286,7 @@ export default function Navbar({ onToggleSidebar }) {
                     >
                       <User className="w-4 h-4 text-[var(--color-text-secondary)] " />
                       <span className="text-xs sm:text-sm text-[var(--color-text-primary)] ">
-                        Profil
+                        {t('navbar.profile', 'Profil')}
                       </span>
                     </Link>
                     <Link
@@ -288,7 +295,7 @@ export default function Navbar({ onToggleSidebar }) {
                     >
                       <Settings className="w-4 h-4 text-[var(--color-text-secondary)] " />
                       <span className="text-xs sm:text-sm text-[var(--color-text-primary)] ">
-                        Paramètres
+                        {t('navbar.settings', 'Paramètres')}
                       </span>
                     </Link>
                     <hr className="my-2 border-[var(--color-border)]" />
@@ -297,7 +304,7 @@ export default function Navbar({ onToggleSidebar }) {
                       className="w-full flex items-center space-x-2 p-2 sm:p-3 rounded-lg hover:bg-[var(--color-danger)]/10  transition-colors text-[var(--color-danger)]"
                     >
                       <LogOut className="w-4 h-4 flex-shrink-0" />
-                      <span className="text-xs sm:text-sm">Déconnexion</span>
+                      <span className="text-xs sm:text-sm">{t('navbar.logout', 'Deconnexion')}</span>
                     </button>
                   </div>
                 </div>

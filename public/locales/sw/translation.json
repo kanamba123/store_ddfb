@@ -12,5 +12,29 @@
     "settings": "Mipangilio",
     "dashboardPro": "Dashibodi Pro",
     "userProfile": "Profaili ya mtumiaji"
+  },
+  "navbar": {
+    "searchPlaceholder": "Tafuta...",
+    "notifications": "Taarifa",
+    "profile": "Profaili",
+    "settings": "Mipangilio",
+    "logout": "Kutoka",
+    "language": "Lugha",
+    "theme": {
+      "light": "Mwanga",
+      "dark": "Giza"
+    },
+    "languageOptions": {
+      "en": "Kiingereza",
+      "fr": "Kifaransa",
+      "es": "Kihispania"
+    }
+  },
+  "notifications": {
+    "newUser": "Mtumiaji mpya amejiandikisha",
+    "systemUpdate": "Sasisho la mfumo",
+    "ago5min": "Dakika 5 zilizopita",
+    "ago1hour": "Saa 1 iliyopita",
+    "viewAll": "Tazama taarifa zote"
   }
 }

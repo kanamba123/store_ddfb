@@ -51,5 +51,29 @@
     "settings": "Settings",
     "dashboardPro": "Pro Dashboard",
     "userProfile": "User Profile"
+  },
+  "navbar": {
+    "searchPlaceholder": "Search...",
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "language": "Language",
+    "theme": {
+      "light": "Light Mode",
+      "dark": "Dark Mode"
+    },
+    "languageOptions": {
+      "en": "English",
+      "fr": "French",
+      "es": "Spanish"
+    }
+  },
+  "notifications": {
+    "newUser": "New user registered",
+    "systemUpdate": "System update",
+    "ago5min": "5 minutes ago",
+    "ago1hour": "1 hour ago",
+    "viewAll": "View all notifications"
   }
 }

@@ -12,5 +12,29 @@
     "settings": "Paramètres",
     "dashboardPro": "Tableau de bord Pro",
     "userProfile": "Profil utilisateur"
+  },
+  "navbar": {
+    "searchPlaceholder": "Rechercher...",
+    "notifications": "Notifications",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "logout": "Déconnexion",
+    "language": "Langue",
+    "theme": {
+      "light": "Mode clair",
+      "dark": "Mode sombre"
+    },
+    "languageOptions": {
+      "en": "Anglais",
+      "fr": "Français",
+      "es": "Espagnol"
+    }
+  },
+  "notifications": {
+    "newUser": "Nouveau utilisateur inscrit",
+    "systemUpdate": "Mise à jour système",
+    "ago5min": "Il y a 5 minutes",
+    "ago1hour": "Il y a 1 heure",
+    "viewAll": "Voir toutes les notifications"
   }
 }
