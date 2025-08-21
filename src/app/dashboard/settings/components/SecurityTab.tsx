@@ -49,34 +49,21 @@ export default function SecurityTab({ settings, handleChange }: SecurityTabProps
       setBioMessage("Vous devez être connecté pour activer la biométrie ❌");
       return;
     }
-    
+
     try {
       setBioMessage(null);
 
       const challenge = new Uint8Array(32);
       crypto.getRandomValues(challenge);
 
-      // const publicKey: PublicKeyCredentialCreationOptions = {
-      //   challenge,
-      //   rp: { name: "MyApp" },
-      //   user: {
-      //     id: Uint8Array.from("123456789", (c) => c.charCodeAt(0)),
-      //     name: "john@example.com",
-      //     displayName: "John Doe",
-      //   },
-      //   pubKeyCredParams: [{ type: "public-key", alg: -7 }],
-      //   authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
-      //   timeout: 60000,
-      //   attestation: "direct",
-      // };
 
       const publicKey: PublicKeyCredentialCreationOptions = {
         challenge,
         rp: { name: "MyApp" },
         user: {
-          id: new TextEncoder().encode(user.id), // convertir string -> Uint8Array
-          name: user.email,
-          displayName: user.name,
+          id: new TextEncoder().encode(user?.id) ||Uint8Array.from("123456789", (c) => c.charCodeAt(0)), 
+          name: user?.email ||"john@example.com",
+          displayName: user?.name||"John Doe",
         },
         pubKeyCredParams: [{ type: "public-key", alg: -7 }],
         authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
