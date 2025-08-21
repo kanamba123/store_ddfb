@@ -88,7 +88,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div onClick={() => {
             handleRowClick(product)
         }
-        } className="bg-[var(--color-bg-primary)] rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-2 space-y-2">
+        } className="bg-[var(--color-bg-primary)] rounded-lg shadow-sm  p-2 space-y-2">
             {/* Header avec image et nom */}
             <div className="flex items-start space-x-3">
                 <div className="flex-shrink-0">
