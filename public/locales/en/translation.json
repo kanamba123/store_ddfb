@@ -112,7 +112,7 @@
   "LoginPage": {
     "title": "Login",
     "email": "Email",
-    "emailPlaceholder": "your@email.com",
+    "emailPlaceholder": "win2cop@email.com",
     "password": "Password",
     "forgotPassword": "Forgot password?",
     "accept": "I accept the",

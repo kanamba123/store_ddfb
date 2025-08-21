@@ -73,7 +73,7 @@
   "LoginPage": {
     "title": "Connexion",
     "email": "Email",
-    "emailPlaceholder": "votre@email.com",
+    "emailPlaceholder": "win2cop@email.com",
     "password": "Mot de passe",
     "forgotPassword": "Mot de passe oublié ?",
     "accept": "J'accepte les",
