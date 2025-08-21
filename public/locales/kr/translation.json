@@ -40,15 +40,15 @@
   },
   "sidebar": {
     "dashboard": "Ibiro vy'ibanze",
-    "products": "Ibikoresho",
+    "products": "Ibicuruzwa",
     "sales": "Ugurisha",
-    "analytics": "Isesengura",
+    "analytics": "Umwihwezo",
     "orders": "Amabwirizwa",
-    "payments": "Amadeni",
+    "payments": "Ibijanye no kuriha",
     "promotions": "Ubukangurambaga",
     "reports": "Raporo",
     "support_customers": "Gufasha abakiriya",
-    "settings": "Amagenamiterere",
+    "settings": "Gutunganya ibirimwo",
     "dashboardPro": "Ibiro vy'ibanze Pro",
     "userProfile": "Umwidondoro w'umukoresha"
   },
@@ -56,7 +56,7 @@
     "searchPlaceholder": "Rondera...",
     "notifications": "Amatangazo",
     "profile": "Umwidondoro",
-    "settings": "Amagenamiterere",
+    "settings": "Gutunganya ibirimwo",
     "logout": "Gusohoka",
     "language": "Ururimi",
     "theme": {
