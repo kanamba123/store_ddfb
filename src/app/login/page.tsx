@@ -167,7 +167,7 @@ export default function LoginPage() {
         router.push("/dashboard");
       }
     } catch (err: any) {
-      setErrorMsg(err.message || t('errors.fingerprintFailed'));
+      // setErrorMsg(err.message || t('errors.fingerprintFailed'));
     } finally {
       setLoading(false);
     }
