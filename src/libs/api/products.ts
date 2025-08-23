@@ -36,7 +36,7 @@ export const updateVariant = async (id: number, formData: FormData) => {
 
 // Récupère une variante par son ID
 export const getVariantById = async (id: string | number) => {
-  const { data } = await API.get(`/variantesProduits/${id}`);
+  const { data } = await API.get(`/variantesProduits/byStore/${id}`);
   return data ;
 };
 

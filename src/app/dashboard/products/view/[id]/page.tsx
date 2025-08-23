@@ -3,22 +3,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ArrowLeft, Edit, Trash2, Share2, QrCode, Eye, EyeOff, Tag, Package, Calendar, BarChart3, Settings, Copy, Download, AlertCircle } from 'lucide-react';
 import { useParams, useRouter } from "next/navigation";
-import { getVariantById, deleteVariant } from "@/libs/api/products";
+import { getVariantById, deleteVariant, fetchProductCategories } from "@/libs/api/products";
 import { VariantsProduct } from '@/types/VariantsProduct';
+import TdCustomViewEdit from '@/components/ui/TdCustomViewEdit';
+import ItemViewer from '@/components/ui/ItemViewer';
+import EditForeignViewEdit from '@/components/ui/EditForeignViewEdit';
+import SimpleDataManyPhotosEdit from '@/components/ui/SimpleDataManyPhotosEdit';
+import { variantTypes } from '@/constants/variantTypes';
+import { Product } from '@/types/Product';
+import TdDynJSOBCustomGrid from '@/components/ui/TdDynJSOBCustomGrid';
 
 interface Specification {
   [key: string]: string;
 }
 
-interface Product {
-  productName: string;
-  description: {
-    en: string;
-    fr: string;
-    sw: string;
-    kir: string;
-  };
-}
 
 interface VariantData {
   id: number;
@@ -37,6 +35,7 @@ interface VariantData {
   isDisplay: boolean;
   Product: Product;
   promotion: any;
+  productId: number;
 }
 
 const ProductDetailBackoffice = () => {
@@ -46,14 +45,16 @@ const ProductDetailBackoffice = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [variant, setVariant] = useState<VariantData | null>(null);
+  const [data, setData] = useState<Product[]>([])
   const [showQR, setShowQR] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
+  const dataendPoint = "variantesProduits";
 
   const loadVariant = useCallback(async () => {
     if (!id) return;
-    
+
     try {
       setLoading(true);
       const variantData = await getVariantById(id as string);
@@ -70,6 +71,18 @@ const ProductDetailBackoffice = () => {
   useEffect(() => {
     loadVariant();
   }, [loadVariant]);
+
+  useEffect(() => {
+    const loadProduct = async () => {
+      try {
+        const dataProduct = await fetchProductCategories()
+        setData(dataProduct)
+      } catch (error) {
+        console.error(error)
+      }
+    }
+    loadProduct()
+  }, [])
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('fr-FR', {
@@ -88,7 +101,7 @@ const ProductDetailBackoffice = () => {
 
   const handleDelete = async () => {
     if (!variant) return;
-    
+
     try {
       setDeleting(true);
       await deleteVariant(variant.id);
@@ -102,51 +115,55 @@ const ProductDetailBackoffice = () => {
     }
   };
 
+  const handleSave = (updatedVariant: any) => {
+    // updateMutation.mutate(updatedVariant);
+  };
+
   const copyShareLink = () => {
     navigator.clipboard.writeText(shareUrl);
-     const shareData = {
-            title: variant!.variantProductName,
-            text: `Découvrez ${variant!.variantProductName} à ${variant!.recommendedPrice} fbu`,
-            url: `https://win2cop.com/products/${variant!.slug}/${variant!.id}`,
-        };
+    const shareData = {
+      title: variant!.variantProductName,
+      text: `Découvrez ${variant!.variantProductName} à ${variant!.recommendedPrice} fbu`,
+      url: `https://win2cop.com/products/${variant!.slug}/${variant!.id}`,
+    };
 
-        if (navigator.share) {
-            // Mobile / navigateur supporté
-            navigator.share(shareData).catch(console.error);
-        } else {
-            // Desktop fallback
-            const shareText = `${shareData.text}\n${shareData.url}`;
+    if (navigator.share) {
+      // Mobile / navigateur supporté
+      navigator.share(shareData).catch(console.error);
+    } else {
+      // Desktop fallback
+      const shareText = `${shareData.text}\n${shareData.url}`;
 
-            // Copier le lien dans le presse-papiers
-            navigator.clipboard.writeText(shareText)
-                .then(() => alert("Lien copié dans le presse-papiers !"))
-                .catch(() => {
-                    // fallback plus ancien
-                    const textArea = document.createElement('textarea');
-                    textArea.value = shareText;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textArea);
-                    alert("Lien copié dans le presse-papiers !");
-                });
+      // Copier le lien dans le presse-papiers
+      navigator.clipboard.writeText(shareText)
+        .then(() => alert("Lien copié dans le presse-papiers !"))
+        .catch(() => {
+          // fallback plus ancien
+          const textArea = document.createElement('textarea');
+          textArea.value = shareText;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          alert("Lien copié dans le presse-papiers !");
+        });
 
-            // Ouvrir un mini menu de partage dans de nouveaux onglets
-            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
-            const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}`;
-            const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareData.url)}&text=${encodeURIComponent(shareText)}`;
+      // Ouvrir un mini menu de partage dans de nouveaux onglets
+      const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}`;
+      const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareData.url)}&text=${encodeURIComponent(shareText)}`;
 
-            // Exemple : ouvrir WhatsApp dans un nouvel onglet
-            const userChoice = window.prompt("Partager sur :\n1 = WhatsApp\n2 = Facebook\n3 = Telegram\nEntrez le numéro :");
-            if (userChoice === "1") window.open(whatsappUrl, "_blank");
-            if (userChoice === "2") window.open(facebookUrl, "_blank");
-            if (userChoice === "3") window.open(telegramUrl, "_blank");
-        }
+      // Exemple : ouvrir WhatsApp dans un nouvel onglet
+      const userChoice = window.prompt("Partager sur :\n1 = WhatsApp\n2 = Facebook\n3 = Telegram\nEntrez le numéro :");
+      if (userChoice === "1") window.open(whatsappUrl, "_blank");
+      if (userChoice === "2") window.open(facebookUrl, "_blank");
+      if (userChoice === "3") window.open(telegramUrl, "_blank");
+    }
   };
 
   const downloadQRCode = () => {
     if (!variant) return;
-    
+
     const link = document.createElement('a');
     link.download = `qr-code-${variant.productCode}.png`;
     link.href = variant.qrCode;
@@ -155,7 +172,7 @@ const ProductDetailBackoffice = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] flex items-center justify-center p-4">
+      <div className=" bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] flex items-center justify-center p-4">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-[var(--color-text-primary)]">Chargement du produit...</p>
@@ -166,11 +183,11 @@ const ProductDetailBackoffice = () => {
 
   if (error || !variant) {
     return (
-      <div className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] flex items-center justify-center p-4">
+      <div className=" bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] flex items-center   justify-center p-4">
         <div className="text-center max-w-md">
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
           <p className="text-red-600 dark:text-red-400 text-xl mb-4">{error || "Produit non trouvé"}</p>
-          <button 
+          <button
             onClick={() => router.push("/products")}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors w-full sm:w-auto"
           >
@@ -184,13 +201,13 @@ const ProductDetailBackoffice = () => {
   const specificationsArray = getSpecificationsArray(variant.specifications);
 
   return (
-    <div className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
+    <div className=" bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] overflow-y-auto max-h-full">
       {/* Header Admin */}
-      <div className="sticky top-0 z-50 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] shadow-sm border-b border-gray-200 dark:border-gray-700">
+      <div className="sticky top-0 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-2 sm:space-x-4">
-              <button 
+              <button
                 onClick={() => router.push("/dashboard/products")}
                 className="flex items-center space-x-1 sm:space-x-2 text-[var(--color-text-primary)] hover:text-gray-900 dark:hover:text-white transition-colors p-1 sm:p-0"
               >
@@ -202,33 +219,33 @@ const ProductDetailBackoffice = () => {
                 Détail du Produit
               </h1>
             </div>
-            
+
             <div className="flex items-center space-x-1 sm:space-x-2">
-              <button 
+              <button
                 onClick={() => setShowQR(true)}
                 className="p-1 sm:p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                 title="Voir QR Code"
               >
                 <QrCode className="w-5 h-5" />
               </button>
-              
-              <button 
+
+              <button
                 onClick={copyShareLink}
                 className="p-1 sm:p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
                 title="Copier le lien de partage"
               >
                 <Share2 className="w-5 h-5" />
               </button>
-              
-              <button 
+
+              <button
                 onClick={() => router.push(`/products/edit/${variant.id}`)}
                 className="flex items-center space-x-1 bg-blue-600 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
               >
                 <Edit className="w-4 h-4" />
                 <span className="hidden sm:inline">Modifier</span>
               </button>
-              
-              <button 
+
+              <button
                 onClick={() => setShowDeleteModal(true)}
                 className="flex items-center space-x-1 bg-red-600 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-lg hover:bg-red-700 transition-colors text-sm sm:text-base"
               >
@@ -320,7 +337,7 @@ const ProductDetailBackoffice = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-[var(--color-bg-primary)] rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
             <div className="flex items-center">
               <div className="p-1 sm:p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
@@ -332,7 +349,7 @@ const ProductDetailBackoffice = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-[var(--color-bg-primary)] rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
             <div className="flex items-center">
               <div className="p-1 sm:p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
@@ -344,12 +361,12 @@ const ProductDetailBackoffice = () => {
               </div>
             </div>
           </div>
-          
+
           <div className="bg-[var(--color-bg-primary)] rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
             <div className="flex items-center">
               <div className="p-1 sm:p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
-                {variant.isDisplay ? 
-                  <Eye className="w-4 sm:w-6 h-4 sm:h-6 text-green-600 dark:text-green-400" /> : 
+                {variant.isDisplay ?
+                  <Eye className="w-4 sm:w-6 h-4 sm:h-6 text-green-600 dark:text-green-400" /> :
                   <EyeOff className="w-4 sm:w-6 h-4 sm:h-6 text-red-600 dark:text-red-400" />
                 }
               </div>
@@ -366,78 +383,87 @@ const ProductDetailBackoffice = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {/* Images Gallery */}
           <div className="space-y-3 sm:space-y-4">
-            <div className="bg-[var(--color-bg-primary)] rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm">
-              <h3 className="text-base sm:text-lg font-semibold text-[var(--color-text-primary)] mb-3 sm:mb-4">Galerie d'images</h3>
-              
-              <div className="relative group mb-3 sm:mb-4">
-                <div className="aspect-square bg-gray-100 dark:bg-gray-700 rounded-lg sm:rounded-xl overflow-hidden">
-                  <img
-                    src={variant.image[selectedImageIndex] || variant.image[0]}
-                    alt={variant.variantProductName}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                
-                <div className="absolute top-2 sm:top-4 left-2 sm:left-4 flex space-x-1 sm:space-x-2">
-                  {variant.isPromotion && (
-                    <span className="bg-red-500 text-white px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-xs font-medium">
-                      PROMO
-                    </span>
-                  )}
-                  <span className="bg-blue-600/90 text-white px-1.5 sm:px-2 py-0.5 sm:py-1 rounded text-xs font-medium">
-                    {variant.variantType.toUpperCase()}
-                  </span>
-                </div>
-              </div>
-              
-              {variant.image.length > 1 && (
-                <div className="flex space-x-2 overflow-x-auto pb-1 sm:pb-2">
-                  {variant.image.map((image, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setSelectedImageIndex(index)}
-                      className={`flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded overflow-hidden transition-all duration-200 ${
-                        selectedImageIndex === index
-                          ? 'ring-2 ring-blue-500 scale-105'
-                          : 'hover:scale-105 opacity-70 hover:opacity-100'
-                      }`}
-                    >
-                      <img src={image} alt={`Vue ${index + 1}`} className="w-full h-full object-cover" />
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
+
+            {/* ✅ Composant modifiable */}
+            <SimpleDataManyPhotosEdit
+              id={variant.id}
+              field="image"
+              value={variant?.image}
+              onSave={handleSave}
+              endpoint={dataendPoint}
+              editable={true}
+              forder="variantes_products"
+              namePitch="photo_variantes_products_modified"
+              suffixName={variant.variantProductName}
+            />
           </div>
 
           {/* Product Info */}
           <div className="space-y-3 sm:space-y-4">
             <div className="bg-[var(--color-bg-primary)] rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm">
               <h3 className="text-base sm:text-lg font-semibold text-[var(--color-text-primary)] mb-3 sm:mb-4">Informations générales</h3>
-              
+
               <div className="space-y-3 sm:space-y-4">
                 <div>
                   <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Nom du produit</label>
-                  <p className="text-sm sm:text-lg font-semibold text-[var(--color-text-primary)]">{variant.variantProductName}</p>
+                  {/* <p className="text-sm sm:text-lg font-semibold text-[var(--color-text-primary)]">{variant.variantProductName}</p> */}
+                  <div className="text-sm sm:text-lg font-semibold text-[var(--color-text-primary)]">
+                    <TdCustomViewEdit
+                      id={variant.id}
+                      field="sellingPrice"
+                      value={variant?.variantProductName}
+                      endpoint={dataendPoint}
+                      editable
+                      useDialog
+                      onSave={handleSave}
+                    />
+                  </div>
+
                 </div>
-                
+
                 <div>
                   <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Catégorie</label>
-                  <p className="text-[var(--color-text-primary)] text-sm sm:text-base">{variant.Product.productName}</p>
+                  <EditForeignViewEdit
+                    id={variant.id}
+                    itemValue={variant?.productId}
+                    endpoint={dataendPoint}
+                    field="productId"
+                    onSave={handleSave}
+                    options={data}
+                    editable={true}
+                    labelField="productName"
+                  />
                 </div>
-                
+
                 <div>
                   <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Type</label>
                   <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">
-                    {variant.variantType}
+                    <ItemViewer
+                      id={variant.id}
+                      itemValue={variant?.variantType}
+                      endpoint={dataendPoint}
+                      field="status"
+                      options={variantTypes}
+                      onSave={handleSave}
+                    />
                   </span>
                 </div>
-                
+
                 <div>
                   <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Prix recommandé</label>
-                  <p className="text-lg sm:text-2xl font-bold text-green-600 dark:text-green-400">{formatPrice(variant.recommendedPrice)}</p>
+                  <div className="text-lg sm:text-2xl font-bold text-green-600 dark:text-green-400">
+                    <TdCustomViewEdit
+                      id={variant.id}
+                      field="sellingPrice"
+                      value={formatPrice(variant?.recommendedPrice)}
+                      endpoint={dataendPoint}
+                      editable
+                      useDialog
+                      onSave={handleSave}
+                    />
+                  </div>
                 </div>
-                
+
                 <div>
                   <label className="text-xs sm:text-sm font-medium ">Slug URL</label>
                   <p className="text-[var(--color-text-primary)] font-mono text-xs sm:text-sm  px-2 py-1 rounded truncate">
@@ -446,7 +472,7 @@ const ProductDetailBackoffice = () => {
                 </div>
               </div>
             </div>
-            
+
             {/* Description */}
             <div className="bg-[var(--color-bg-primary)] rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm">
               <h3 className="text-base sm:text-lg font-semibold text-[var(--color-text-primary)] mb-3 sm:mb-4">Description</h3>
@@ -462,32 +488,14 @@ const ProductDetailBackoffice = () => {
         </div>
 
         {/* Specifications */}
-        <div className="mt-6 sm:mt-8">
-          <div className="bg-[var(--color-bg-primary)] rounded-xl sm:rounded-2xl shadow-sm overflow-hidden">
-            <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="text-base sm:text-lg font-semibold text-[var(--color-text-primary)]">Spécifications techniques</h3>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-0">
-              {specificationsArray.map((spec, index) => (
-                <div
-                  key={index}
-                  className={`p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700 ${
-                    index % 2 === 0 ? 'sm:border-r bg-gray-50/50 dark:bg-gray-700/30' : 'bg-[var(--color-bg-primary)]'
-                  } ${index >= specificationsArray.length - (specificationsArray.length % 2 === 0 ? 2 : 1) ? 'border-b-0' : ''}`}
-                >
-                  <div className="flex justify-between items-start">
-                    <dt className="font-medium text-[var(--color-text-primary)] flex-shrink-0 mr-2 sm:mr-4 text-xs sm:text-sm">
-                      {spec.key}
-                    </dt>
-                    <dd className="font-medium text-[var(--color-text-primary)] text-right text-xs sm:text-sm break-all">
-                      {spec.value}
-                    </dd>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <TdDynJSOBCustomGrid
+          id={variant.id}
+          field="specifications"
+          value={variant?.specifications}
+          endpoint={dataendPoint}
+          editable
+          onSave={handleSave}
+        />
       </div>
     </div>
   );

@@ -138,7 +138,7 @@ export default function Sidebar({ isOpen, onClose }) {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-2 sm:p-2 space-y-1 sm:space-y-2">
+        <nav className="flex-1 p-2 sm:p-2 space-y-1 sm:space-y-2 overflow-y-auto max-h-full">
           {sidebarLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href;
