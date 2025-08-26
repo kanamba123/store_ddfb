@@ -24,8 +24,8 @@
       "specificationValue": "Agaciro"
     },
     "options": {
-      "product": "Igicuruzwa",
-      "accessory": "Igikoresho"
+      "product": "Igicuruzwa nyamukuru",
+      "accessory": "Igiciruzwa y'inyongerako"
     },
     "buttons": {
       "submitting": "⏳ Biriko birungikwa...",
@@ -134,7 +134,7 @@
     }
   },
   "SearchableSelect": {
-    "searchPlaceholder": "Rondera...",
+    "searchPlaceholder": "Cagura kurutonde cank urondera...",
     "result": "Ntanyishu yabonetse"
   },
   "AddKeyValuePairs": {

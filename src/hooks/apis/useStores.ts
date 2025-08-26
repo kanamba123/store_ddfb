@@ -8,8 +8,10 @@ export const fetchStoreWithUserDetails = async (ownerId: string) => {
   });
   return data;
 };
-const fetchStores = async () => {
-  const response = await API.get(`/stores/shops-dashboard-select`);
+
+// Fetch stores for condition filters (e.g., dropdowns) )
+const fetchStoresByConditionFilters = async () => {
+  const response = await API.get(`/stores/visibles`);
   return response.data;
 };
 
@@ -18,10 +20,10 @@ const fetchStoreDetail = async (id:string) => {
   return response.data;
 };
 
-export const useStores = () => {
+export const useFetchStoresByConditionFilters = () => {
   return useQuery({
     queryKey: ["stores"],
-    queryFn: fetchStores,
+    queryFn: fetchStoresByConditionFilters,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });

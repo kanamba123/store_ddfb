@@ -5,7 +5,7 @@ import { fetchProductCategories } from "@/libs/api/products"
 import { useCreateVariantProduct } from "@/hooks/apis/useVariants"
 import ImageUploader from "@/components/ui/ImageUploader"
 import AddKeyValuePairs from "@/components/ui/AddKeyValuePairs"
-import { useStores } from "@/hooks/apis/useStores"
+import { useFetchStoresByConditionFilters } from "@/hooks/apis/useStores"
 import { Product } from "@/types/Product"
 import { StoreData } from "@/types/registration"
 import { uploadMultipleImagesToFirebase } from "@/services/uploadMultipleImagesToFirebase"
@@ -63,7 +63,7 @@ const Select = ({
 )
 
 export default function UploadVariantForm() {
-  const { data: store = [] } = useStores();
+  const { data: store = [] } = useFetchStoresByConditionFilters();
   const useMutation = useCreateVariantProduct();
   const [submitting, setSubmitting] = useState(false)
   const [data, setData] = useState<Product[]>([])
