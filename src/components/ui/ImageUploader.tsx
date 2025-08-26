@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { X } from "lucide-react";
 import Image from "next/image";
+import { useTranslation } from 'react-i18next';
 
 interface ImageUploaderProps {
   onImagesChange: (files: File[]) => void;
@@ -10,6 +11,7 @@ interface ImageUploaderProps {
 const ImageUploader = ({ onImagesChange }: ImageUploaderProps) => {
   const [images, setImages] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const { t } = useTranslation();
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files || event.target.files.length === 0) return;
@@ -39,7 +41,7 @@ const ImageUploader = ({ onImagesChange }: ImageUploaderProps) => {
   return (
     <div className="flex flex-col gap-2">
       <label className="text-sm font-semibold text-blue-600 dark:text-blue-400">
-        Upload Images
+        {t('ImageUploader.uploadImages')}
       </label>
 
       <input

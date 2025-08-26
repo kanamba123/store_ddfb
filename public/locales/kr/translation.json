@@ -4,32 +4,32 @@
     "chooseOption": "-- Hitamwo --"
   },
   "uploadVariantForm": {
-    "title": "Ongerako ubundi bwoko bw'igicuruzwa",
-    "successMessage": "✅ Ubundi bwoko bwashizweko neza!",
+    "title": "Gushirako ikidandazwa",
+    "successMessage": "✅ Igicuruzwa mwagishizemwo neza!",
     "labels": {
       "store": "Iduka ry'igicuruzwa",
-      "variantName": "Izina ry'ubundi bwoko",
+      "variantName": "Izina ry'igicuruzwa",
       "variantType": "Ubwoko",
       "description": "Insiguro",
-      "product": "Igicuruzwa",
+      "product": "Cagura ubwoko bw'igicuruzwa",
       "purchasePrice": "Igiciro co kugura",
-      "specifications": "Ibisobanuro vy'ibikoresho",
+      "specifications": "Kudondora ibigize igiciruzwa",
       "images": "Amashusho"
     },
     "placeholders": {
-      "variantName": "Izina ry'ubundi bwoko",
-      "description": "Insiguro irambuye y'igicuruzwa...",
-      "purchasePrice": "Urugero: 1200.00",
+      "variantName": "Izina ry'igicuruzwa",
+      "description": "Insiguro  y'igicuruzwa...",
+      "purchasePrice": "Akarorero: 1200.00",
       "specificationName": "Izina ry'igisobanuro",
       "specificationValue": "Agaciro"
     },
     "options": {
       "product": "Igicuruzwa",
-      "accessory": "Ikindi kinyongera"
+      "accessory": "Igikoresho"
     },
     "buttons": {
       "submitting": "⏳ Biriko birungikwa...",
-      "submit": "✅ Shiramwo ubundi bwoko"
+      "submit": "Birunguke"
     },
     "errors": {
       "failedLoadProducts": "Ntivyashobotse kurungika ibicuruzwa",
@@ -132,5 +132,18 @@
       "noFingerprintUser": "Nta mukoresha yanditse kuri biometrics.",
       "fingerprintFailed": "Kwinjira ukoresheje ikimenyetso c’akiganza kwabaye ikibazo."
     }
+  },
+  "SearchableSelect": {
+    "searchPlaceholder": "Rondera...",
+    "result": "Ntanyishu yabonetse"
+  },
+  "AddKeyValuePairs": {
+    "add":"Ongereza",
+    "added":"Ivyo mwashizemwo",
+    "delete":"Gufuta",
+    "require":"Ni ngombwa kuzuza"
+  },
+  "ImageUploader":{
+    "uploadImages":"Gushiramwo amashusho"
   }
 }

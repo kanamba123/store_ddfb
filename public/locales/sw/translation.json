@@ -93,5 +93,18 @@
       "noFingerprintUser": "Hakuna mtumiaji aliyesajiliwa kwa uthibitishaji wa kibayometri.",
       "fingerprintFailed": "Uthibitishaji wa alama ya kidole umeshindikana."
     }
+  },
+  "SearchableSelect": {
+    "searchPlaceholder": "Tafuta",
+    "result": "Hakuna jibu "
+  },
+  "AddKeyValuePairs": {
+    "add": "Ongeza",
+    "added": "Added",
+    "delete": "Futa",
+    "require": "Hiyi ni lazima"
+  },
+  "ImageUploader": {
+    "uploadImages": "Pakia picha"
   }
 }

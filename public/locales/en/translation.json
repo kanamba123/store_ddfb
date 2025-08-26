@@ -132,5 +132,18 @@
       "noFingerprintUser": "No user registered for biometric authentication.",
       "fingerprintFailed": "Fingerprint authentication failed."
     }
+  },
+  "SearchableSelect": {
+    "searchPlaceholder": "Search...",
+    "result": "Empty result"
+  },
+  "AddKeyValuePairs": {
+    "add": "Add",
+    "added": "Added",
+    "delete": "Delete",
+    "require": "This field is require"
+  },
+  "ImageUploader": {
+    "uploadImages": "Upload Images"
   }
 }

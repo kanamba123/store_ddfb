@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface SelectProps {
   label: string;
@@ -20,6 +21,7 @@ const SearchableSelect: React.FC<SelectProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   // Filtrer les options basées sur la recherche
   const filteredOptions = options.filter(option =>
@@ -59,7 +61,7 @@ const SearchableSelect: React.FC<SelectProps> = ({
             setSearchTerm(e.target.value);
           }}
           onClick={() => setIsOpen(!isOpen)}
-          placeholder="Rechercher..."
+          placeholder={t('SearchableSelect.searchPlaceholder')}
           readOnly={!isOpen}
         />
         <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
@@ -88,7 +90,7 @@ const SearchableSelect: React.FC<SelectProps> = ({
               </div>
             ))
           ) : (
-            <div className="px-4 py-2 text-gray-500">Aucun résultat trouvé</div>
+            <div className="px-4 py-2 text-gray-500">{t('SearchableSelect.result')}</div>
           )}
         </div>
       )}

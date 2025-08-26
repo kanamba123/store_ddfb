@@ -93,5 +93,18 @@
       "noFingerprintUser": "Aucun utilisateur enregistré pour l'authentification biométrique.",
       "fingerprintFailed": "Échec de l'authentification par empreinte."
     }
+  },
+  "SearchableSelect": {
+    "searchPlaceholder": "Chercher...",
+    "result": "Aucun resultat trouvé"
+  },
+  "AddKeyValuePairs": {
+    "add": "Ajouter",
+    "added": "Ajoutés",
+    "delete": "Suprimer",
+    "require": "Ce champs est obligatoire"
+  },
+  "ImageUploader": {
+    "uploadImages": "Télécharger une image"
   }
 }

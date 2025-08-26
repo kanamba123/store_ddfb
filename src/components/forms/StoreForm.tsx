@@ -94,20 +94,20 @@ export const StoreForm: React.FC<StoreFormProps> = ({
     w-full px-4 py-3 rounded-lg border-2 transition-all
     ${
       errors[fieldName]
-        ? "border-red-300 bg-red-50 focus:border-red-500 dark:bg-red-900/20 dark:border-red-700"
-        : "border-gray-200 focus:border-blue-500 focus:bg-blue-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:bg-gray-600"
+        ? "border-red-300 bg-[var(--color-bg-primary)] focus:border-red-500  dark:border-red-700"
+        : "border-gray-200 focus:border-blue-500  dark:border-gray-600  "
     }
     focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-blue-500
     dark:placeholder-gray-400
   `;
 
   return (
-    <div className="max-w-4xl mx-auto p-4 sm:p-6 bg-white rounded-xl shadow-lg dark:bg-gray-800 transition-colors duration-300">
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] rounded-xl shadow-lg  transition-colors duration-300">
       <div className="mb-6 sm:mb-8">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-2">
+        <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)]">
           Informations du magasin
         </h2>
-        <p className="text-gray-600 dark:text-gray-300">
+        <p className="">
           Configurez les détails de votre magasin
         </p>
       </div>
@@ -118,7 +118,7 @@ export const StoreForm: React.FC<StoreFormProps> = ({
           <div>
             <label
               htmlFor="storeName"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2"
             >
               Nom du magasin *
             </label>
@@ -142,7 +142,7 @@ export const StoreForm: React.FC<StoreFormProps> = ({
           <div>
             <label
               htmlFor="storeType"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2"
             >
               Type de magasin *
             </label>
@@ -151,7 +151,7 @@ export const StoreForm: React.FC<StoreFormProps> = ({
               name="storeType"
               value={formData.storeType}
               onChange={handleChange}
-              className={inputClasses("storeType")}
+              className={`bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] ${inputClasses("storeType")}`}
               required
             >
               <option value="retail">Commerce de détail</option>
@@ -172,7 +172,7 @@ export const StoreForm: React.FC<StoreFormProps> = ({
           <div>
             <label
               htmlFor="nif"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2"
             >
               NIF
             </label>
@@ -190,7 +190,7 @@ export const StoreForm: React.FC<StoreFormProps> = ({
           <div>
             <label
               htmlFor="rc"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2"
             >
               RC
             </label>
@@ -212,7 +212,7 @@ export const StoreForm: React.FC<StoreFormProps> = ({
         <div>
           <label
             htmlFor="storeAddress"
-            className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+            className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2"
           >
             Adresse du magasin
           </label>
@@ -232,7 +232,7 @@ export const StoreForm: React.FC<StoreFormProps> = ({
           <div>
             <label
               htmlFor="city"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2"
             >
               Ville *
             </label>
@@ -256,7 +256,7 @@ export const StoreForm: React.FC<StoreFormProps> = ({
           <div>
             <label
               htmlFor="country"
-              className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+              className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2"
             >
               Pays *
             </label>
@@ -280,7 +280,7 @@ export const StoreForm: React.FC<StoreFormProps> = ({
 
         {/* Contact Phones */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2">
             Téléphones de contact
           </label>
           {formData.storeContactPhone?.map((phone, index) => (
@@ -319,7 +319,7 @@ export const StoreForm: React.FC<StoreFormProps> = ({
         <div>
           <label
             htmlFor="storeDescription"
-            className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2"
+            className="block text-sm font-semibold text-[var(--color-text-primary)] mb-2"
           >
             Description du magasin
           </label>

@@ -170,7 +170,7 @@ export default function RegisterPage() {
 
     return (
       <div className="mb-8 overflow-x-auto">
-        <div className="flex items-center justify-start md:justify-center min-w-max">
+        <div className="flex items-center bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] justify-start md:justify-center min-w-max">
           {steps.map((step, index) => (
             <div key={step.key} className="flex items-center">
               <div
@@ -219,7 +219,7 @@ export default function RegisterPage() {
   const TermsCheckbox = () => {
     return (
       <div className="max-w-2xl mx-auto mb-6">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+        <div className="bg-[var(--color-bg-primary)] rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
           <div className="flex items-start space-x-3">
             <div className="flex items-center h-5">
               <input
@@ -236,10 +236,10 @@ export default function RegisterPage() {
               />
             </div>
             <div className="text-sm">
-              <label htmlFor="terms-checkbox" className="font-medium text-gray-900 dark:text-gray-300">
+              <label htmlFor="terms-checkbox" className="font-medium text-[var(--color-text-primary)]">
                 J'accepte les conditions d'utilisation et la politique de confidentialité
               </label>
-              <p className="text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-[var(--color-text-primary)] mt-1">
                 En cochant cette case, vous acceptez nos{" "}
                 <a 
                   href="/terms-of-service" 
@@ -268,14 +268,14 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-8 md:py-12 px-2 sm:px-6">
+    <div className="min-h-screen bg-gradient-to-br bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] py-8 md:py-12 px-2 sm:px-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8 md:mb-12">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 dark:text-white mb-3 md:mb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold  text-[var(--color-text-primary)] mb-3 md:mb-4">
             Créer votre magasin
           </h1>
-          <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-lg sm:text-xl  max-w-2xl mx-auto">
             Rejoignez notre plateforme en quelques étapes simples. Créez votre
             compte et configurez votre magasin.
           </p>
@@ -315,7 +315,7 @@ export default function RegisterPage() {
 
         {/* Success messages */}
         {successMessage && (
-          <div className="max-w-2xl mx-auto mb-6 p-4 bg-green-50 dark:bg-green-900/20 border-l-4 border-green-400 dark:border-green-500 rounded-lg">
+          <div className="max-w-2xl mx-auto mb-6 p-4 bg-[var(--color-bg-primary)] border-l-4 border-green-400 dark:border-green-500 rounded-lg">
             <div className="flex">
               <div className="flex-shrink-0">
                 <svg

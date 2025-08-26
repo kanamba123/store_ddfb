@@ -171,10 +171,9 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
     w-full px-4 py-3 rounded-lg border-2 transition-all
     ${errors[fieldName]
       ? "border-red-300 bg-red-50 focus:border-red-500 dark:bg-red-900/20 dark:border-red-700"
-      : "border-gray-200 focus:border-blue-500 focus:bg-blue-50 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:focus:border-blue-400 dark:focus:bg-gray-600"
+      : "border-gray-200 focus:border-blue-500  dark:border-gray-600   "
     }
-    focus:outline-none focus:ring-2 focus:ring-opacity-20 focus:ring-blue-500
-    dark:placeholder-gray-400
+    focus:outline-none focus:ring-2 focus:ring-opacity-20 
   `;
 
   const isPasswordValid = formData.password.length >= 8;
@@ -184,15 +183,15 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
     formData.confirmPassword.length > 0 && !doPasswordsMatch;
 
   return (
-    <div className="max-w-2xl mx-auto p-2 sm:p-6 bg-white rounded-xl shadow-lg dark:bg-gray-800 transition-colors duration-300 relative">
+    <div className="max-w-2xl mx-auto p-2 sm:p-6 bg-[var(--color-bg-primary)] rounded-xl shadow-lg  transition-colors duration-300 relative">
       {/* Exit Confirmation Modal */}
       {showExitModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-700 p-6 rounded-lg shadow-xl max-w-md w-full">
+          <div className="bg-[var(--color-bg-primary)] p-6 rounded-lg shadow-xl max-w-md w-full">
             <h3 className="text-lg font-semibold mb-4 dark:text-white">
               Leave this page?
             </h3>
-            <p className="mb-6 text-gray-600 dark:text-gray-300">
+            <p className="mb-6 ">
               Your changes will not be saved. Are you sure you want to leave?
             </p>
             <div className="flex justify-end space-x-3">
@@ -216,7 +215,7 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
       {/* Back Button */}
       <button
         onClick={() => setShowExitModal(true)}
-        className="absolute top-4 left-4 flex items-center text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+        className="absolute top-4 left-4 flex items-center  hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
       >
         <ArrowLeft className="mr-1" size={18} />
         <span className="text-sm">Back</span>
@@ -280,7 +279,7 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
       <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
         {/* Full Name */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-semibold  mb-2">
             Full Name *
           </label>
           <input
@@ -302,7 +301,7 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
         {/* Email and Phone */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-semibold  mb-2">
               Email *
             </label>
             <input
@@ -324,7 +323,7 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-semibold  mb-2">
               Phone Number *
             </label>
             <input
@@ -347,7 +346,7 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
 
         {/* Password */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-semibold  mb-2">
             Password *
           </label>
           <div className="relative">
@@ -374,7 +373,7 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
               )}
               <button
                 type="button"
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                className="text-gray-500 hover:text-gray-700 "
                 onClick={() => togglePasswordVisibility("password")}
                 aria-label={
                   showPassword.password ? "Hide password" : "Show password"
@@ -388,7 +387,7 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
               </button>
             </div>
           </div>
-          <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+          <div className="mt-1 text-xs ">
             {hasPasswordError && (
               <span className="text-red-500">
                 Password must be at least 8 characters
@@ -402,7 +401,7 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
 
         {/* Confirm Password */}
         <div>
-          <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+          <label className="block text-sm font-semibold  mb-2">
             Confirm Password *
           </label>
           <div className="relative">
@@ -428,7 +427,7 @@ export const OwnerForm: React.FC<OwnerFormProps> = ({
               )}
               <button
                 type="button"
-                className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                className=" hover:text-gray-700  "
                 onClick={() => togglePasswordVisibility("confirmPassword")}
                 aria-label={
                   showPassword.confirmPassword

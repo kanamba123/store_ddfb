@@ -38,21 +38,21 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4 sm:p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg dark:shadow-gray-900/50">
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] rounded-xl shadow-lg dark:shadow-gray-900/50">
       <div className="mb-6 md:mb-8">
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white mb-1 sm:mb-2">
+        <h2 className="text-2xl sm:text-3xl font-bold text-[var(--color-text-primary)] mb-1 sm:mb-2">
           Confirmation des informations
         </h2>
-        <p className="text-gray-600 dark:text-gray-300">
+        <p className="text-[var(--color-text-secondary)]">
           Vérifiez vos informations avant de finaliser l'enregistrement
         </p>
       </div>
 
       <div className="space-y-6 md:space-y-8">
         {/* Informations du propriétaire */}
-        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 sm:p-6">
+        <div className="bg-[var(--color-bg-primary)] rounded-lg p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-3 sm:mb-4 gap-2">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">
+            <h3 className="text-lg sm:text-xl font-semibold text-[var(--color-text-primary)]">
               Informations du propriétaire
             </h3>
             <button
@@ -66,10 +66,10 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div>
-              <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
+              <p className="text-xs sm:text-sm font-semibold text-[var(--color-text-primary)]">
                 Nom complet
               </p>
-              <p className="text-gray-800 dark:text-gray-100">
+              <p className="text-[var(--color-text-primary)]">
                 {ownerData.fullName}
               </p>
             </div>
@@ -77,7 +77,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
               <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Email
               </p>
-              <p className="text-gray-800 dark:text-gray-100">
+              <p className="text-[var(--color-text-primary)]">
                 {ownerData.email || "Non spécifié"}
               </p>
             </div>
@@ -85,7 +85,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
               <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Téléphone
               </p>
-              <p className="text-gray-800 dark:text-gray-100">
+              <p className="text-[var(--color-text-primary)]">
                 {ownerData.phoneNumber || "Non spécifié"}
               </p>
             </div>
@@ -93,7 +93,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
               <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
                 Mot de passe
               </p>
-              <p className="text-gray-800 dark:text-gray-100">
+              <p className="text-[var(--color-text-primary)]">
                 {ownerData.password ? "••••••••" : "Non défini"}
               </p>
             </div>
@@ -101,9 +101,9 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
         </div>
 
         {/* Informations du magasin */}
-        <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4 sm:p-6">
+        <div className="bg-[var(--color-bg-secondary)] rounded-lg p-4 sm:p-6">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-3 sm:mb-4 gap-2">
-            <h3 className="text-lg sm:text-xl font-semibold text-gray-800 dark:text-white">
+            <h3 className="text-lg sm:text-xl font-semibold ">
               Informations du magasin
             </h3>
             <button
@@ -122,7 +122,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
                 <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
                   Nom du magasin
                 </p>
-                <p className="text-gray-800 dark:text-gray-100 font-medium">
+                <p className="text-[var(--color-text-primary)] font-medium">
                   {storeData.storeName}
                 </p>
               </div>
@@ -130,7 +130,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
                 <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
                   Type
                 </p>
-                <p className="text-gray-800 dark:text-gray-100">
+                <p className="text-[var(--color-text-primary)]">
                   {storeTypeLabels[storeData.storeType]}
                 </p>
               </div>
@@ -138,7 +138,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
                 <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
                   Ville
                 </p>
-                <p className="text-gray-800 dark:text-gray-100">
+                <p className="text-[var(--color-text-primary)]">
                   {storeData.city}
                 </p>
               </div>
@@ -146,7 +146,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
                 <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
                   Pays
                 </p>
-                <p className="text-gray-800 dark:text-gray-100">
+                <p className="text-[var(--color-text-primary)]">
                   {storeData.country}
                 </p>
               </div>
@@ -154,7 +154,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
                 <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
                   Adresse
                 </p>
-                <p className="text-gray-800 dark:text-gray-100">
+                <p className="text-[var(--color-text-primary)]">
                   {storeData.storeAddress || "Non spécifiée"}
                 </p>
               </div>
@@ -166,7 +166,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
                 <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
                   NIF
                 </p>
-                <p className="text-gray-800 dark:text-gray-100">
+                <p className="text-[var(--color-text-primary)]">
                   {storeData.nif || "Non spécifié"}
                 </p>
               </div>
@@ -174,7 +174,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
                 <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
                   RC
                 </p>
-                <p className="text-gray-800 dark:text-gray-100">
+                <p className="text-[var(--color-text-primary)]">
                   {storeData.rc || "Non spécifié"}
                 </p>
               </div>
@@ -182,7 +182,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
                 <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400">
                   Téléphones
                 </p>
-                <p className="text-gray-800 dark:text-gray-100">
+                <p className="text-[var(--color-text-primary)]">
                   {formatPhoneNumbers(storeData.storeContactPhone)}
                 </p>
               </div>
@@ -192,10 +192,10 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
           {/* Description */}
           {storeData.storeDescription && (
             <div className="mt-3 sm:mt-4">
-              <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1 sm:mb-2">
+              <p className="text-xs sm:text-sm font-semibold  mb-1 sm:mb-2">
                 Description
               </p>
-              <p className="text-gray-800 dark:text-gray-100 bg-white dark:bg-gray-700 p-2 sm:p-3 rounded border dark:border-gray-600">
+              <p className="text-[var(--color-text-primary)]  p-2 sm:p-3 rounded border dark:border-gray-600">
                 {storeData.storeDescription}
               </p>
             </div>
@@ -210,7 +210,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
             <p className="text-xs sm:text-sm font-semibold text-gray-600 dark:text-gray-400 mb-1 sm:mb-2">
               Affichage public
             </p>
-            <p className="text-gray-800 dark:text-gray-100">
+            <p className="text-[var(--color-text-primary)]">
               {storeData.isDisplay
                 ? "✅ Visible sur le site web"
                 : "❌ Non visible sur le site web"}
@@ -219,7 +219,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
         </div>
 
         {/* Avertissement et boutons */}
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 dark:border-yellow-500 p-3 sm:p-4">
+        <div className=" border-l-4 border-yellow-400 dark:border-yellow-500 p-3 sm:p-4">
           <div className="flex">
             <div className="flex-shrink-0">
               <svg
@@ -235,7 +235,7 @@ export const ConfirmationStep: React.FC<ConfirmationStepProps> = ({
               </svg>
             </div>
             <div className="ml-3">
-              <p className="text-xs sm:text-sm text-yellow-700 dark:text-yellow-300">
+              <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] ">
                 <strong>Important :</strong> Une fois confirmé, votre compte
                 propriétaire et votre magasin seront créés. Vous pourrez
                 modifier ces informations plus tard depuis votre tableau de

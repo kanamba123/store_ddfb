@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useEffect, useCallback } from "react";
 import { FiPlus as Add, FiTrash2 as Delete } from "react-icons/fi";
+import { useTranslation } from 'react-i18next';
 
 interface AddKeyValuePairsProps {
   title: string;
@@ -20,6 +21,7 @@ const AddKeyValuePairs: React.FC<AddKeyValuePairsProps> = ({
   const [valueInput, setValueInput] = useState("");
   const [errors, setErrors] = useState({ key: false, value: false });
   const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     const handleResize = () => {
@@ -102,7 +104,7 @@ const AddKeyValuePairs: React.FC<AddKeyValuePairsProps> = ({
           />
           {errors.key && (
             <p className="mt-1 text-sm text-red-500 dark:text-red-400">
-              Ce champ est requis
+              {t('AddKeyValuePairs.require')}
             </p>
           )}
         </div>
@@ -124,7 +126,7 @@ const AddKeyValuePairs: React.FC<AddKeyValuePairsProps> = ({
           />
           {errors.value && (
             <p className="mt-1 text-sm text-red-500 dark:text-red-400">
-              Ce champ est requis
+              {t('AddKeyValuePairs.require')}
             </p>
           )}
         </div>
@@ -135,14 +137,14 @@ const AddKeyValuePairs: React.FC<AddKeyValuePairsProps> = ({
           className="flex items-center justify-center bg-[var(--color-action-add)]  hover:bg-[var(--color-action-add-hover)] text-white px-4 py-2.5 rounded-lg transition-colors duration-200 shadow-sm whitespace-nowrap"
         >
           <Add className="mr-1.5" size={18} />
-          {!isSmallScreen && "Ajouter"}
+          {!isSmallScreen && `${t('AddKeyValuePairs.add')}`}
         </button>
       </div>
 
       {Object.keys(items).length > 0 && (
         <div className="mt-2 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg transition-colors duration-200">
           <h6 className="font-medium mb-3 text-gray-700 dark:text-gray-200">
-            {title} ajoutés
+            {title} {t('AddKeyValuePairs.added')}
           </h6>
           <ul className="border dark:border-gray-600 rounded-lg divide-y dark:divide-gray-600 overflow-hidden">
             {Object.entries(items).map(([key, value]) => (
@@ -165,7 +167,7 @@ const AddKeyValuePairs: React.FC<AddKeyValuePairsProps> = ({
                 >
                   <Delete size={16} />
                   {!isSmallScreen && (
-                    <span className="sr-only">Supprimer</span>
+                    <span className="sr-only">${t('AddKeyValuePairs.delete')}</span>
                   )}
                 </button>
               </li>

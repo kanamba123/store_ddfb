@@ -284,7 +284,6 @@ export default function UploadVariantForm() {
 
         {/* Images */}
         <div>
-          <label className="block mb-1 font-medium">{t('uploadVariantForm.labels.images')}</label>
           <ImageUploader onImagesChange={handleImageChange} />
           <div className="flex flex-wrap gap-2 mt-2">
             {previews.map((src, i) => (
