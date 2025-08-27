@@ -11,6 +11,7 @@ import { uploadMultipleImagesToFirebase } from "@/services/uploadMultipleImagesT
 import SearchableSelect from "@/components/ui/SearchableSelect"
 import { useTranslation } from 'react-i18next';
 import { useProductsCat } from "@/hooks/apis/useProducts"
+import MultiLangDescription from "@/components/ui/MultiLangDescription"
 
 interface Specification {
   key: string
@@ -66,7 +67,6 @@ export default function UploadVariantForm() {
   const { data: productsCategories = [], isLoading: isLoadingProducts, isError: isErrorProduct, refetch: refetchProduct } = useProductsCat();
   const useMutation = useCreateVariantProduct();
   const [submitting, setSubmitting] = useState(false)
-  const [data, setData] = useState<Product[]>([])
   const [error, setError] = useState("")
   const [submitted, setSubmitted] = useState(false)
   const [previews, setPreviews] = useState<string[]>([])
@@ -75,6 +75,7 @@ export default function UploadVariantForm() {
   const { t } = useTranslation();
 
   const {
+    watch,
     register,
     handleSubmit,
     reset,
@@ -157,6 +158,10 @@ export default function UploadVariantForm() {
     }
   };
 
+
+  console.log("description ",watch("description"))
+  console.log("watch ",watch)
+
   return (
     <div className="max-w-7xl mx-auto p-2 sm:p-6 bg-[var(--color-bg-primary)]  shadow-md dark:shadow-lg rounded-lg text-[var(--color-text-primary)] ">
       {submitted && (
@@ -225,15 +230,12 @@ export default function UploadVariantForm() {
             )}
           />
 
-          {/* Description */}
+          {/* Description multilingue */}
           <div className="sm:col-span-2">
-            <label className="block mb-1 font-medium">{t('uploadVariantForm.labels.description')}</label>
-            <textarea
-              {...register("description")}
-              className={inputClass}
-              rows={2}
-              placeholder={t('uploadVariantForm.placeholders.description')}
-            />
+            <label className="block mb-1 font-medium">
+              {t('uploadVariantForm.labels.description')}
+            </label>
+            <MultiLangDescription register={register} errors={errors} />
           </div>
 
           <Controller

@@ -6,7 +6,7 @@ export interface VariantsProduct {
   variantProductName: string;
   recommendedPrice: number;
   purchasePrice: number;
-  specifications: string[];
+  specifications: string[] | null;
   sellingPrice: number;
   status: string;
   isDisplay: boolean;
@@ -14,6 +14,7 @@ export interface VariantsProduct {
   Product: Product;
   description: string;
   variantType: string;
-  productId: number;
+  productId: string;
+  storeId: string;
 
 }
