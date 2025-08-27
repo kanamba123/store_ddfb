@@ -142,8 +142,8 @@ const AddKeyValuePairs: React.FC<AddKeyValuePairsProps> = ({
       </div>
 
       {Object.keys(items).length > 0 && (
-        <div className="mt-2 bg-gray-50 dark:bg-gray-700 p-2 rounded-lg transition-colors duration-200">
-          <h6 className="font-medium mb-3 text-gray-700 dark:text-gray-200">
+        <div className="mt-2 bg-[var(--color-bg-primary)] p-2 rounded-lg transition-colors duration-200">
+          <h6 className="font-medium mb-3 text-[var(--color-text-primary)]">
             {title} {t('AddKeyValuePairs.added')}
           </h6>
           <ul className="border dark:border-gray-600 rounded-lg divide-y dark:divide-gray-600 overflow-hidden">
@@ -153,7 +153,7 @@ const AddKeyValuePairs: React.FC<AddKeyValuePairsProps> = ({
                 className="p-3 flex justify-between items-center relative hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-150"
               >
                 <div className="flex items-center overflow-hidden">
-                  <span className="font-bold text-gray-800 dark:text-gray-100 truncate mr-2">
+                  <span className="font-bold text-[var(--color-text-primary)] truncate mr-2">
                     {key}:
                   </span>
                   <span className="text-green-600 dark:text-green-400 truncate">

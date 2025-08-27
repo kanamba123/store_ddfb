@@ -158,7 +158,7 @@ export default function UploadVariantForm() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-4 sm:p-6 bg-[var(--color-bg-primary)]  shadow-md dark:shadow-lg rounded-lg text-[var(--color-text-primary)] ">
+    <div className="max-w-7xl mx-auto p-2 sm:p-6 bg-[var(--color-bg-primary)]  shadow-md dark:shadow-lg rounded-lg text-[var(--color-text-primary)] ">
       {submitted && (
         <p className="text-green-600 dark:text-green-400 text-center mt-10">
           {t('uploadVariantForm.successMessage')}
