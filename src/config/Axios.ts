@@ -22,21 +22,7 @@ API.interceptors.response.use(
         if (error.response) {
             const status = error.response.status;
 
-            console.warn("⚠️ Token expiré ou invalide, ouverture du panneau de login.", status);
-
-            console.warn("⚠️ Token expiré ou invalide, ouverture du panneau de login.");
-
-            // Supprimer le token stocké
-            localStorage.removeItem("authToken");
-
-            // Ici tu peux soit :
-            // 1. Rediriger vers la page de login
-            // window.location.href = "/login";
-
-            // 2. Déclencher un Event global → ton app peut ouvrir un modal/panel
-            const event = new Event("auth:expired");
-            window.dispatchEvent(event);
-
+        
             // ✅ Token expiré ou manquant
             if (status === 401 || status === 403) {
                 console.warn("⚠️ Token expiré ou invalide, ouverture du panneau de login.");
