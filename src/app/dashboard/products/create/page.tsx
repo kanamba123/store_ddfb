@@ -12,6 +12,8 @@ import { uploadMultipleImagesToFirebase } from "@/services/uploadMultipleImagesT
 import SearchableSelect from "@/components/ui/SearchableSelect"
 import Image from "next/image"
 import { useTranslation } from 'react-i18next';
+import { useMarkets } from "@/hooks/apis/useMarkets"
+import { useProductsCat } from "@/hooks/apis/useProducts"
 
 interface Specification {
   key: string
@@ -57,13 +59,14 @@ const Select = ({
           {opt.label}
         </option>
       ))}
-      
+
     </select>
   </div>
 )
 
 export default function UploadVariantForm() {
-  const { data: store = [] } = useFetchStoresByConditionFilters();
+  const { data: store = [], isLoading: isLoadingStores, isError: isErrorStores, refetch: refetchStores } = useFetchStoresByConditionFilters();
+  const { data: productsCategories = [], isLoading: isLoadingProducts, isError: isErrorProduct, refetch: refetchProduct } = useProductsCat();
   const useMutation = useCreateVariantProduct();
   const [submitting, setSubmitting] = useState(false)
   const [data, setData] = useState<Product[]>([])
@@ -100,17 +103,7 @@ export default function UploadVariantForm() {
     setValue("specifications", Object.entries(specifications).map(([key, value]) => ({ key, value })))
   }, [specifications, setValue])
 
-  useEffect(() => {
-    const loadProduct = async () => {
-      try {
-        const dataProduct = await fetchProductCategories()
-        setData(dataProduct)
-      } catch (error) {
-        console.error(t('uploadVariantForm.errors.failedLoadProducts'), error)
-      }
-    }
-    loadProduct()
-  }, [t])
+
 
   const handleImageChange = useCallback((files: File[]) => {
     setUploadedFiles(files);
@@ -191,9 +184,12 @@ export default function UploadVariantForm() {
                   value: String(store.id),
                   label: store.storeName
                 }))}
-                value={String(field.value || '')} 
+                value={String(field.value || '')}
                 onChange={(value: string) => field.onChange(Number(value))}
                 required
+                isLoading={isLoadingStores}
+                isError={isErrorStores}
+                refetch={refetchStores}
               />
               {fieldState.error && (
                 <span className="text-red-500 text-sm">{t('common.requiredField')}</span>
@@ -217,7 +213,7 @@ export default function UploadVariantForm() {
           <Controller
             name="variantType"
             control={control}
-            
+
             render={({ field }) => (
               <Select
                 label={t('uploadVariantForm.labels.variantType')}
@@ -250,13 +246,16 @@ export default function UploadVariantForm() {
             render={({ field, fieldState }) => (
               <SearchableSelect
                 label={t('uploadVariantForm.labels.product') + ' *'}
-                options={data.map(product => ({
+                options={productsCategories.map((product: Product) => ({
                   value: String(product.id),
                   label: product.productName
                 }))}
-                value={String(field.value || '')} 
+                value={String(field.value || '')}
                 onChange={(value: string) => field.onChange(Number(value))}
                 required
+                isLoading={isLoadingProducts}
+                isError={isErrorProduct}
+                refetch={refetchProduct}
               />
             )}
           />
@@ -277,7 +276,7 @@ export default function UploadVariantForm() {
           <AddKeyValuePairs
             keyPlaceholder={t('uploadVariantForm.placeholders.specificationName')}
             valuePlaceholder={t('uploadVariantForm.placeholders.specificationValue')}
-            onAdd={handleSpecificationsChange} 
+            onAdd={handleSpecificationsChange}
             title=""
           />
         </div>
@@ -291,7 +290,7 @@ export default function UploadVariantForm() {
                 key={i}
                 src={src}
                 alt="Preview"
-                loader={() => src} 
+                loader={() => src}
                 width={80}
                 height={80}
                 className="object-cover rounded border border-gray-300 dark:border-gray-600"

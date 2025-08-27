@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
 const fetchMarkets = async () => {
-  const response = await API.get(`/markets/mrkt`);
+  const response = await API.get(`/markets/fromDashS`);
   return response.data;
 };
 

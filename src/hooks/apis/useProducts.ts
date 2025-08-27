@@ -2,6 +2,21 @@ import API from "@/config/Axios";
 import { useInfiniteQuery, useQuery, useIsMutating } from "@tanstack/react-query";
 
 
+const fetchProductCategories = async () => {
+  const response = await API.get(`/products/byAdminSelect`);
+  return response.data;
+};
+
+
+// Hook to fetch product categories to display in select options
+export const useProductsCat = () => {
+  return useQuery({
+    queryKey: ["productsCategories"],
+    queryFn: fetchProductCategories,
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
+};
 
 export const useProducts = () => {
   return useInfiniteQuery({
