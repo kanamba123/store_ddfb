@@ -145,5 +145,11 @@
   },
   "ImageUploader": {
     "uploadImages": "Upload Images"
+  },
+  "authExpired": {
+    "title": "Session Expired",
+    "message": "Your session has expired or you need to log in again to continue.",
+    "loginButton": "Log in again",
+    "close": "Close"
   }
 }

@@ -106,5 +106,11 @@
   },
   "ImageUploader": {
     "uploadImages": "Pakia picha"
+  },
+  "authExpired": {
+    "title": "Kikao Kimeisha",
+    "message": "Kikao chako kimeisha au unahitaji kuingia tena ili kuendelea.",
+    "loginButton": "Ingia Tena",
+    "close": "Funga"
   }
 }

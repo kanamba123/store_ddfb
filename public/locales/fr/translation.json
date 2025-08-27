@@ -106,5 +106,11 @@
   },
   "ImageUploader": {
     "uploadImages": "Télécharger une image"
+  },
+  "authExpired": {
+    "title": "Session expirée",
+    "message": "Votre session a expiré ou vous devez vous reconnecter pour continuer.",
+    "loginButton": "Se reconnecter",
+    "close": "Fermer"
   }
 }

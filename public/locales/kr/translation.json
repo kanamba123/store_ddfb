@@ -138,12 +138,18 @@
     "result": "Ntanyishu yabonetse"
   },
   "AddKeyValuePairs": {
-    "add":"Ongereza",
-    "added":"Ivyo mwashizemwo",
-    "delete":"Gufuta",
-    "require":"Ni ngombwa kuzuza"
+    "add": "Ongereza",
+    "added": "Ivyo mwashizemwo",
+    "delete": "Gufuta",
+    "require": "Ni ngombwa kuzuza"
   },
-  "ImageUploader":{
-    "uploadImages":"Gushiramwo amashusho"
+  "ImageUploader": {
+    "uploadImages": "Gushiramwo amashusho"
+  },
+  "authExpired": {
+    "title": "Igihe c'umukoresha caheze",
+    "message": "Igihe co gukoresha uruhusha gwiyi application caheze, subira mwinjire kandi.",
+    "loginButton": "Subira mwinjire",
+    "close": "Funga"
   }
 }

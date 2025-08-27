@@ -7,11 +7,13 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import AuthExpiredPanel from "@/components/AuthExpiredPanel";
+import { useRouter } from "next/navigation";
 
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(() => new QueryClient());
   const [isAuthExpired, setIsAuthExpired] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     const handleAuthExpired = () => setIsAuthExpired(true);
@@ -23,7 +25,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const handleClosePanel = () => setIsAuthExpired(false);
   const handleLoginRedirect = () => {
     setIsAuthExpired(false);
-    window.location.href = "/login"; // redirige vers login
+    document.cookie = 'authToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("user");
+    router.push("/login");
   };
 
   return (
