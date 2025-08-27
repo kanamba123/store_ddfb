@@ -1,7 +1,6 @@
 "use client"
 import { useEffect, useState, useCallback } from "react"
 import { useForm, Controller } from "react-hook-form"
-import { fetchProductCategories } from "@/libs/api/products"
 import { useCreateVariantProduct } from "@/hooks/apis/useVariants"
 import ImageUploader from "@/components/ui/ImageUploader"
 import AddKeyValuePairs from "@/components/ui/AddKeyValuePairs"
@@ -10,9 +9,7 @@ import { Product } from "@/types/Product"
 import { StoreData } from "@/types/registration"
 import { uploadMultipleImagesToFirebase } from "@/services/uploadMultipleImagesToFirebase"
 import SearchableSelect from "@/components/ui/SearchableSelect"
-import Image from "next/image"
 import { useTranslation } from 'react-i18next';
-import { useMarkets } from "@/hooks/apis/useMarkets"
 import { useProductsCat } from "@/hooks/apis/useProducts"
 
 interface Specification {
@@ -284,19 +281,6 @@ export default function UploadVariantForm() {
         {/* Images */}
         <div>
           <ImageUploader onImagesChange={handleImageChange} />
-          <div className="flex flex-wrap gap-2 mt-2">
-            {previews.map((src, i) => (
-              <Image
-                key={i}
-                src={src}
-                alt="Preview"
-                loader={() => src}
-                width={80}
-                height={80}
-                className="object-cover rounded border border-gray-300 dark:border-gray-600"
-              />
-            ))}
-          </div>
         </div>
 
         {/* Bouton de soumission */}
