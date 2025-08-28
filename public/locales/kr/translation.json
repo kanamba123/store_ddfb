@@ -6,9 +6,9 @@
   },
   "hero": {
     "title": "Tunganya iduka ryawe vyoroshe",
-    "description": "Vyose ukeneye kugira utere imbere mu bucuruzi bwawe, hamwe n’ishirahamwe ry’ugutwara ibicuruzwa kugira wongere uduhimbazamusyi twawe.",
+    "description": "Vyose ukeneye kugira utere imbere mu bucuruzi bwawe, hamwe n’ishirahamwe ry’ugutwara ibicuruzwa kugira woroshe ubucuruzi bwawe.",
     "tryFree": "Gerageza ku buntu",
-    "viewFeatures": "Raba ivyiranga"
+    "viewFeatures": "Raba ibikogwa"
   },
   "features": {
     "title": "Vyose vyo gutunganya ubucuruzi bwawe",
@@ -18,19 +18,19 @@
     },
     "orderTracking": {
       "title": "Kurikirana amategeko y’ugutumiza",
-      "description": "Kurikirana ibigurishwa vyawe vyose mu kanya nyako kandi utunganye uko buri teka rihagaze."
+      "description": "Kurikirana ibigurishwa vyawe vyose kumwanya kumwanya ."
     },
     "deliveryService": {
-      "title": "Serivisi y’ugutwara",
-      "description": "Amaduka yinjijwe arungikirwa serivisi yacu y’ugutwara kugira ashikire abakiriya benshi."
+      "title": "Akaryo ko gutwara imizigo",
+      "description": "Iyo ukurikirana iduka ryawe aha kwiyi application, uraronka ubufasha mugutwara ibicuruzwa vyawe mumicungararo itandukanye."
     },
     "advancedAnalytics": {
       "title": "Isuzuma rihanitse",
-      "description": "Raba ingene bikora ukoresheje raporo zihanitse ku bijanye n’ibigurishwa, stock hamwe n’ivyerekezo."
+      "description": "Raba ingene bikora ukoresheje raporo zihanitse ku bijanye n’ibigurishwa, stock hamwe n'ibindi bikogwa."
     },
     "customerManagement": {
-      "title": "Igenzura ry’abakiriya",
-      "description": "Shira hamwe amakuru y’abakiriya hanyuma ukomeze umubano ukoresheje ibikoresho vy’ugukangurira kugura."
+      "title": "Gukwirikirana abakiriya",
+      "description": "Kwirikirana abakiriya bawe hamwe no kububakira ukwizigigwa ukoresheje ibikoresho vyo kwamamaza."
     },
     "multiPlatform": {
       "title": "Platforme nyinshi",
@@ -38,10 +38,10 @@
     }
   },
   "delivery": {
-    "title": "Serivisi y’ugutwara yinjijwe",
+    "title": "Akaryo ko gutwara imizigo muhabwa n’ishirahamwe",
     "description": "Iduka ryose ryinjijwe muri Win2cop riraronka ako kanya serivisi yacu y’ugutwara ikomeye. Ongera akarere k’uburangu bwawe, terekerereza abakiriya serivisi y’ugutwara mu rugo, kandi kurikirana buri paki mu kanya nyako.",
     "benefits": {
-      "trackedDelivery": "Ugutwara gukurikirwa mu kanya nyako",
+      "trackedDelivery": "Ugutwara gukurikirwa kumwanya kumwanya",
       "preferentialRates": "Amafaranga yoroheje ku maduka y’abagenzi",
       "returnsManagement": "Gutunganya vyoroshe gusubiza ibicuruzwa"
     },

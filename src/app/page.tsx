@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { useLanguage } from "@/contexts/LanguageContext";
+import Logo from "@/components/ui/Logo";
+import Link from "next/link";
 // Remplacer par ton vrai hook d'auth ou contexte
 const useAuth = () => {
   return { isAuthenticated: false }; // ⬅️ À remplacer
@@ -14,7 +16,7 @@ export default function Home() {
   const { isAuthenticated } = useAuth();
   const languageContext = useLanguage();
   const { t, i18n } = useTranslation();
-  
+
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -31,7 +33,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-br bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] transition-colors relative overflow-hidden">
       {/* Image de fond avec overlay */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{
           backgroundImage: "url('https://www.flagshipcompany.com/app/uploads/2017/02/international_shipping-1.jpg')",
@@ -46,15 +48,15 @@ export default function Home() {
         <header className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
           <div className="flex justify-between items-center max-w-7xl mx-auto space-x-2">
             <div className="flex items-center">
-              <h1 className="text-xl font-bold text-[var(--color-text-primary)] sm:text-2xl md:text-3xl">
-                Win2cop
-              </h1>
+              <Link href="/" className="flex items-center">
+                <Logo />
+              </Link>
               <span className="ml-2 text-xs  text-[var(--color-secondary)] px-2 py-1 rounded-full hidden sm:block">
                 {t('header.business')}
               </span>
             </div>
 
-             <div className="flex items-center space-x-2 sm:space-x-4">
+            <div className="flex items-center space-x-2 sm:space-x-4">
               {/* Sélecteur de langue */}
               <select
                 value={i18n.language}
@@ -72,12 +74,6 @@ export default function Home() {
                 className="px-3 py-1 text-xs font-medium hover:bg-[var(--color-action-add-hover)] border border-action-add rounded-2xl transition-colors sm:text-sm md:px-4 md:py-1 md:text-base"
               >
                 {t('header.login')}
-              </button>
-              <button
-                onClick={() => router.push("/register")}
-                className="px-3 py-1.5 hover:bg-blue-50 text-blue-700 text-xs font-medium rounded-lg transition-colors shadow-md hover:shadow-lg sm:text-sm md:px-4 md:py-2 md:text-base"
-              >
-                {t('header.getStarted')}
               </button>
             </div>
           </div>
@@ -98,15 +94,15 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-12 sm:mb-16 md:mb-20">
               <button
                 onClick={() => router.push("/register")}
-                className="w-full px-6 py-3 bg-white hover:bg-blue-50 text-blue-700 font-semibold rounded-lg text-base transition-colors shadow-md hover:shadow-lg sm:w-auto md:px-8 md:py-4 md:text-lg"
+                className="w-full px-6 py-2 bg-white hover:bg-blue-50 text-blue-700 font-semibold rounded-lg text-base transition-colors shadow-md hover:shadow-lg sm:w-auto md:px-8 md:py-2 md:text-lg"
               >
                 {t('hero.tryFree')}
               </button>
               <button
-                onClick={() => router.push("/features")}
-                className="w-full px-6 py-3 bg-[var(--color-bg-secondary)] hover:bg-white/20 text-[var(--color-secondary)] font-semibold rounded-lg text-base transition-colors border border-white/20 sm:w-auto md:px-8 md:py-4 md:text-lg"
+                onClick={() => router.push("/login")}
+                className="w-full px-6 py-2 bg-[var(--color-bg-secondary)] hover:bg-white/20 text-[var(--color-secondary)] font-semibold rounded-lg text-base transition-colors border  sm:w-auto md:px-8 md:py-2 md:text-lg"
               >
-                {t('hero.viewFeatures')}
+                {t('header.login')}
               </button>
             </div>
 
@@ -115,7 +111,7 @@ export default function Home() {
           {/* Features */}
           <div className="max-w-6xl mx-auto mt-12 sm:mt-16 md:mt-20">
             <h3 className="text-xl font-bold text-center mb-8 sm:text-2xl md:text-3xl md:mb-12">{t('features.title')}</h3>
-            
+
             <div className="grid gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 lg:gap-10">
               {/* Produits */}
               <div className="bg-[var(--color-bg-secondary)] backdrop-blur-sm p-4 rounded-xl border border-white/10 hover:bg-white/15 transition-all sm:p-5 md:p-6">
@@ -262,7 +258,7 @@ export default function Home() {
             <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
               <div className="md:w-1/2">
                 <h3 className="text-xl font-bold mb-3 sm:text-2xl md:text-3xl md:mb-4">{t('delivery.title')}</h3>
-                <p className="text-white/80 mb-4 text-sm sm:text-base md:mb-6">
+                <p className="text-[var(--color-text-secondary)] mb-4 text-sm sm:text-base md:mb-6">
                   {t('delivery.description')}
                 </p>
                 <ul className="space-y-2 mb-4 md:mb-6">
@@ -318,7 +314,11 @@ export default function Home() {
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-2 gap-6 mb-6 sm:grid-cols-4 sm:gap-8 sm:mb-8">
               <div className="col-span-2 sm:col-span-1">
-                <h4 className="text-base font-semibold mb-2 sm:text-lg sm:mb-4">Win2cop</h4>
+                <div className="text-base font-semibold mb-2 sm:text-lg sm:mb-4">
+                  <Link href="/" className="flex items-center">
+                    <Logo />
+                  </Link>
+                </div>
                 <p className=" text-xs sm:text-sm">
                   {t('footer.description')}
                 </p>
