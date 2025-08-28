@@ -1,4 +1,74 @@
 {
+ "header": {
+    "business": "Biashara",
+    "login": "Ingia",
+    "getStarted": "Anza"
+  },
+  "hero": {
+    "title": "Simamia duka lako kwa urahisi",
+    "description": "Vyote unavyohitaji kukuza biashara yako, ukiwa na huduma ya usafirishaji iliyojumuishwa ili kuongeza mauzo yako.",
+    "tryFree": "Jaribu bure",
+    "viewFeatures": "Tazama vipengele"
+  },
+  "features": {
+    "title": "Vyote vya kusimamia biashara yako",
+    "productManagement": {
+      "title": "Usimamizi wa bidhaa",
+      "description": "Ongeza na simamia bidhaa zako kwa urahisi ukiambatanisha picha na maelezo kamili."
+    },
+    "orderTracking": {
+      "title": "Ufuatiliaji wa maagizo",
+      "description": "Fuata mauzo yako yote kwa wakati halisi na simamia hali ya kila agizo."
+    },
+    "deliveryService": {
+      "title": "Huduma ya usafirishaji",
+      "description": "Maduka yaliyounganishwa yanapata huduma yetu ya usafirishaji iliyojumuishwa ili kupanua wateja wao."
+    },
+    "advancedAnalytics": {
+      "title": "Uchambuzi wa kina",
+      "description": "Chambua utendaji wako kwa ripoti za kina kuhusu mauzo, hisa na mwenendo."
+    },
+    "customerManagement": {
+      "title": "Usimamizi wa wateja",
+      "description": "Weka taarifa za wateja pamoja na ujenge uaminifu kwa kutumia zana za masoko."
+    },
+    "multiPlatform": {
+      "title": "Jukwaa nyingi",
+      "description": "Linganishwa data zako kati ya maduka mengi na njia za mauzo mtandaoni."
+    }
+  },
+  "delivery": {
+    "title": "Huduma ya usafirishaji iliyojumuishwa",
+    "description": "Kila duka lililounganishwa na Win2cop linapata moja kwa moja huduma yetu bora ya usafirishaji. Panua eneo lako la mauzo, toa huduma ya kusafirisha hadi nyumbani kwa wateja, na fuatilia kila kifurushi kwa wakati halisi.",
+    "benefits": {
+      "trackedDelivery": "Usafirishaji unaofuatiliwa kwa wakati halisi",
+      "preferentialRates": "Viwango vya upendeleo kwa maduka washirika",
+      "returnsManagement": "Usimamizi rahisi wa marejesho"
+    },
+    "learnMore": "Jifunze zaidi",
+    "expressDelivery": "Usafirishaji wa haraka",
+    "available": "Inapatikana",
+    "secureDelivery": "Usafirishaji salama",
+    "insurance": "Kila kifurushi kimehakikishwa hadi €1000"
+  },
+  "footer": {
+    "description": "Suluhisho la kila kitu kwa kusimamia na kukuza biashara yako.",
+    "features": "Vipengele",
+    "featuresList": {
+      "productManagement": "Usimamizi wa bidhaa",
+      "orderTracking": "Ufuatiliaji wa maagizo",
+      "deliveryService": "Huduma ya usafirishaji",
+      "analytics": "Uchambuzi na ripoti"
+    },
+    "legal": "Kisheria",
+    "legalList": {
+      "terms": "Masharti ya matumizi",
+      "privacy": "Sera ya faragha",
+      "legal": "Taarifa za kisheria",
+      "cookies": "Vidakuzi"
+    },
+    "copyright": "© {{year}} Win2cop. Haki zote zimehifadhiwa."
+  },
   "sidebar": {
     "dashboard": "Dashibodi",
     "products": "Bidhaa",

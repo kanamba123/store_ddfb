@@ -1,4 +1,74 @@
 {
+  "header": {
+    "business": "Business",
+    "login": "Connexion",
+    "getStarted": "Commencer"
+  },
+  "hero": {
+    "title": "Gérez votre boutique simplement",
+    "description": "Tout ce dont vous avez besoin pour faire grandir votre business, avec un service de livraison intégré pour maximiser vos ventes.",
+    "tryFree": "Essayer gratuitement",
+    "viewFeatures": "Voir les fonctionnalités"
+  },
+  "features": {
+    "title": "Tout pour gérer votre business",
+    "productManagement": {
+      "title": "Gestion des produits",
+      "description": "Ajoutez et gérez vos produits en quelques clics avec des photos et descriptions détaillées."
+    },
+    "orderTracking": {
+      "title": "Suivi des commandes",
+      "description": "Suivez toutes vos ventes en temps réel et gérez les statuts de chaque commande."
+    },
+    "deliveryService": {
+      "title": "Service de livraison",
+      "description": "Les magasins connectés bénéficient de notre service de livraison intégré pour étendre leur zone de chalandise."
+    },
+    "advancedAnalytics": {
+      "title": "Analytiques avancées",
+      "description": "Analysez vos performances avec des rapports détaillés sur les ventes, stocks et tendances."
+    },
+    "customerManagement": {
+      "title": "Gestion des clients",
+      "description": "Centralisez les informations clients et fidélisez votre audience avec des outils marketing."
+    },
+    "multiPlatform": {
+      "title": "Multi-plateformes",
+      "description": "Synchronisez vos données entre plusieurs points de vente et canaux de vente en ligne."
+    }
+  },
+  "delivery": {
+    "title": "Service de livraison intégré",
+    "description": "Chaque magasin connecté à Win2cop bénéficie automatiquement de notre service de livraison performant. Étendez votre zone de vente, proposez la livraison à domicile à vos clients et suivez chaque colis en temps réel.",
+    "benefits": {
+      "trackedDelivery": "Livraison suivie en temps réel",
+      "preferentialRates": "Tarifs préférentiels pour les magasins partenaires",
+      "returnsManagement": "Gestion simplifiée des retours"
+    },
+    "learnMore": "En savoir plus",
+    "expressDelivery": "Livraison express",
+    "available": "Disponible",
+    "secureDelivery": "Livraison sécurisée",
+    "insurance": "Chaque colis est assuré jusqu'à 1000€"
+  },
+  "footer": {
+    "description": "La solution tout-en-un pour gérer et développer votre commerce.",
+    "features": "Fonctionnalités",
+    "featuresList": {
+      "productManagement": "Gestion des produits",
+      "orderTracking": "Suivi des commandes",
+      "deliveryService": "Service de livraison",
+      "analytics": "Analyses et rapports"
+    },
+    "legal": "Légal",
+    "legalList": {
+      "terms": "Conditions d'utilisation",
+      "privacy": "Politique de confidentialité",
+      "legal": "Mentions légales",
+      "cookies": "Cookies"
+    },
+    "copyright": "© {{year}} Win2cop. Tous droits réservés."
+  },
   "sidebar": {
     "dashboard": "Tableau de bord",
     "products": "Produits",

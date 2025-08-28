@@ -2,7 +2,8 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-
+import { useTranslation } from "react-i18next";
+import { useLanguage } from "@/contexts/LanguageContext";
 // Remplacer par ton vrai hook d'auth ou contexte
 const useAuth = () => {
   return { isAuthenticated: false }; // ⬅️ À remplacer
@@ -11,12 +12,21 @@ const useAuth = () => {
 export default function Home() {
   const router = useRouter();
   const { isAuthenticated } = useAuth();
+  const languageContext = useLanguage();
+  const { t, i18n } = useTranslation();
+  
 
   useEffect(() => {
     if (isAuthenticated) {
       router.replace("/dashboard");
     }
   }, [isAuthenticated, router]);
+
+  const changeLanguage = languageContext?.changeLanguage || ((lang) => {
+    localStorage.setItem("language", lang);
+    document.documentElement.lang = lang;
+    i18n.changeLanguage(lang);
+  });
 
   return (
     <div className="min-h-screen bg-gradient-to-br bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] transition-colors relative overflow-hidden">
@@ -34,27 +44,40 @@ export default function Home() {
       <div className="relative z-10">
         {/* Header */}
         <header className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
-          <div className="flex justify-between items-center max-w-7xl mx-auto">
+          <div className="flex justify-between items-center max-w-7xl mx-auto space-x-2">
             <div className="flex items-center">
               <h1 className="text-xl font-bold text-[var(--color-text-primary)] sm:text-2xl md:text-3xl">
                 Win2cop
               </h1>
               <span className="ml-2 text-xs  text-[var(--color-secondary)] px-2 py-1 rounded-full hidden sm:block">
-                Business
+                {t('header.business')}
               </span>
             </div>
-            <div className="flex space-x-2 sm:space-x-3 md:space-x-4">
+
+             <div className="flex items-center space-x-2 sm:space-x-4">
+              {/* Sélecteur de langue */}
+              <select
+                value={i18n.language}
+                onChange={(e) => changeLanguage(e.target.value)}
+                className="px-2 py-1 text-xs sm:text-sm rounded-md bg-[var(--color-bg-secondary)] text-[var(--color-text-primary)] border border-white/20"
+              >
+                <option value="fr">🇫🇷 FR</option>
+                <option value="en">🇬🇧 EN</option>
+                <option value="sw">🇰🇪 SW</option>
+                <option value="kr">🇧🇮 KIR</option>
+              </select>
+
               <button
                 onClick={() => router.push("/login")}
-                className="px-3 py-1 text-xs font-medium text-[var(--color-text-primary)] hover:bg-[var(--color-action-add-hover)] border border-action-add rounded-2xl transition-colors sm:text-sm md:px-4 md:py-1 md:text-base"
+                className="px-3 py-1 text-xs font-medium hover:bg-[var(--color-action-add-hover)] border border-action-add rounded-2xl transition-colors sm:text-sm md:px-4 md:py-1 md:text-base"
               >
-                Connexion
+                {t('header.login')}
               </button>
               <button
                 onClick={() => router.push("/register")}
-                className="px-3 py-1.5  hover:bg-blue-50 text-blue-700 text-xs font-medium rounded-lg transition-colors shadow-md hover:shadow-lg sm:text-sm md:px-4 md:py-2 md:text-base"
+                className="px-3 py-1.5 hover:bg-blue-50 text-blue-700 text-xs font-medium rounded-lg transition-colors shadow-md hover:shadow-lg sm:text-sm md:px-4 md:py-2 md:text-base"
               >
-                Commencer
+                {t('header.getStarted')}
               </button>
             </div>
           </div>
@@ -65,11 +88,11 @@ export default function Home() {
           <div className="max-w-4xl mx-auto text-center">
             {/* Hero */}
             <h2 className="text-1xl font-bold mb-4 sm:text-4xl md:text-4xl lg:text-4xl lg:mb-6">
-              Gérez votre boutique simplement
+              {t('hero.title')}
             </h2>
 
             <p className="text-base text-[var(--color-text-primary)] mb-6 max-w-2xl mx-auto sm:text-lg md:text-xl lg:mb-8">
-              Tout ce dont vous avez besoin pour faire grandir votre business, avec un service de livraison intégré pour maximiser vos ventes.
+              {t('hero.description')}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center mb-12 sm:mb-16 md:mb-20">
@@ -77,13 +100,13 @@ export default function Home() {
                 onClick={() => router.push("/register")}
                 className="w-full px-6 py-3 bg-white hover:bg-blue-50 text-blue-700 font-semibold rounded-lg text-base transition-colors shadow-md hover:shadow-lg sm:w-auto md:px-8 md:py-4 md:text-lg"
               >
-                Essayer gratuitement
+                {t('hero.tryFree')}
               </button>
               <button
                 onClick={() => router.push("/features")}
                 className="w-full px-6 py-3 bg-[var(--color-bg-secondary)] hover:bg-white/20 text-[var(--color-secondary)] font-semibold rounded-lg text-base transition-colors border border-white/20 sm:w-auto md:px-8 md:py-4 md:text-lg"
               >
-                Voir les fonctionnalités
+                {t('hero.viewFeatures')}
               </button>
             </div>
 
@@ -91,7 +114,7 @@ export default function Home() {
 
           {/* Features */}
           <div className="max-w-6xl mx-auto mt-12 sm:mt-16 md:mt-20">
-            <h3 className="text-xl font-bold text-center mb-8 sm:text-2xl md:text-3xl md:mb-12">Tout pour gérer votre business</h3>
+            <h3 className="text-xl font-bold text-center mb-8 sm:text-2xl md:text-3xl md:mb-12">{t('features.title')}</h3>
             
             <div className="grid gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3 lg:gap-10">
               {/* Produits */}
@@ -111,9 +134,9 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold mb-1 sm:text-xl sm:mb-2">Gestion des produits</h3>
+                <h3 className="text-lg font-semibold mb-1 sm:text-xl sm:mb-2">{t('features.productManagement.title')}</h3>
                 <p className="text-[var(--color-text-secondary)] text-sm sm:text-base">
-                  Ajoutez et gérez vos produits en quelques clics avec des photos et descriptions détaillées.
+                  {t('features.productManagement.description')}
                 </p>
               </div>
 
@@ -134,9 +157,9 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold mb-1 sm:text-xl sm:mb-2">Suivi des commandes</h3>
+                <h3 className="text-lg font-semibold mb-1 sm:text-xl sm:mb-2">{t('features.orderTracking.title')}</h3>
                 <p className="text-[var(--color-text-secondary)] text-sm sm:text-base">
-                  Suivez toutes vos ventes en temps réel et gérez les statuts de chaque commande.
+                  {t('features.orderTracking.description')}
                 </p>
               </div>
 
@@ -157,9 +180,9 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold mb-1 sm:text-xl sm:mb-2">Service de livraison</h3>
+                <h3 className="text-lg font-semibold mb-1 sm:text-xl sm:mb-2">{t('features.deliveryService.title')}</h3>
                 <p className="text-[var(--color-text-secondary)] text-sm sm:text-base">
-                  Les magasins connectés bénéficient de notre service de livraison intégré pour étendre leur zone de chalandise.
+                  {t('features.deliveryService.description')}
                 </p>
               </div>
 
@@ -180,9 +203,9 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold mb-1 sm:text-xl sm:mb-2">Analytiques avancées</h3>
+                <h3 className="text-lg font-semibold mb-1 sm:text-xl sm:mb-2">{t('features.advancedAnalytics.title')}</h3>
                 <p className="text-[var(--color-text-secondary)] text-sm sm:text-base">
-                  Analysez vos performances avec des rapports détaillés sur les ventes, stocks et tendances.
+                  {t('features.advancedAnalytics.description')}
                 </p>
               </div>
 
@@ -203,9 +226,9 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold mb-1 sm:text-xl sm:mb-2">Gestion des clients</h3>
+                <h3 className="text-lg font-semibold mb-1 sm:text-xl sm:mb-2">{t('features.customerManagement.title')}</h3>
                 <p className="text-[var(--color-text-secondary)] text-sm sm:text-base">
-                  Centralisez les informations clients et fidélisez votre audience avec des outils marketing.
+                  {t('features.customerManagement.description')}
                 </p>
               </div>
 
@@ -226,9 +249,9 @@ export default function Home() {
                     />
                   </svg>
                 </div>
-                <h3 className="text-lg font-semibold mb-1 sm:text-xl sm:mb-2">Multi-plateformes</h3>
+                <h3 className="text-lg font-semibold mb-1 sm:text-xl sm:mb-2">{t('features.multiPlatform.title')}</h3>
                 <p className="text-[var(--color-text-secondary)] text-sm sm:text-base">
-                  Synchronisez vos données entre plusieurs points de vente et canaux de vente en ligne.
+                  {t('features.multiPlatform.description')}
                 </p>
               </div>
             </div>
@@ -238,43 +261,42 @@ export default function Home() {
           <div className="max-w-6xl mx-auto mt-12 p-6 bg-[var(--color-bg-secondary)] backdrop-blur-sm rounded-2xl border border-white/10 sm:mt-16 md:mt-20 md:p-8">
             <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
               <div className="md:w-1/2">
-                <h3 className="text-xl font-bold mb-3 sm:text-2xl md:text-3xl md:mb-4">Service de livraison intégré</h3>
+                <h3 className="text-xl font-bold mb-3 sm:text-2xl md:text-3xl md:mb-4">{t('delivery.title')}</h3>
                 <p className="text-white/80 mb-4 text-sm sm:text-base md:mb-6">
-                  Chaque magasin connecté à Win2cop bénéficie automatiquement de notre service de livraison performant. 
-                  Étendez votre zone de vente, proposez la livraison à domicile à vos clients et suivez chaque colis en temps réel.
+                  {t('delivery.description')}
                 </p>
                 <ul className="space-y-2 mb-4 md:mb-6">
                   <li className="flex items-center text-sm sm:text-base">
                     <svg className="w-4 h-4 text-blue-300 mr-2 flex-shrink-0 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span>Livraison suivie en temps réel</span>
+                    <span>{t('delivery.benefits.trackedDelivery')}</span>
                   </li>
                   <li className="flex items-center text-sm sm:text-base">
                     <svg className="w-4 h-4 text-blue-300 mr-2 flex-shrink-0 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span>Tarifs préférentiels pour les magasins partenaires</span>
+                    <span>{t('delivery.benefits.preferentialRates')}</span>
                   </li>
                   <li className="flex items-center text-sm sm:text-base">
                     <svg className="w-4 h-4 text-blue-300 mr-2 flex-shrink-0 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span>Gestion simplifiée des retours</span>
+                    <span>{t('delivery.benefits.returnsManagement')}</span>
                   </li>
                 </ul>
                 <button
                   onClick={() => router.push("/delivery")}
                   className="px-4 py-2 bg-white text-blue-700 hover:bg-blue-50 font-medium rounded-lg transition-colors text-sm sm:text-base md:px-6 md:py-3"
                 >
-                  En savoir plus
+                  {t('delivery.learnMore')}
                 </button>
               </div>
               <div className="md:w-1/2 mt-6 md:mt-0">
                 <div className="bg-[var(--color-bg-secondary)] backdrop-blur-sm p-4 rounded-xl border border-white/10 sm:p-5 md:p-6">
                   <div className="flex justify-between items-center mb-4 md:mb-6">
-                    <div className="text-sm font-medium sm:text-base">Livraison express</div>
-                    <div className="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-full sm:text-sm">Disponible</div>
+                    <div className="text-sm font-medium sm:text-base">{t('delivery.expressDelivery')}</div>
+                    <div className="text-xs bg-green-500/20 text-green-300 px-2 py-1 rounded-full sm:text-sm">{t('delivery.available')}</div>
                   </div>
                   <div className="h-32 bg-white/5 rounded-lg mb-4 flex items-center justify-center sm:h-36 md:h-40">
                     <svg className="w-10 h-10 text-blue-300 sm:w-12 sm:h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -282,8 +304,8 @@ export default function Home() {
                     </svg>
                   </div>
                   <div className="text-center">
-                    <div className="text-base font-semibold mb-1 sm:text-lg md:mb-2">Livraison sécurisée</div>
-                    <p className="text-xs text-white/70 sm:text-sm">Chaque colis est assuré jusqu'à 1000€</p>
+                    <div className="text-base font-semibold mb-1 sm:text-lg md:mb-2">{t('delivery.secureDelivery')}</div>
+                    <p className="text-xs text-white/70 sm:text-sm">{t('delivery.insurance')}</p>
                   </div>
                 </div>
               </div>
@@ -298,31 +320,31 @@ export default function Home() {
               <div className="col-span-2 sm:col-span-1">
                 <h4 className="text-base font-semibold mb-2 sm:text-lg sm:mb-4">Win2cop</h4>
                 <p className=" text-xs sm:text-sm">
-                  La solution tout-en-un pour gérer et développer votre commerce.
+                  {t('footer.description')}
                 </p>
               </div>
               <div>
-                <h4 className="text-base font-semibold mb-2 sm:text-lg sm:mb-4">Fonctionnalités</h4>
+                <h4 className="text-base font-semibold mb-2 sm:text-lg sm:mb-4">{t('footer.features')}</h4>
                 <ul className="space-y-1 text-xs  sm:text-sm sm:space-y-2">
-                  <li>Gestion des produits</li>
-                  <li>Suivi des commandes</li>
-                  <li>Service de livraison</li>
-                  <li>Analyses et rapports</li>
+                  <li>{t('footer.featuresList.productManagement')}</li>
+                  <li>{t('footer.featuresList.orderTracking')}</li>
+                  <li>{t('footer.featuresList.deliveryService')}</li>
+                  <li>{t('footer.featuresList.analytics')}</li>
                 </ul>
               </div>
               <div>
-                <h4 className="text-base font-semibold mb-2 sm:text-lg sm:mb-4">Légal</h4>
+                <h4 className="text-base font-semibold mb-2 sm:text-lg sm:mb-4">{t('footer.legal')}</h4>
                 <ul className="space-y-1 text-xs  sm:text-sm sm:space-y-2">
-                  <li>Conditions d'utilisation</li>
-                  <li>Politique de confidentialité</li>
-                  <li>Mentions légales</li>
-                  <li>Cookies</li>
+                  <li>{t('footer.legalList.terms')}</li>
+                  <li>{t('footer.legalList.privacy')}</li>
+                  <li>{t('footer.legalList.legal')}</li>
+                  <li>{t('footer.legalList.cookies')}</li>
                 </ul>
               </div>
             </div>
             <div className="pt-6 border-t border-white/10 text-center sm:pt-8">
               <p className="text-xs  sm:text-sm">
-                © 2025 Win2cop. Tous droits réservés.
+                {t('footer.copyright', { year: 2025 })}
               </p>
             </div>
           </div>

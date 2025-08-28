@@ -38,7 +38,6 @@ export default function Navbar({ onToggleSidebar }) {
 
 
   const changeLanguage = languageContext?.changeLanguage || ((lang) => {
-    console.warn("LanguageContext not available");
     localStorage.setItem("language", lang);
     document.documentElement.lang = lang;
     i18n.changeLanguage(lang);

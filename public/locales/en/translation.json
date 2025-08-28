@@ -1,4 +1,74 @@
 {
+  "header": {
+    "business": "Business",
+    "login": "Login",
+    "getStarted": "Get Started"
+  },
+  "hero": {
+    "title": "Manage your store easily",
+    "description": "Everything you need to grow your business, with an integrated delivery service to maximize your sales.",
+    "tryFree": "Try for free",
+    "viewFeatures": "View features"
+  },
+  "features": {
+    "title": "Everything to manage your business",
+    "productManagement": {
+      "title": "Product management",
+      "description": "Add and manage your products in a few clicks with photos and detailed descriptions."
+    },
+    "orderTracking": {
+      "title": "Order tracking",
+      "description": "Track all your sales in real time and manage the status of each order."
+    },
+    "deliveryService": {
+      "title": "Delivery service",
+      "description": "Connected stores benefit from our integrated delivery service to extend their reach."
+    },
+    "advancedAnalytics": {
+      "title": "Advanced analytics",
+      "description": "Analyze your performance with detailed reports on sales, stock, and trends."
+    },
+    "customerManagement": {
+      "title": "Customer management",
+      "description": "Centralize customer information and build loyalty with marketing tools."
+    },
+    "multiPlatform": {
+      "title": "Multi-platform",
+      "description": "Sync your data across multiple stores and online sales channels."
+    }
+  },
+  "delivery": {
+    "title": "Integrated delivery service",
+    "description": "Every store connected to Win2cop automatically benefits from our efficient delivery service. Expand your sales area, offer home delivery to your customers, and track each package in real time.",
+    "benefits": {
+      "trackedDelivery": "Real-time tracked delivery",
+      "preferentialRates": "Preferential rates for partner stores",
+      "returnsManagement": "Simplified returns management"
+    },
+    "learnMore": "Learn more",
+    "expressDelivery": "Express delivery",
+    "available": "Available",
+    "secureDelivery": "Secure delivery",
+    "insurance": "Each package is insured up to €1000"
+  },
+  "footer": {
+    "description": "The all-in-one solution to manage and grow your business.",
+    "features": "Features",
+    "featuresList": {
+      "productManagement": "Product management",
+      "orderTracking": "Order tracking",
+      "deliveryService": "Delivery service",
+      "analytics": "Analytics and reports"
+    },
+    "legal": "Legal",
+    "legalList": {
+      "terms": "Terms of use",
+      "privacy": "Privacy policy",
+      "legal": "Legal notice",
+      "cookies": "Cookies"
+    },
+    "copyright": "© {{year}} Win2cop. All rights reserved."
+  },
   "common": {
     "requiredField": "This field is required",
     "chooseOption": "-- Choose --"

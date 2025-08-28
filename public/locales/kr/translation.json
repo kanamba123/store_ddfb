@@ -1,4 +1,74 @@
 {
+  "header": {
+    "business": "Ubucuruzi",
+    "login": "Injira",
+    "getStarted": "Tangira"
+  },
+  "hero": {
+    "title": "Tunganya iduka ryawe vyoroshe",
+    "description": "Vyose ukeneye kugira utere imbere mu bucuruzi bwawe, hamwe n’ishirahamwe ry’ugutwara ibicuruzwa kugira wongere uduhimbazamusyi twawe.",
+    "tryFree": "Gerageza ku buntu",
+    "viewFeatures": "Raba ivyiranga"
+  },
+  "features": {
+    "title": "Vyose vyo gutunganya ubucuruzi bwawe",
+    "productManagement": {
+      "title": "Igenzura ry’ibicuruzwa",
+      "description": "Shiraho kandi utunganye ibicuruzwa vyawe mu minota mike, ushizemwo amashusho n'ivyanditswe vyuzuye."
+    },
+    "orderTracking": {
+      "title": "Kurikirana amategeko y’ugutumiza",
+      "description": "Kurikirana ibigurishwa vyawe vyose mu kanya nyako kandi utunganye uko buri teka rihagaze."
+    },
+    "deliveryService": {
+      "title": "Serivisi y’ugutwara",
+      "description": "Amaduka yinjijwe arungikirwa serivisi yacu y’ugutwara kugira ashikire abakiriya benshi."
+    },
+    "advancedAnalytics": {
+      "title": "Isuzuma rihanitse",
+      "description": "Raba ingene bikora ukoresheje raporo zihanitse ku bijanye n’ibigurishwa, stock hamwe n’ivyerekezo."
+    },
+    "customerManagement": {
+      "title": "Igenzura ry’abakiriya",
+      "description": "Shira hamwe amakuru y’abakiriya hanyuma ukomeze umubano ukoresheje ibikoresho vy’ugukangurira kugura."
+    },
+    "multiPlatform": {
+      "title": "Platforme nyinshi",
+      "description": "Guhuza amakuru yawe hagati y’amaduka menshi hamwe n’inzira zo kugurisha kuri internet."
+    }
+  },
+  "delivery": {
+    "title": "Serivisi y’ugutwara yinjijwe",
+    "description": "Iduka ryose ryinjijwe muri Win2cop riraronka ako kanya serivisi yacu y’ugutwara ikomeye. Ongera akarere k’uburangu bwawe, terekerereza abakiriya serivisi y’ugutwara mu rugo, kandi kurikirana buri paki mu kanya nyako.",
+    "benefits": {
+      "trackedDelivery": "Ugutwara gukurikirwa mu kanya nyako",
+      "preferentialRates": "Amafaranga yoroheje ku maduka y’abagenzi",
+      "returnsManagement": "Gutunganya vyoroshe gusubiza ibicuruzwa"
+    },
+    "learnMore": "Menya vyinshi",
+    "expressDelivery": "Ugutwara vuba",
+    "available": "Biraboneka",
+    "secureDelivery": "Ugutwara kwizewe",
+    "insurance": "Buri paki irafise kwishingirwa gushika kuri €1000"
+  },
+  "footer": {
+    "description": "Igisubizo cose mu gutunganya no guteza imbere ubucuruzi bwawe.",
+    "features": "Ibiranga",
+    "featuresList": {
+      "productManagement": "Igenzura ry’ibicuruzwa",
+      "orderTracking": "Kurikirana amategeko",
+      "deliveryService": "Serivisi y’ugutwara",
+      "analytics": "Isuzuma n’inyandiko"
+    },
+    "legal": "Amategeko",
+    "legalList": {
+      "terms": "Amategeko y’ikoreshwa",
+      "privacy": "Politike y’ibanga",
+      "legal": "Inyandiko zemewe n’amategeko",
+      "cookies": "Cookies"
+    },
+    "copyright": "© {{year}} Win2cop. Uburenganzira bwose burabitswe."
+  },
   "common": {
     "requiredField": "Iki kibanza kirakenewe",
     "chooseOption": "-- Hitamwo --"
