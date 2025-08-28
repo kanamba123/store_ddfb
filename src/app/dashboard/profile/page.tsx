@@ -19,6 +19,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
 import { useStoreWithUserDetails } from "@/hooks/apis/useStores";
 import { useTranslation } from "react-i18next";
+import FullScreenLoaderMain from "@/components/ui/FullScreenLoaderMain";
 
 export default function ProfileTab() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -30,7 +31,7 @@ export default function ProfileTab() {
     <div className="container mx-auto px-1">
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+          <FullScreenLoaderMain message={t("products.loading")} />
         </div>
       ) : isError ? (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
