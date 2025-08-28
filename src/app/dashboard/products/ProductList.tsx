@@ -7,6 +7,8 @@ import Image from "next/image";
 import Link from "next/link";
 import DescriptionPreview from "@/components/ui/DescriptionPreview";
 import { useRouter } from "next/navigation";
+import FullScreenLoaderMain from "@/components/ui/FullScreenLoaderMain";
+import { useTranslation } from "react-i18next";
 
 interface ProductListProps {
   products: VariantsProduct[];
@@ -28,6 +30,7 @@ export default function ProductList({
   const desktopScrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const router = useRouter();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
@@ -85,46 +88,46 @@ export default function ProductList({
   }, [isMobile, hasNextPage, isFetchingNextPage, fetchNextPage, filteredProducts]);
 
 
-    const handleShare = (product: VariantsProduct) => {
-        const shareData = {
-            title: product.variantProductName,
-            text: `Découvrez ${product.variantProductName} à ${product.recommendedPrice} fbu`,
-            url: `https://win2cop.com/products/${product.slug}/${product.id}`,
-        };
-
-        if (navigator.share) {
-            // Mobile / navigateur supporté
-            navigator.share(shareData).catch(console.error);
-        } else {
-            // Desktop fallback
-            const shareText = `${shareData.text}\n${shareData.url}`;
-
-            // Copier le lien dans le presse-papiers
-            navigator.clipboard.writeText(shareText)
-                .then(() => alert("Lien copié dans le presse-papiers !"))
-                .catch(() => {
-                    // fallback plus ancien
-                    const textArea = document.createElement('textarea');
-                    textArea.value = shareText;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(textArea);
-                    alert("Lien copié dans le presse-papiers !");
-                });
-
-            // Ouvrir un mini menu de partage dans de nouveaux onglets
-            const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
-            const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}`;
-            const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareData.url)}&text=${encodeURIComponent(shareText)}`;
-
-            // Exemple : ouvrir WhatsApp dans un nouvel onglet
-            const userChoice = window.prompt("Partager sur :\n1 = WhatsApp\n2 = Facebook\n3 = Telegram\nEntrez le numéro :");
-            if (userChoice === "1") window.open(whatsappUrl, "_blank");
-            if (userChoice === "2") window.open(facebookUrl, "_blank");
-            if (userChoice === "3") window.open(telegramUrl, "_blank");
-        }
+  const handleShare = (product: VariantsProduct) => {
+    const shareData = {
+      title: product.variantProductName,
+      text: `Découvrez ${product.variantProductName} à ${product.recommendedPrice} fbu`,
+      url: `https://win2cop.com/products/${product.slug}/${product.id}`,
     };
+
+    if (navigator.share) {
+      // Mobile / navigateur supporté
+      navigator.share(shareData).catch(console.error);
+    } else {
+      // Desktop fallback
+      const shareText = `${shareData.text}\n${shareData.url}`;
+
+      // Copier le lien dans le presse-papiers
+      navigator.clipboard.writeText(shareText)
+        .then(() => alert("Lien copié dans le presse-papiers !"))
+        .catch(() => {
+          // fallback plus ancien
+          const textArea = document.createElement('textarea');
+          textArea.value = shareText;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          alert("Lien copié dans le presse-papiers !");
+        });
+
+      // Ouvrir un mini menu de partage dans de nouveaux onglets
+      const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}`;
+      const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareData.url)}&text=${encodeURIComponent(shareText)}`;
+
+      // Exemple : ouvrir WhatsApp dans un nouvel onglet
+      const userChoice = window.prompt("Partager sur :\n1 = WhatsApp\n2 = Facebook\n3 = Telegram\nEntrez le numéro :");
+      if (userChoice === "1") window.open(whatsappUrl, "_blank");
+      if (userChoice === "2") window.open(facebookUrl, "_blank");
+      if (userChoice === "3") window.open(telegramUrl, "_blank");
+    }
+  };
 
 
   const handleDelete = async (id: number) => {
@@ -149,7 +152,7 @@ export default function ProductList({
       <div className="flex flex-col sm:flex-row text-base sm:items-center sm:justify-between gap-4 mb-2">
         <input
           type="text"
-          placeholder="Rechercher un produit..."
+          placeholder={t("products.search")}
           value={filterText}
           onChange={(e) => setFilterText(e.target.value)}
           className="flex-grow px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] dark:border-gray-700  dark:placeholder-gray-400"
@@ -169,13 +172,13 @@ export default function ProductList({
 
         {isFetchingNextPage && (
           <div className="flex justify-center py-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+            <FullScreenLoaderMain message={t("products.loading")} />
           </div>
         )}
 
         {!hasNextPage && filteredProducts.length > 0 && (
           <div className="text-center py-4 text-gray-500 dark:text-gray-400">
-            Tous les produits ont été chargés
+            {t("products.allLoaded")}
           </div>
         )}
       </div>
@@ -189,12 +192,12 @@ export default function ProductList({
           <table className="min-w-full divide-y divide-gray-200 ">
             <thead className="bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
               <tr>
-                <th className="px-6 py-3">Image</th>
-                <th className="px-6 py-3">Nom</th>
-                <th className="px-6 py-3">Description</th>
-                <th className="px-6 py-3">Prix (€)</th>
-                <th className="px-6 py-3">Statut</th>
-                <th className="px-6 py-3">Actions</th>
+                <th className="px-6 py-3">{t("products.image")}</th>
+                <th className="px-6 py-3">{t("products.name")}</th>
+                <th className="px-6 py-3">{t("products.description")}</th>
+                <th className="px-6 py-3">{t("products.price")}</th>
+                <th className="px-6 py-3">{t("products.status")}</th>
+                <th className="px-6 py-3">{t("products.actions")}</th>
               </tr>
             </thead>
             <tbody>
@@ -220,7 +223,7 @@ export default function ProductList({
                       </div>
                     ) : (
                       <div className="h-10 w-10 bg-gray-200 rounded-md flex items-center justify-center">
-                        <span>No image</span>
+                        <span>{t("products.noImage")}</span>
                       </div>
                     )}
                   </td>
@@ -233,7 +236,7 @@ export default function ProductList({
 
                   <td className="px-6 py-4">{product?.recommendedPrice} fbu</td>
                   <td className="px-6 py-4">
-                    {product.isDisplay ? "Visible" : "Masqué"}
+                    {product.isDisplay ? t("products.visible") : t("products.hidden")}
                   </td>
                   <td className="px-6 py-4 flex space-x-2">
                     {/* Modifier */}
@@ -295,9 +298,7 @@ export default function ProductList({
           </table>
 
           {isFetchingNextPage && (
-            <div className="flex justify-center py-4">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
-            </div>
+            <FullScreenLoaderMain message="Chargement..." />
           )}
 
           {!hasNextPage && filteredProducts.length > 0 && (

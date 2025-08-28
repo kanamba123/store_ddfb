@@ -4,9 +4,12 @@ import { useVariantsProductByStore } from "@/hooks/apis/useProducts";
 import { useAuth } from "@/contexts/AuthContext";
 import Link from "next/link";
 import ProductList from "./ProductList";
+import FullScreenLoaderMain from "@/components/ui/FullScreenLoaderMain";
+import { useTranslation } from "react-i18next";
 
 export default function ProductsPage() {
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const {
     data,
@@ -19,26 +22,23 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen p-2 space-y-6 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] transition-colors duration-200">
-      
-      {/* Bouton Ajouter un produit */}
+
       <div className="flex justify-end">
         <Link
           href="/dashboard/products/create"
           className="px-4 py-2 rounded-md font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] transition-colors duration-200 dark:bg-[var(--color-primary-dark)] dark:hover:bg-[var(--color-primary)]"
         >
-          + Ajouter un produit
+          {t("products.addProduct")}
         </Link>
       </div>
 
       {/* Liste des produits */}
       <div className="space-y-4">
         {isLoading ? (
-          <div className="text-[var(--color-text-secondary)] dark:text-[var(--color-text-secondary)]">
-            Chargement des produits...
-          </div>
+          <FullScreenLoaderMain message={t("products.loading")} />
         ) : isError ? (
           <div className="text-red-500 dark:text-red-400">
-            Une erreur est survenue lors du chargement des produits
+            {t("products.loadError")}
           </div>
         ) : (
           <ProductList

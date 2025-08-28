@@ -182,5 +182,29 @@
     "message": "Votre session a expiré ou vous devez vous reconnecter pour continuer.",
     "loginButton": "Se reconnecter",
     "close": "Fermer"
+  },
+  "products": {
+    "addProduct": "+ Ajouter un produit",
+    "loading": "Chargement...",
+    "loadError": "Une erreur est survenue lors du chargement des produits",
+    "search": "Rechercher un produit...",
+    "allLoaded": "Tous les produits ont été chargés",
+    "noImage": "Pas d'image",
+    "visible": "Visible",
+    "hidden": "Masqué",
+    "edit": "Modifier",
+    "share": "Partager",
+    "delete": "Supprimer",
+    "deleteConfirm": "Voulez-vous vraiment supprimer ce produit ?",
+    "deleteSuccess": "Produit supprimé avec succès !",
+    "deleteError": "Erreur lors de la suppression",
+    "shareText": "Découvrez {{name}} à {{price}} fbu",
+    "copied": "Lien copié dans le presse-papiers !",
+    "image": "Image",
+    "name": "Nom",
+    "description": "Description",
+    "price": "Prix",
+    "status": "Statut",
+    "actions": "Actions"
   }
 }

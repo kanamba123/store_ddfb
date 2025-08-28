@@ -221,5 +221,29 @@
     "message": "Your session has expired or you need to log in again to continue.",
     "loginButton": "Log in again",
     "close": "Close"
+  },
+    "products": {
+    "addProduct": "+ Add Product",
+    "loading": "Loading...",
+    "loadError": "An error occurred while loading products",
+    "search": "Search for a product...",
+    "allLoaded": "All products have been loaded",
+    "noImage": "No image",
+    "visible": "Visible",
+    "hidden": "Hidden",
+    "edit": "Edit",
+    "share": "Share",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this product?",
+    "deleteSuccess": "Product deleted successfully!",
+    "deleteError": "Error while deleting",
+    "shareText": "Check out {{name}} for {{price}} fbu",
+    "copied": "Link copied to clipboard!",
+    "image": "Image",
+    "name": "Name",
+    "description": "Description",
+    "price": "Price",
+    "status": "Status",
+    "actions": "Actions"
   }
 }

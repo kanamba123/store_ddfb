@@ -1,5 +1,5 @@
 {
- "header": {
+  "header": {
     "business": "Biashara",
     "login": "Ingia",
     "getStarted": "Anza"
@@ -182,5 +182,29 @@
     "message": "Kikao chako kimeisha au unahitaji kuingia tena ili kuendelea.",
     "loginButton": "Ingia Tena",
     "close": "Funga"
+  },
+  "products": {
+    "addProduct": "+ Ongeza Bidhaa",
+    "loading": "Inapakia...",
+    "loadError": "Kulikuwa na hitilafu wakati wa kupakia bidhaa",
+    "search": "Tafuta bidhaa...",
+    "allLoaded": "Bidhaa zote zimepakuliwa",
+    "noImage": "Hakuna picha",
+    "visible": "Inaonekana",
+    "hidden": "Imefichwa",
+    "edit": "Hariri",
+    "share": "Shiriki",
+    "delete": "Futa",
+    "deleteConfirm": "Una hakika unataka kufuta bidhaa hii?",
+    "deleteSuccess": "Bidhaa imefutwa kwa mafanikio!",
+    "deleteError": "Kuna hitilafu wakati wa kufuta",
+    "shareText": "Angalia {{name}} kwa {{price}} fbu",
+    "copied": "Kiungo kimekopiishwa kwenye clipboard!",
+    "image": "Picha",
+    "name": "Jina",
+    "description": "Maelezo",
+    "price": "Bei",
+    "status": "Hali",
+    "actions": "Vitendo"
   }
 }

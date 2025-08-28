@@ -221,5 +221,29 @@
     "message": "Igihe co gukoresha uruhusha gwiyi application caheze, subira mwinjire kandi.",
     "loginButton": "Subira mwinjire",
     "close": "Funga"
+  },
+    "products": {
+    "addProduct": "+ Ongerako igicuruzwa",
+    "loading": "Biriko birapakira...",
+    "loadError": "Habayeho ikosa mu gukurura ibicuruzwa",
+    "search": "Rondera igicuruzwa...",
+    "allLoaded": "Ibicuruzwa vyose nivyo",
+    "noImage": "Nta shusho",
+    "visible": "Birashobora kugaragara",
+    "hidden": "Bihishwe",
+    "edit": "Hindura",
+    "share": "Sangira",
+    "delete": "Siba",
+    "deleteConfirm": "Urashaka koko gusiba iki gicuruzwa?",
+    "deleteSuccess": "Igicuruzwa casibwe neza!",
+    "deleteError": "Habayeho ikosa mu gusiba",
+    "shareText": "Rondera {{name}} ku {{price}} fbu",
+    "copied": "Uruhushya rwakoporowe muri clipboard!",
+    "image": "Ifoto",
+    "name": "Izina",
+    "description": "Ibisobanuro",
+    "price": "Igiciro",
+    "status": "Imiterere",
+    "actions": "Ibikorwa"
   }
 }
