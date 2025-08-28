@@ -94,7 +94,7 @@ const EditForeignViewEdit: React.FC<EditForeignViewEditProps> = ({
     <>
       {/* Conteneur cliquable */}
       <div
-        className="cursor-pointer bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] rounded-md px-2 py-1 hover:bg-gray-100 transition"
+        className="cursor-pointer bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] rounded-md px-2 py-1 hover:bg-[var(--color-bg-secondary)] transition"
         onClick={handleClick}
       >
         <div className="text-sm font-medium">

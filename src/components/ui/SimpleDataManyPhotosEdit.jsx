@@ -192,7 +192,7 @@ const SimpleDataManyPhotosEditInline = ({
           <div className="flex gap-2">
             <button
               className={`px-3 py-1 rounded border ${
-                selectedUploader === "image" ? "bg-blue-600 text-white" : "bg-gray-100"
+                selectedUploader === "image" ? "bg-blue-600 text-[var(--color-text-primary)]" : "bg-[var(--color-bg-primary)]"
               }`}
               onClick={() => setSelectedUploader("image")}
             >
@@ -200,7 +200,7 @@ const SimpleDataManyPhotosEditInline = ({
             </button>
             <button
               className={`px-3 py-1 rounded border ${
-                selectedUploader === "url" ? "bg-blue-600 text-white" : "bg-gray-100"
+                selectedUploader === "url" ? "bg-blue-600 text-[var(--color-text-primary)]" : "bg-[var(--color-bg-primary)]"
               }`}
               onClick={() => setSelectedUploader("url")}
             >
@@ -213,7 +213,7 @@ const SimpleDataManyPhotosEditInline = ({
               <URLUploader onUrlsChange={setSelectedImage} loading={false} />
               <button
                 onClick={addNewPhotoUri}
-                className="px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700"
+                className="px-3 py-1 bg-green-600 text-[var(--color-text-primary)] rounded hover:bg-green-700"
               >
                 Soumettre
               </button>
@@ -228,7 +228,7 @@ const SimpleDataManyPhotosEditInline = ({
             <button
               onClick={addNewPhoto}
               disabled={loading || !selectedFile}
-              className="mt-2 px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+              className="mt-2 px-3 py-1 bg-blue-600 text-[var(--color-text-primary)] rounded hover:bg-blue-700 disabled:opacity-50"
             >
               Ajouter
             </button>
