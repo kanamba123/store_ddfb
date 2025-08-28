@@ -331,7 +331,7 @@ export default function LoginPage() {
         <div className="space-y-3">
           <button
             onClick={handleGoogleLogin}
-            className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg border font-medium transition `}
+            className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-lg border border-[var(--color-border)] font-medium transition `}
           >
             <FaGoogle className="text-red-500" />
             {t('LoginPage.google')}
