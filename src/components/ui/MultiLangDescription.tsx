@@ -31,7 +31,7 @@ export default function MultiLangDescription({ register, errors }: Props) {
     return (
         <div className="space-y-4">
             {/* Sélecteur de langues */}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 items-center md:justify-start justify-center">
                 {languages.map((lang) => {
                     const isSelected = selectedLangs.includes(lang.code);
                     return (
@@ -39,7 +39,7 @@ export default function MultiLangDescription({ register, errors }: Props) {
                             key={lang.code}
                             type="button"
                             onClick={() => toggleLang(lang.code)}
-                            className={`px-3 py-1 rounded-full text-sm font-medium border flex items-center gap-1 transition
+                            className={`px-3 sm:px-1 py-1 rounded-full text-xs font-medium border flex items-center  transition
                 ${isSelected
                                     ? "bg-blue-600 text-white border-blue-600"
                                     : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
