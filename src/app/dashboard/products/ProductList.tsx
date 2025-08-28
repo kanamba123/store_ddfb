@@ -155,7 +155,7 @@ export default function ProductList({
           placeholder={t("products.search")}
           value={filterText}
           onChange={(e) => setFilterText(e.target.value)}
-          className="flex-grow px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] dark:border-gray-700  dark:placeholder-gray-400"
+          className="flex-grow px-4 py-2  rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] shadow-xs shadow-action-add  dark:placeholder-gray-400"
         />
       </div>
 
@@ -208,7 +208,7 @@ export default function ProductList({
                   onClick={() => handleRowClick(product)}
                   className={`cursor-pointer transition-colors ${selectedProductId === product.id
                     ? "bg-indigo-100 dark:bg-indigo-900"
-                    : "hover:bg-[var(--color-bg-secondary)]"
+                    : "hover:bg-[var(--color-bg-secondary)] border-b border-[var(--color-border)] "
                     }`}
                 >
                   <td className="px-6 py-4">

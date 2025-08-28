@@ -88,9 +88,9 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div onClick={() => {
             handleRowClick(product)
         }
-        } className="bg-[var(--color-bg-primary)] rounded-lg shadow-sm  p-2 space-y-2">
+        } className="bg-[var(--color-bg-primary)]   border-b border-[var(--color-border)]   space-y-2">
             {/* Header avec image et nom */}
-            <div className="flex items-start space-x-3">
+            <div className="flex items-start space-x-3 p-2">
                 <div className="flex-shrink-0">
                     {product?.image?.length > 0 ? (
                         <div className="relative h-16 w-16">
@@ -135,7 +135,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
 
             {/* Description */}
-            <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
+            <div className="p-2 border-t border-gray-100 dark:border-gray-700">
                 <p className="text-sm text-[var(--color-text-primary)] line-clamp-2">
                     {product?.Product?.description?.fr ||
                         product?.Product?.description?.en ||
@@ -144,7 +144,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
 
             {/* Actions */}
-            <div className="flex space-x-2 pt-2">
+            <div className="flex space-x-2 p-2">
                 <Link
                     href={`/dashboard/products/${product.id}`}
                     onClick={(e) => e.stopPropagation()}

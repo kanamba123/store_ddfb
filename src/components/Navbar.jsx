@@ -80,7 +80,7 @@ export default function Navbar({ onToggleSidebar }) {
   if (!mounted) return null;
 
   return (
-    <nav className=" backdrop-blur-xl border-b bg-[var(--color-bg-primary)]/95 text-[var(--color-text-secondary)] border-[var(--color-border)] shadow-sm relative z-30">
+    <nav className=" backdrop-blur-xl  bg-[var(--color-bg-primary)]/95 text-[var(--color-text-secondary)] border-b border-[var(--color-border)] shadow-sm relative z-30">
       <div className="px-3 sm:px-4 lg:px-6 py-3 sm:py-1">
         <div className="flex justify-between items-center">
           {/* Left section */}
@@ -110,7 +110,7 @@ export default function Navbar({ onToggleSidebar }) {
                 placeholder={t('navbar.searchPlaceholder', 'Rechercher...')}
                 className="w-full md:w-64 lg:w-80 pl-9 sm:pl-10 pr-10 sm:pr-4 py-2 
                   bg-[var(--color-bg-secondary)]/50 
-                  border border-[var(--color-border)] rounded-xl 
+                  shadow-xs shadow-action-add rounded-xl 
                   focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-light)]/30 
                   focus:border-[var(--color-primary-light)]/40 
                   transition-all duration-200 text-sm sm:text-base 

@@ -12,7 +12,7 @@ export default function DashboardLayout({ children }) {
   const closeSidebar = () => setSidebarOpen(false);
 
   return (
-    <div className="min-h-screen grid grid-rows-[auto_1fr_auto] lg:grid-cols-[280px_1fr] lg:grid-rows-[auto_1fr_auto] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
+    <div className="min-h-screen grid grid-rows-[auto_1fr_auto] lg:grid-cols-[280px_1fr] lg:grid-rows-[auto_1fr_auto] bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] mb-1">
       {/* Navbar */}
       
       <div className="lg:col-span-2 lg:col-start-1 relative z-20">
@@ -32,14 +32,9 @@ export default function DashboardLayout({ children }) {
 
       {/* Main Content */}
       <main className="lg:col-start-2 lg:row-start-2 overflow-hidden">
-        <div className="h-full p-2">
+        <div className="h-full ">
           <div
             className="h-full overflow-auto rounded-2xl custom-scrollbar "
-            style={{
-              border: "1px solid var(--color-border)",
-              boxShadow: `0 2px 6px var(--color-shadow-light)`,
-              color: "var(--color-text-primary)",
-            }}
           >
             {children}
           </div>
