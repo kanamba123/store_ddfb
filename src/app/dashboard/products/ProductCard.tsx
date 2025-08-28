@@ -88,7 +88,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div onClick={() => {
             handleRowClick(product)
         }
-        } className="bg-[var(--color-bg-primary)]   border-b border-[var(--color-border)]   space-y-2">
+        } className="bg-[var(--color-bg-primary)]   border-b  border-[var(--color-secondary)]   space-y-2">
             {/* Header avec image et nom */}
             <div className="flex items-start space-x-3 p-2">
                 <div className="flex-shrink-0">
@@ -112,14 +112,14 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </div>
 
                 <div className="flex-1 min-w-0">
-                    <h3 className="font-medium text-gray-900 dark:text-white truncate">
+                    <h3 className="font-medium text-[var(--color-primary)] truncate">
                         {product.variantProductName}
                     </h3>
                     <p className="text-sm text-[var(--color-text-secondary)] truncate">
                         {product?.Product?.productName}
                     </p>
                     <div className="flex items-center justify-between mt-2">
-                        <span className="text-lg font-semibold text-gray-900 dark:text-white">
+                        <span className="text-lg font-semibold ">
                             {product?.recommendedPrice} fbu
                         </span>
                         <span
@@ -135,12 +135,16 @@ export default function ProductCard({ product }: ProductCardProps) {
             </div>
 
             {/* Description */}
-            <div className="p-2 border-t border-gray-100 dark:border-gray-700">
-                <p className="text-sm text-[var(--color-text-primary)] line-clamp-2">
-                    {product?.Product?.description?.fr ||
-                        product?.Product?.description?.en ||
-                        "Aucune description"}
-                </p>
+            <div className="p-2">
+                <div className="border-t   border-[var(--color-border)] mx-2 pt-2"></div>
+                <div className="">
+                    <p className="text-sm text-[var(--color-text-primary)] line-clamp-2">
+                        {product?.Product?.description?.fr ||
+                            product?.Product?.description?.en ||
+                            "Aucune description"}
+                    </p>
+                </div>
+            
             </div>
 
             {/* Actions */}

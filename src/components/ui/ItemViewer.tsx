@@ -146,9 +146,8 @@ const ItemViewer: React.FC<ItemViewerProps> = ({
                 onChange={(e) => setNewValue(e.target.value)}
                 rows={3}
                 disabled={loading}
-                className={`w-full border rounded-md p-2 mb-3 ${
-                  error ? "border-red-500" : ""
-                }`}
+                className={`w-full border rounded-md p-2 mb-3 ${error ? "border-red-500" : ""
+                  }`}
               />
             )}
 

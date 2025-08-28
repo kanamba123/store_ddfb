@@ -12,6 +12,9 @@ import SimpleDataManyPhotosEdit from '@/components/ui/SimpleDataManyPhotosEdit';
 import { variantTypes } from '@/constants/variantTypes';
 import { Product } from '@/types/Product';
 import TdDynJSOBCustomGrid from '@/components/ui/TdDynJSOBCustomGrid';
+import TdDynJSOBCustom from '@/components/ui/TdDynJSOBCustom';
+import FullScreenLoaderMain from '@/components/ui/FullScreenLoaderMain';
+import { useTranslation } from "react-i18next";
 
 interface Specification {
   [key: string]: string;
@@ -51,6 +54,7 @@ const ProductDetailBackoffice = () => {
   const [deleting, setDeleting] = useState(false);
   const [shareUrl, setShareUrl] = useState("");
   const dataendPoint = "variantesProduits";
+  const { t } = useTranslation();
 
   const loadVariant = useCallback(async () => {
     if (!id) return;
@@ -174,8 +178,7 @@ const ProductDetailBackoffice = () => {
     return (
       <div className=" bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] flex items-center justify-center p-4">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-[var(--color-text-primary)]">Chargement du produit...</p>
+          <FullScreenLoaderMain message={t("products.loading")} />
         </div>
       </div>
     );
@@ -476,14 +479,19 @@ const ProductDetailBackoffice = () => {
             {/* Description */}
             <div className="bg-[var(--color-bg-primary)] rounded-xl sm:rounded-2xl p-4 sm:p-6 shadow-sm">
               <h3 className="text-base sm:text-lg font-semibold text-[var(--color-text-primary)] mb-3 sm:mb-4">Description</h3>
-              {variant.description ? (
-                <p className="text-[var(--color-text-primary)] text-sm sm:text-base leading-relaxed">{variant.description}</p>
-              ) : variant.Product.description?.fr ? (
-                <p className="text-[var(--color-text-primary)] text-sm sm:text-base leading-relaxed">{variant.Product.description.fr}</p>
-              ) : (
-                <p className="text-gray-400 italic text-sm sm:text-base">Aucune description disponible</p>
-              )}
+
+              <TdDynJSOBCustom
+                id={variant.id}
+                field="description"
+                value={variant?.description ?? variant.description } 
+                endpoint={dataendPoint}
+                editable
+                onSave={handleSave}
+              />
+
             </div>
+
+
           </div>
         </div>
 
