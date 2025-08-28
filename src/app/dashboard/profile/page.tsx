@@ -38,14 +38,14 @@ export default function ProfileTab() {
           {isError}
         </div>
       ) : store ? (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 m-2">
           {/* Store Profile Section */}
           <div className="lg:col-span-2 space-y-6">
             {/* Store Header */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm dark:shadow-none border dark:border-gray-700 p-6">
-              <div className="flex flex-col sm:flex-row gap-6">
+            <div className="bg-[var(--color-bg-primary)]  rounded-xl  dark:shadow-none border-b border-[var(--color-border)] p-6 ">
+              <div className="flex flex-col sm:flex-row gap-6 ">
                 {/* Store Logo/Avatar */}
-                <div className="relative w-24 h-24 rounded-full overflow-hidden border-2 border-blue-100 dark:border-gray-600">
+                <div className="relative w-24 h-24 rounded-full overflow-hidden  border-b border-[var(--color-border)]">
                   {store.storePlatformUrl?.[0] ? (
                     <Image
                       src={store.storePlatformUrl[0]}
@@ -64,7 +64,7 @@ export default function ProfileTab() {
                   <div className="flex justify-between items-start">
                     <div>
                       <h1 className="text-2xl font-bold">{store.storeName}</h1>
-                      <div className="flex items-center gap-2 mt-1 text-gray-600 dark:text-gray-300">
+                      <div className="flex items-center gap-2 mt-1 text-[var(--color-text-primary)]">
                         <MapPin size={16} />
                         <span>
                           {store.city}, {store.country}
@@ -75,7 +75,7 @@ export default function ProfileTab() {
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center gap-2 mt-1 text-gray-600 dark:text-gray-300">
+                      <div className="flex items-center gap-2 mt-1 text-[var(--color-text-primary)]">
                         <ShoppingBag size={16} />
                         <span className="capitalize">{store.storeType}</span>
                         {store.Market && (
@@ -95,7 +95,7 @@ export default function ProfileTab() {
                   </div>
 
                   {store.storeDescription && (
-                    <p className="mt-4 text-gray-700 dark:text-gray-300">
+                    <p className="mt-4 text-[var(--color-text-primary)]">
                       {store.storeDescription}
                     </p>
                   )}
@@ -104,7 +104,7 @@ export default function ProfileTab() {
             </div>
 
             {/* Store Details */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm dark:shadow-none border dark:border-gray-700 p-6">
+            <div className="bg-[var(--color-bg-primary)]  rounded-xl shadow-sm dark:shadow-none border-b border-[var(--color-border)] p-6">
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Info size={20} />
                 Store Information
@@ -175,21 +175,21 @@ export default function ProfileTab() {
 
             {/* Person References */}
             {store.personReferences && store.personReferences.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm dark:shadow-none border dark:border-gray-700 p-6">
+              <div className="bg-[var(--color-bg-primary)] rounded-xl shadow-sm dark:shadow-none border-b border-[var(--color-border)] p-6">
                 <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                   <Users size={20} />
                   Person References
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {store.personReferences.map((person: any, index: string) => (
-                    <div key={index} className="border rounded-lg p-4">
+                    <div key={index} className="border border-[var(--color-border)] rounded-lg p-4">
                       <h3 className="font-medium">{person.name}</h3>
                       <div className="mt-2 space-y-1">
 
                         {(person as any).phoneNumbers?.map?.((phone: string, i: number) => (
                           phone && (
                             <div key={i} className="flex items-center gap-2 text-sm">
-                              <Phone size={14} className="text-gray-500" />
+                              <Phone size={14} className="text-[var(--color-text-primary)]" />
                               <span>{phone}</span>
                             </div>
                           )
@@ -206,12 +206,12 @@ export default function ProfileTab() {
           {/* Right Sidebar Section */}
           <div className="space-y-6">
             {/* Owner Information */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm dark:shadow-none border dark:border-gray-700 p-6">
+            <div className="bg-[var(--color-bg-primary)] rounded-xl shadow-sm dark:shadow-none border border-[var(--color-border)] p-6">
               <h2 className="text-xl font-semibold mb-4">Owner Information</h2>
               {store.OwnerStore && (
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
-                    <div className="relative w-12 h-12 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700">
+                    <div className="relative w-12 h-12 rounded-full overflow-hidden ">
                       {store.OwnerStore.profil ? (
                         <Image
                           src={store.OwnerStore.profil}
@@ -220,14 +220,14 @@ export default function ProfileTab() {
                           className="object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        <div className="w-full h-full flex items-center justify-center text-[var(--color-text-primary)]">
                           <Users size={20} />
                         </div>
                       )}
                     </div>
                     <div>
                       <h3 className="font-medium">{store.OwnerStore.fullName}</h3>
-                      <p className="text-sm text-gray-600 dark:text-gray-300">
+                      <p className="text-sm text-[var(--color-text-primary)]">
                         @{store.OwnerStore.userName}
                       </p>
                     </div>
@@ -255,7 +255,7 @@ export default function ProfileTab() {
             </div>
 
             {/* Verification Status */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm dark:shadow-none border dark:border-gray-700 p-6">
+            <div className="bg-[var(--color-bg-primary)] rounded-xl shadow-sm dark:shadow-none border border-[var(--color-border)] p-6">
               <h2 className="text-xl font-semibold mb-2">Verification</h2>
               <div
                 className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${store.verificationStatus === "verified"
@@ -268,7 +268,7 @@ export default function ProfileTab() {
                 {store.verificationStatus.charAt(0).toUpperCase() +
                   store.verificationStatus.slice(1)}
               </div>
-              <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+              <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
                 {store.verificationStatus === "verified"
                   ? "Your store is fully verified"
                   : store.verificationStatus === "pending"
@@ -285,7 +285,7 @@ export default function ProfileTab() {
 
             {/* Store Gallery Section */}
             {store.storePlatformUrl && store.storePlatformUrl.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm dark:shadow-none border dark:border-gray-700 p-6">
+              <div className="bg-[var(--color-bg-primary)] rounded-xl shadow-sm dark:shadow-none border border-[var(--color-border)] p-6">
                 <h2 className="text-xl font-semibold mb-4">Store Images</h2>
                 <div className="grid grid-cols-2 gap-4">
                   {store.storePlatformUrl?.map((img: string, index: string) => (
