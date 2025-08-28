@@ -222,7 +222,7 @@
     "loginButton": "Log in again",
     "close": "Close"
   },
-    "products": {
+  "products": {
     "addProduct": "+ Add Product",
     "loading": "Loading...",
     "loadError": "An error occurred while loading products",
@@ -245,5 +245,40 @@
     "price": "Price",
     "status": "Status",
     "actions": "Actions"
+  },
+  "profile": {
+    "editButton": "Edit",
+    "storeInformation": "Store Information",
+    "email": "Email",
+    "phone": "Phone",
+    "businessPhone": "Business",
+    "whatsapp": "WhatsApp",
+    "communication": "Communication",
+    "address": "Address",
+    "website": "Website",
+    "visitStore": "Visit Store",
+    "notProvided": "Not provided",
+    "status": "Status",
+    "businessPapers": "Business Papers",
+    "market": "Market",
+    "createdAt": "Created At",
+    "lastUpdated": "Last updated",
+    "personReferences": "Person References",
+    "ownerInformation": "Owner Information",
+    "business": "Business",
+    "verification": "Verification",
+    "verificationStatus": {
+      "verified": "Verified",
+      "pending": "Pending",
+      "rejected": "Rejected"
+    },
+    "verificationMessage": {
+      "verified": "Your store is fully verified",
+      "pending": "Verification is in progress",
+      "rejected": "Please complete verification"
+    },
+    "verifiedOn": "Verified on",
+    "storeImages": "Store Images",
+    "storeImage": "Store image"
   }
 }

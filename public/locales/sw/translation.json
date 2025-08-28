@@ -206,5 +206,40 @@
     "price": "Bei",
     "status": "Hali",
     "actions": "Vitendo"
+  },
+  "profile": {
+    "editButton": "Hariri",
+    "storeInformation": "Taarifa za Duka",
+    "email": "Barua pepe",
+    "phone": "Simu",
+    "businessPhone": "Biashara",
+    "whatsapp": "WhatsApp",
+    "communication": "Mawasiliano",
+    "address": "Anwani",
+    "website": "Tovuti",
+    "visitStore": "Tembelea Duka",
+    "notProvided": "Haijatolewa",
+    "status": "Hali",
+    "businessPapers": "Hati za Biashara",
+    "market": "Soko",
+    "createdAt": "Imeundwa tarehe",
+    "lastUpdated": "Imesasishwa mwisho",
+    "personReferences": "Marejeleo ya Watu",
+    "ownerInformation": "Taarifa za Mmiliki",
+    "business": "Biashara",
+    "verification": "Uhakiki",
+    "verificationStatus": {
+      "verified": "Umehakikishwa",
+      "pending": "Inasubiri",
+      "rejected": "Imekataliwa"
+    },
+    "verificationMessage": {
+      "verified": "Duka lako limehakikishwa kikamilifu",
+      "pending": "Uhakiki unaendelea",
+      "rejected": "Tafadhali kamilisha uhakiki"
+    },
+    "verifiedOn": "Imehakikishwa tarehe",
+    "storeImages": "Picha za Duka",
+    "storeImage": "Picha ya duka"
   }
 }

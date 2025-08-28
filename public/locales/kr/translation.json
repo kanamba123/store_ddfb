@@ -222,7 +222,7 @@
     "loginButton": "Subira mwinjire",
     "close": "Funga"
   },
-    "products": {
+  "products": {
     "addProduct": "+ Ongerako igicuruzwa",
     "loading": "Biriko birapakira...",
     "loadError": "Habayeho ikosa mu gukurura ibicuruzwa",
@@ -245,5 +245,40 @@
     "price": "Igiciro",
     "status": "Imiterere",
     "actions": "Ibikorwa"
+  },
+  "profile": {
+    "editButton": "Hindura",
+    "storeInformation": "Amakuru y’Iduka",
+    "email": "Imeli",
+    "phone": "Terefone",
+    "businessPhone": "Ubucuruzi",
+    "whatsapp": "WhatsApp",
+    "communication": "Ugutumanaho",
+    "address": "Aderesi",
+    "website": "Urubuga",
+    "visitStore": "Sura Iduka",
+    "notProvided": "Ntivyatanzwe",
+    "status": "Imimerere",
+    "businessPapers": "Amadosiye y’Ubucuruzi",
+    "market": "Isoko",
+    "createdAt": "Vyaremwe ku",
+    "lastUpdated": "Vyahinduwe bwa nyuma",
+    "personReferences": "Indango z’Abantu",
+    "ownerInformation": "Amakuru y’Umwinyi",
+    "business": "Ubucuruzi",
+    "verification": "Kugenzurwa",
+    "verificationStatus": {
+      "verified": "Vyemejwe",
+      "pending": "Birindiriye",
+      "rejected": "Byanse"
+    },
+    "verificationMessage": {
+      "verified": "Iduka ryawe ryemejwe neza",
+      "pending": "Igenzura riracabandanya",
+      "rejected": "Ntugire utangure urangure igenzura"
+    },
+    "verifiedOn": "Vyemejwe ku",
+    "storeImages": "Amafoto y’Iduka",
+    "storeImage": "Ifoto y’Iduka"
   }
 }

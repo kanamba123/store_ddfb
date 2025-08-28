@@ -206,5 +206,40 @@
     "price": "Prix",
     "status": "Statut",
     "actions": "Actions"
+  },
+   "profile": {
+    "editButton": "Modifier",
+    "storeInformation": "Informations du magasin",
+    "email": "Email",
+    "phone": "Téléphone",
+    "businessPhone": "Professionnel",
+    "whatsapp": "WhatsApp",
+    "communication": "Communication",
+    "address": "Adresse",
+    "website": "Site web",
+    "visitStore": "Visiter le magasin",
+    "notProvided": "Non fourni",
+    "status": "Statut",
+    "businessPapers": "Documents d'entreprise",
+    "market": "Marché",
+    "createdAt": "Créé le",
+    "lastUpdated": "Dernière mise à jour",
+    "personReferences": "Références personnelles",
+    "ownerInformation": "Informations du propriétaire",
+    "business": "Entreprise",
+    "verification": "Vérification",
+    "verificationStatus": {
+      "verified": "Vérifié",
+      "pending": "En attente",
+      "rejected": "Rejeté"
+    },
+    "verificationMessage": {
+      "verified": "Votre magasin est entièrement vérifié",
+      "pending": "La vérification est en cours",
+      "rejected": "Veuillez compléter la vérification"
+    },
+    "verifiedOn": "Vérifié le",
+    "storeImages": "Images du magasin",
+    "storeImage": "Image du magasin"
   }
 }

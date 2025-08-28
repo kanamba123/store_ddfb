@@ -18,14 +18,13 @@ import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import Image from "next/image";
 import { useStoreWithUserDetails } from "@/hooks/apis/useStores";
+import { useTranslation } from "react-i18next";
 
 export default function ProfileTab() {
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAuth();
-  const { data: store, isLoading,isError } = useStoreWithUserDetails(user?.id);
-
-
+  const { data: store, isLoading, isError } = useStoreWithUserDetails(user?.id);
+   const { t } = useTranslation();
 
   return (
     <div className="container mx-auto px-1">
@@ -42,7 +41,7 @@ export default function ProfileTab() {
           {/* Store Profile Section */}
           <div className="lg:col-span-2 space-y-6">
             {/* Store Header */}
-            <div className="bg-[var(--color-bg-primary)]  rounded-xl  dark:shadow-none border-b border-[var(--color-border)] p-6 ">
+            <div className="bg-[var(--color-bg-primary)]  rounded-xl  dark:shadow-none border-b border-[var(--color-border)] p-2 ">
               <div className="flex flex-col sm:flex-row gap-6 ">
                 {/* Store Logo/Avatar */}
                 <div className="relative w-24 h-24 rounded-full overflow-hidden  border-b border-[var(--color-border)]">
@@ -90,7 +89,7 @@ export default function ProfileTab() {
                       className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
                     >
                       <Edit size={16} />
-                      Edit
+                      {t('profile.editButton')}
                     </button>
                   </div>
 
@@ -104,36 +103,36 @@ export default function ProfileTab() {
             </div>
 
             {/* Store Details */}
-            <div className="bg-[var(--color-bg-primary)]  rounded-xl shadow-sm dark:shadow-none border-b border-[var(--color-border)] p-6">
+            <div className="bg-[var(--color-bg-primary)]  rounded-xl shadow-sm dark:shadow-none border-b border-[var(--color-border)] p-2">
               <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                 <Info size={20} />
-                Store Information
+                {t('profile.storeInformation')}
               </h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <DetailCard
                   icon={<Mail size={18} />}
-                  title="Email"
+                  title={t('profile.email')}
                   value={store.storeContactMail}
                 />
                 <DetailCard
                   icon={<Phone size={18} />}
-                  title="Phone"
+                  title={t('profile.phone')}
                   value={store.storeContactPhone?.call}
                   additionalValues={[
-                    { label: "Business", value: store.storeContactPhone?.Busness },
-                    { label: "WhatsApp", value: store.storeContactPhone?.Whatsapp },
-                    { label: "Communication", value: store.storeContactPhone?.Communication }
+                    { label: t('profile.businessPhone'), value: store.storeContactPhone?.Busness },
+                    { label: t('profile.whatsapp'), value: store.storeContactPhone?.Whatsapp },
+                    { label: t('profile.communication'), value: store.storeContactPhone?.Communication }
                   ]}
                 />
                 <DetailCard
                   icon={<MapPin size={18} />}
-                  title="Address"
+                  title={t('profile.address')}
                   value={store.storeAddress}
                 />
                 <DetailCard
                   icon={<Globe size={18} />}
-                  title="Website"
+                  title={t('profile.website')}
                   value={store.storePlatformUrl?.[0] ? (
                     <a
                       href={store.storePlatformUrl[0]}
@@ -141,44 +140,44 @@ export default function ProfileTab() {
                       rel="noopener noreferrer"
                       className="text-blue-600 hover:underline"
                     >
-                      Visit Store
+                      {t('profile.visitStore')}
                     </a>
-                  ) : "Not provided"}
+                  ) : t('profile.notProvided')}
                 />
                 <DetailCard
                   icon={<Shield size={18} />}
-                  title="Status"
+                  title={t('profile.status')}
                   value={store.storeStatus}
                   badge={true}
                 />
                 <DetailCard
                   icon={<FileText size={18} />}
-                  title="Business Papers"
-                  value={store.bp || "Not provided"}
+                  title={t('profile.businessPapers')}
+                  value={store.bp || t('profile.notProvided')}
                 />
                 {store.Market && (
                   <DetailCard
                     icon={<Store size={18} />}
-                    title="Market"
+                    title={t('profile.market')}
                     value={`${store.Market.marketName} (${store.Market.marketType})`}
                     additionalValue={store.Market.adressMarket}
                   />
                 )}
                 <DetailCard
                   icon={<Calendar size={18} />}
-                  title="Created At"
+                  title={t('profile.createdAt')}
                   value={new Date(store.createdAt).toLocaleDateString()}
-                  additionalValue={`Last updated: ${new Date(store.updatedAt).toLocaleDateString()}`}
+                  additionalValue={`${t('profile.lastUpdated')}: ${new Date(store.updatedAt).toLocaleDateString()}`}
                 />
               </div>
             </div>
 
             {/* Person References */}
             {store.personReferences && store.personReferences.length > 0 && (
-              <div className="bg-[var(--color-bg-primary)] rounded-xl shadow-sm dark:shadow-none border-b border-[var(--color-border)] p-6">
+              <div className="bg-[var(--color-bg-primary)] rounded-xl shadow-sm dark:shadow-none border-b border-[var(--color-border)] p-2">
                 <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
                   <Users size={20} />
-                  Person References
+                  {t('profile.personReferences')}
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {store.personReferences.map((person: any, index: string) => (
@@ -206,8 +205,8 @@ export default function ProfileTab() {
           {/* Right Sidebar Section */}
           <div className="space-y-6">
             {/* Owner Information */}
-            <div className="bg-[var(--color-bg-primary)] rounded-xl shadow-sm dark:shadow-none border border-[var(--color-border)] p-6">
-              <h2 className="text-xl font-semibold mb-4">Owner Information</h2>
+            <div className="bg-[var(--color-bg-primary)] rounded-xl shadow-sm dark:shadow-none border border-[var(--color-border)] p-2">
+              <h2 className="text-xl font-semibold mb-4">{t('profile.ownerInformation')}</h2>
               {store.OwnerStore && (
                 <div className="space-y-4">
                   <div className="flex items-center gap-3">
@@ -234,19 +233,19 @@ export default function ProfileTab() {
                   </div>
                   <DetailCard
                     icon={<Mail size={16} />}
-                    title="Email"
+                    title={t('profile.email')}
                     value={store.OwnerStore.email}
                     small
                   />
                   <DetailCard
                     icon={<Phone size={16} />}
-                    title="Phone"
+                    title={t('profile.phone')}
                     value={store.OwnerStore.phoneNumber}
                     small
                   />
                   <DetailCard
                     icon={<ShoppingBag size={16} />}
-                    title="Business"
+                    title={t('profile.business')}
                     value={store.OwnerStore.businessName}
                     small
                   />
@@ -256,7 +255,7 @@ export default function ProfileTab() {
 
             {/* Verification Status */}
             <div className="bg-[var(--color-bg-primary)] rounded-xl shadow-sm dark:shadow-none border border-[var(--color-border)] p-6">
-              <h2 className="text-xl font-semibold mb-2">Verification</h2>
+              <h2 className="text-xl font-semibold mb-2">{t('profile.verification')}</h2>
               <div
                 className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${store.verificationStatus === "verified"
                   ? "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
@@ -265,20 +264,15 @@ export default function ProfileTab() {
                     : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
                   }`}
               >
-                {store.verificationStatus.charAt(0).toUpperCase() +
-                  store.verificationStatus.slice(1)}
+                {t(`profile.verificationStatus.${store.verificationStatus}`)}
               </div>
               <p className="mt-2 text-sm text-[var(--color-text-secondary)]">
-                {store.verificationStatus === "verified"
-                  ? "Your store is fully verified"
-                  : store.verificationStatus === "pending"
-                    ? "Verification is in progress"
-                    : "Please complete verification"}
+                {t(`profile.verificationMessage.${store.verificationStatus}`)}
               </p>
               {store.verifiedAt && (
                 <p className="mt-1 text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
                   <Clock size={12} />
-                  Verified on: {new Date(store.verifiedAt).toLocaleDateString()}
+                  {t('profile.verifiedOn')}: {new Date(store.verifiedAt).toLocaleDateString()}
                 </p>
               )}
             </div>
@@ -286,7 +280,7 @@ export default function ProfileTab() {
             {/* Store Gallery Section */}
             {store.storePlatformUrl && store.storePlatformUrl.length > 0 && (
               <div className="bg-[var(--color-bg-primary)] rounded-xl shadow-sm dark:shadow-none border border-[var(--color-border)] p-6">
-                <h2 className="text-xl font-semibold mb-4">Store Images</h2>
+                <h2 className="text-xl font-semibold mb-4">{t('profile.storeImages')}</h2>
                 <div className="grid grid-cols-2 gap-4">
                   {store.storePlatformUrl?.map((img: string, index: string) => (
                     <div
@@ -295,7 +289,7 @@ export default function ProfileTab() {
                     >
                       <Image
                         src={img}
-                        alt={`Store image ${index + 1}`}
+                        alt={`${t('profile.storeImage')} ${index + 1}`}
                         fill
                         className="object-cover"
                       />
@@ -332,6 +326,7 @@ function DetailCard({
   badge?: boolean;
   small?: boolean;
 }) {
+ const { t } = useTranslation();
   return (
     <div className={`flex items-start gap-3 ${small ? 'text-sm' : ''}`}>
       <div className={`p-2 bg-blue-50 dark:bg-gray-700 rounded-lg text-blue-600 dark:text-blue-400 ${small ? 'p-1' : ''}`}>
@@ -346,11 +341,11 @@ function DetailCard({
               : "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
               }`}
           >
-            {value || "Not provided"}
+            {value || t('profile.notProvided')}
           </span>
         ) : (
           <p className={`font-medium ${small ? 'text-sm' : ''}`}>
-            {value || <span className="text-gray-400">Not provided</span>}
+            {value || <span className="text-gray-400">{t('profile.notProvided')}</span>}
           </p>
         )}
         {additionalValue && (
