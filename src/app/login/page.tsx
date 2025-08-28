@@ -325,20 +325,12 @@ export default function LoginPage() {
         )}
 
         {/* Divider */}
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div
-              className={`w-full border-t `}
-            ></div>
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span
-              className={`px-2 `}
-            >
-              {t('LoginPage.orContinue')}
-            </span>
-          </div>
+        <div className="flex items-center my-4">
+          <div className="flex-grow border-t border-gray-400"></div>
+          <span className="px-4 text-sm text-gray-400">{t('LoginPage.orContinue')}</span>
+          <div className="flex-grow border-t border-gray-400"></div>
         </div>
+
 
         {/* Google */}
         <div className="space-y-3">
