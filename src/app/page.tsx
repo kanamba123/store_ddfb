@@ -45,7 +45,7 @@ export default function Home() {
       {/* Contenu */}
       <div className="relative z-10">
         {/* Header */}
-        <header className="px-4 py-4 sm:px-6 sm:py-6 lg:px-8">
+        <header className="px-2 py-4 sm:px-6 sm:py-6 lg:px-8">
           <div className="flex justify-between items-center max-w-7xl mx-auto space-x-2">
             <div className="flex items-center">
               <Link href="/" className="flex items-center">
@@ -80,7 +80,7 @@ export default function Home() {
         </header>
 
         {/* Main Content */}
-        <main className="px-4 py-6 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+        <main className="px-1 py-6 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
           <div className="max-w-4xl mx-auto text-center">
             {/* Hero */}
             <h2 className="text-1xl font-bold mb-4 sm:text-4xl md:text-4xl lg:text-4xl lg:mb-6">
@@ -310,7 +310,7 @@ export default function Home() {
         </main>
 
         {/* Footer */}
-        <footer className="px-4 py-8 mt-12 bg-white/5 backdrop-blur-sm border-t border-white/10 sm:px-6 sm:py-10 sm:mt-16 lg:px-8 lg:py-12 lg:mt-20">
+        <footer className="px-2 py-8 mt-12 bg-white/5 backdrop-blur-sm border-t border-white/10 sm:px-6 sm:py-10 sm:mt-16 lg:px-8 lg:py-12 lg:mt-20">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-2 gap-6 mb-6 sm:grid-cols-4 sm:gap-8 sm:mb-8">
               <div className="col-span-2 sm:col-span-1">
