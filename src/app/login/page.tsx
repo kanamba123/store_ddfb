@@ -177,9 +177,9 @@ export default function LoginPage() {
       className={`min-h-screen flex items-center bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] justify-center px-4 transition-colors duration-300 `}
     >
       <div
-        className={`w-full max-w-md rounded-xl shadow-md p-6 space-y-6 transition-colors duration-300 
+        className={`w-full max-w-md  rounded-xl shadow-md p-6 space-y-6 transition-colors duration-300 
            ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
-        } border`}
+        }  border border-[var(--color-border)]`}
       >
         <h2 className="text-2xl font-bold text-center">{t('LoginPage.title')}</h2>
 
@@ -203,7 +203,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder={t('LoginPage.emailPlaceholder')}
-                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300  border`}
+                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring  transition-colors duration-300  border  border-[var(--color-border)`}
               />
             </div>
           </div>
@@ -227,7 +227,7 @@ export default function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="••••••••"
-                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring focus:ring-blue-200 transition-colors duration-300  border`}
+                className={`pl-10 w-full px-4 py-2 rounded-lg shadow-sm focus:ring  transition-colors duration-300  border border-[var(--color-border)`}
               />
               <button
                 type="button"
@@ -255,13 +255,13 @@ export default function LoginPage() {
           </div>
 
           {/* Terms */}
-          <div className="flex items-start">
+          <div className="flex items-start ">
             <input
               id="terms"
               type="checkbox"
               checked={acceptedTerms}
               onChange={(e) => setAcceptedTerms(e.target.checked)}
-              className={`focus:ring-blue-500 h-4 w-4 rounded `}
+              className={`focus:ring-blue-500 h-4 w-4 rounded  `}
             />
             <label
               htmlFor="terms"
