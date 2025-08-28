@@ -179,11 +179,11 @@ export default function LoginPage() {
     <div
       className="min-h-screen flex flex-col items-center bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] justify-center px-4 transition-colors duration-300"
     >
-      
+
       <div className="mb-4">
         <Link href="/">
           <Logo
-            textClassName="text-lg font-extrabold "
+            textClassName="text-lg  font-extrabold "
             imageClassName="h-10 w-10 rounded-full"
           />
 
