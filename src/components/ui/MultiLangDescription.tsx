@@ -17,7 +17,7 @@ const languages = [
 ];
 
 const inputClass =
-    "mt-1 block w-full rounded-lg border border-gray-300 p-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500";
+    "mt-1 block w-full rounded-lg border border-[var(--color-border)] p-2 text-sm shadow-sm focus:border-blue-500 focus:ring-blue-500";
 
 export default function MultiLangDescription({ register, errors }: Props) {
     const [selectedLangs, setSelectedLangs] = useState<string[]>(["fr"]);

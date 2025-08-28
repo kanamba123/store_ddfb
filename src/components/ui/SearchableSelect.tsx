@@ -59,10 +59,10 @@ const SearchableSelect: React.FC<SelectProps> = ({
       </label>
 
       {/* Champ de contrôle */}
-      <div className="relative">
+      <div className="relative ">
         <input
           type="text"
-          className={`w-full p-2 border rounded-lg bg-[var(--color-bg-primary)] focus:ring-2 transition-all duration-200
+          className={`w-full p-2 border border-[var(--color-border)] rounded-lg bg-[var(--color-bg-primary)] focus:ring-2 transition-all duration-200
             ${
               isError
                 ? "border-red-500 focus:ring-red-500"
@@ -128,7 +128,7 @@ const SearchableSelect: React.FC<SelectProps> = ({
 
       {/* Liste des options */}
       {isOpen && !isLoading && !isError && (
-        <div className="absolute z-10 w-full mt-1 bg-[var(--color-bg-primary)] border border-gray-300 dark:border-gray-600 rounded-md shadow-lg max-h-60 overflow-auto">
+        <div className="absolute z-10 w-full mt-1 bg-[var(--color-bg-primary)] border border-[var(--color-border)] rounded-md shadow-lg max-h-60 overflow-auto">
           {filteredOptions.length > 0 ? (
             filteredOptions.map((option) => (
               <div

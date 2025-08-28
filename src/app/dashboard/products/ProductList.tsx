@@ -303,7 +303,7 @@ export default function ProductList({
 
           {!hasNextPage && filteredProducts.length > 0 && (
             <div className="text-center py-4 text-gray-500 dark:text-gray-400">
-              Tous les produits ont été chargés
+              {t("products.allLoaded")}
             </div>
           )}
         </div>

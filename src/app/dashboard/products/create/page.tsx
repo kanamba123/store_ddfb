@@ -32,7 +32,7 @@ interface VariantFormData {
   bulkInput?: string
 }
 
-const inputClass = "w-full border dark:border-gray-600 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+const inputClass = "w-full   p-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 border border-[var(--color-border)]"
 
 const Input = ({ label, ...props }: React.InputHTMLAttributes<HTMLInputElement> & { label: string }) => (
   <div>
@@ -152,15 +152,11 @@ export default function UploadVariantForm() {
       });
 
     } catch (uploadError) {
-      console.error(t('uploadVariantForm.errors.imageUploadError'), uploadError);
       setError(t('uploadVariantForm.errors.imageUploadFailed'));
       setSubmitting(false);
     }
   };
 
-
-  console.log("description ",watch("description"))
-  console.log("watch ",watch)
 
   return (
     <div className="max-w-7xl mx-auto p-2 sm:p-6 bg-[var(--color-bg-primary)]  shadow-md dark:shadow-lg rounded-lg text-[var(--color-text-primary)] ">
