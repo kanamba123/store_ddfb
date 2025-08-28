@@ -15,6 +15,7 @@ import {
   FaFingerprint,
 } from "react-icons/fa";
 import { useTranslation } from 'react-i18next';
+import Logo from "@/components/ui/Logo";
 
 export default function LoginPage() {
   const { t } = useTranslation();
@@ -173,13 +174,25 @@ export default function LoginPage() {
   };
 
   return (
+
+
     <div
-      className={`min-h-screen flex items-center bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] justify-center px-4 transition-colors duration-300 `}
+      className="min-h-screen flex flex-col items-center bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] justify-center px-4 transition-colors duration-300"
     >
+      
+      <div className="mb-4">
+        <Link href="/">
+          <Logo
+            textClassName="text-lg font-extrabold "
+            imageClassName="h-10 w-10 rounded-full"
+          />
+
+        </Link>
+      </div>
+
+      {/* Container du formulaire */}
       <div
-        className={`w-full max-w-md  rounded-xl shadow-md p-6 space-y-6 transition-colors duration-300 
-           ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
-        }  border border-[var(--color-border)]`}
+        className="w-full max-w-md rounded-xl shadow-md p-6 space-y-6 border border-[var(--color-border)] transition-colors duration-300 bg-[var(--color-bg-secondary)] "
       >
         <h2 className="text-2xl font-bold text-center">{t('LoginPage.title')}</h2>
 
