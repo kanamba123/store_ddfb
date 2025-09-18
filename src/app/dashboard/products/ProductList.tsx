@@ -9,6 +9,8 @@ import DescriptionPreview from "@/components/ui/DescriptionPreview";
 import { useRouter } from "next/navigation";
 import FullScreenLoaderMain from "@/components/ui/FullScreenLoaderMain";
 import { useTranslation } from "react-i18next";
+import SearchBarWithCategory from "@/components/ui/SearchBarWithCategory.tsx";
+import { useCategories } from "@/hooks/apis/useCategoris";
 
 interface ProductListProps {
   products: VariantsProduct[];
@@ -29,8 +31,13 @@ export default function ProductList({
   const lastDesktopRef = useRef<HTMLTableRowElement | null>(null);
   const desktopScrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+  const { data: categories } = useCategories();
+  const [selectedCategory, setSelectedCategory] = useState("");
   const router = useRouter();
   const { t } = useTranslation();
+
+  // Exemple de catégories (tu peux remplacer par des données dynamiques venant de l’API)
+
 
   useEffect(() => {
     const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
@@ -39,11 +46,24 @@ export default function ProductList({
     return () => window.removeEventListener("resize", checkIsMobile);
   }, []);
 
-  const filteredProducts = products.filter((product) =>
-    product?.variantProductName
+
+  // Mets à jour le filtre : combine texte + catégorie
+  const handleSearch = () => {
+    console.log("Recherche lancée :", { filterText, selectedCategory });
+  };
+
+  const filteredProducts = products.filter((product) => {
+    const matchesText = product?.variantProductName
       ?.toLowerCase()
-      .includes(filterText.toLowerCase())
-  );
+      .includes(filterText.toLowerCase());
+
+    const matchesCategory = selectedCategory
+      ? product?.Product?.id === Number(selectedCategory)
+      : true;
+
+    return matchesText && matchesCategory;
+  });
+
 
   // 📱 Scroll infini mobile
   const handleScroll = useCallback(() => {
@@ -149,15 +169,17 @@ export default function ProductList({
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row text-base sm:items-center sm:justify-between gap-4 mb-2">
-        <input
-          type="text"
-          placeholder={t("products.search")}
-          value={filterText}
-          onChange={(e) => setFilterText(e.target.value)}
-          className="flex-grow px-4 py-2  rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] shadow-xs shadow-action-add  dark:placeholder-gray-400"
-        />
-      </div>
+
+
+      <SearchBarWithCategory
+        categories={categories}
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
+        searchText={filterText}
+        onSearchChange={setFilterText}
+        onSubmit={handleSearch}
+      />
+
 
       {/* Mobile View */}
       <div className="block md:hidden space-y-4 pb-24">

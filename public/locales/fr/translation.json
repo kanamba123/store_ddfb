@@ -205,7 +205,8 @@
     "description": "Description",
     "price": "Prix",
     "status": "Statut",
-    "actions": "Actions"
+    "actions": "Actions",
+    "allCategories": "Toutes les catégories"
   },
    "profile": {
     "editButton": "Modifier",

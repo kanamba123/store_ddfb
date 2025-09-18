@@ -205,7 +205,8 @@
     "description": "Maelezo",
     "price": "Bei",
     "status": "Hali",
-    "actions": "Vitendo"
+    "actions": "Vitendo",
+    "allCategories": "Aina Zote"
   },
   "profile": {
     "editButton": "Hariri",

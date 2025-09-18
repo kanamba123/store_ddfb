@@ -244,7 +244,8 @@
     "description": "Description",
     "price": "Price",
     "status": "Status",
-    "actions": "Actions"
+    "actions": "Actions",
+    "allCategories": "All Categories"
   },
   "profile": {
     "editButton": "Edit",

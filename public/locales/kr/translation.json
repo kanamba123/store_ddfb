@@ -244,7 +244,8 @@
     "description": "Ibisobanuro",
     "price": "Igiciro",
     "status": "Imiterere",
-    "actions": "Ibikorwa"
+    "actions": "Ibikorwa",
+    "allCategories": "Ubwoko yose"
   },
   "profile": {
     "editButton": "Hindura",
