@@ -41,11 +41,11 @@ export const useStoreDetail = (storeId:string) => {
 };
 
 
-export const useStoreWithUserDetails = (storeId: string | undefined) => {
+export const useStoreWithUserDetails = (userId: string | undefined) => {
   return useQuery({
-    queryKey: ["storeUserDetail", storeId],
-    queryFn: () => fetchStoreWithUserDetails(storeId!),
-    enabled: !!storeId,
+    queryKey: ["storeUserDetail", userId],
+    queryFn: () => fetchStoreWithUserDetails(userId!),
+    enabled: !!userId,
     staleTime: 5 * 60 * 1000,
   });
 };

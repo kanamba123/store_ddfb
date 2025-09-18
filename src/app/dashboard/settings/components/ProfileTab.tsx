@@ -1,12 +1,10 @@
 "use client";
 import { InputChangeEvent } from "@/types/events";
-import { StoreByOwner } from "@/types/store";
-import { Eye, Store } from "lucide-react";
+import { Eye } from "lucide-react";
 import { useParams } from "next/navigation";
-import {  fetchStoreWithUserDetails } from "@/libs/api/stores";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
-import { User } from "@/types/user";
+import { useRouter } from "next/navigation";
 import StoreDetailsModal from "./StoreDetailsModal";
 import { useStoreWithUserDetails } from "@/hooks/apis/useStores";
 
@@ -19,7 +17,7 @@ export default function ProfileTab({ handleChange }: StoreProfileTabProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { user } = useAuth();
   const { data: store, isLoading } = useStoreWithUserDetails(user?.id);
-
+  const router = useRouter();
 
   const handleSaveStore = async (updatedStore: any) => {
     try {
@@ -39,7 +37,7 @@ export default function ProfileTab({ handleChange }: StoreProfileTabProps) {
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">{store?.storeName}</h2>
           <button
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => router.push("/dashboard/profile")}
             className="flex items-center gap-2 text-blue-600 dark:text-blue-400"
           >
             <Eye size={16} />
