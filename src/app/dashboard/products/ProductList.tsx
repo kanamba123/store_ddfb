@@ -199,7 +199,7 @@ export default function ProductList({
         )}
 
         {!hasNextPage && filteredProducts.length > 0 && (
-          <div className="text-center py-4 text-gray-500 dark:text-gray-400">
+          <div className="text-center py-4 text-[var(--color-text-primary)]">
             {t("products.allLoaded")}
           </div>
         )}

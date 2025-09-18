@@ -14,7 +14,7 @@ interface SearchBarWithCategoryProps {
 }
 
 export default function SearchBarWithCategory({
-  categories = [], 
+  categories = [],
   selectedCategory,
   onCategoryChange,
   searchText,
@@ -23,7 +23,7 @@ export default function SearchBarWithCategory({
 }: SearchBarWithCategoryProps) {
   const { t } = useTranslation();
 
-  // Récupère le nom de la catégorie sélectionnée
+  // Nom de la catégorie sélectionnée
   const selectedCategoryName =
     categories.find((cat) => cat?.id === selectedCategory)?.categoryName ||
     t("products.allCategories");
@@ -31,13 +31,16 @@ export default function SearchBarWithCategory({
   return (
     <div className="flex w-full max-w-3xl mx-auto rounded-md overflow-hidden shadow-sm border border-gray-300 dark:border-gray-700">
       {/* Zone catégorie + select invisible */}
-      <div className="relative flex items-center min-w-[6rem] max-w-[9rem] sm:max-w-[12rem] border-r border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800">
+      <div className="relative flex items-center min-w-[6rem] max-w-[9rem] sm:max-w-[12rem] border-r border-gray-300 dark:border-gray-600 bg-[var(--color-bg-primary)] ">
         {/* Select invisible qui couvre tout le bloc */}
         <select
           value={selectedCategory}
           onChange={(e) => onCategoryChange(e.target.value)}
-          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+          className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10 bg-[var(--color-bg-primary)] "
         >
+          {/* Option réinitialisation */}
+          <option value="">{t("products.allCategories")}</option>
+
           {categories.map((cat) => (
             <option key={cat.id} value={cat.id}>
               {cat.categoryName}
@@ -46,9 +49,9 @@ export default function SearchBarWithCategory({
         </select>
 
         {/* Texte + Icône */}
-        <span className="flex items-center justify-between w-full px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
+        <span className="flex items-center justify-between w-full px-2 sm:px-3 py-2 text-xs sm:text-sm text-[var(--color-text-primary)] ">
           <span className="truncate">{selectedCategoryName}</span>
-          <ChevronDown className="w-4 h-4 ml-1 sm:ml-2 text-gray-500 shrink-0" />
+          <ChevronDown className="w-4 h-4 ml-1 sm:ml-2  shrink-0" />
         </span>
       </div>
 
@@ -58,8 +61,8 @@ export default function SearchBarWithCategory({
         placeholder={t("products.search")}
         value={searchText}
         onChange={(e) => onSearchChange(e.target.value)}
-        className="flex-grow px-2 sm:px-4 py-2 text-sm sm:text-base text-gray-900 dark:text-gray-100 
-                   bg-[var(--color-bg-primary)] dark:placeholder-gray-400 
+        className="flex-grow px-2 sm:px-4 py-2 text-sm sm:text-base text-[var(--color-text-primary)] 
+                   bg-[var(--color-bg-primary)] 
                    focus:outline-none"
       />
 
