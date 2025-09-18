@@ -5,7 +5,7 @@ import { FieldErrors, Path, UseFormRegister } from "react-hook-form";
 import { VariantsProduct } from "@/types/VariantsProduct"; // importe ton type
 
 interface Props {
-    register: any; 
+    register: any;
     errors: any;
 }
 
@@ -39,11 +39,12 @@ export default function MultiLangDescription({ register, errors }: Props) {
                             key={lang.code}
                             type="button"
                             onClick={() => toggleLang(lang.code)}
-                            className={`px-3 sm:px-1 py-1 rounded-full text-xs font-medium border flex items-center  transition
-                ${isSelected
+                            className={`px-3 sm:px-1 py-1 rounded-full md:text-xs text-[10px] font-medium border flex items-center transition
+  ${isSelected
                                     ? "bg-blue-600 text-white border-blue-600"
                                     : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
                                 }`}
+
                         >
                             <span>{lang.flag}</span>
                             {lang.label}
