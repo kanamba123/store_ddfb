@@ -72,6 +72,12 @@
   "sidebar": {
     "dashboard": "Tableau de bord",
     "products": "Produits",
+    "productsList": "Liste/Ajouter",
+    "productsCategories": "Catégories",
+    "productsInventory": "Inventaire / Stock",
+    "productsVariants": "Variantes",
+    "productsReviews": "Avis clients",
+    "productsAttributes": "Attributs",
     "sales": "Ventes",
     "analytics": "Analytique",
     "orders": "Commandes",
@@ -81,7 +87,16 @@
     "support_customers": "Support clients",
     "settings": "Paramètres",
     "dashboardPro": "Tableau de bord Pro",
-    "userProfile": "Profil utilisateur"
+    "userProfile": "Profil utilisateur",
+    "hr": "Ressources Humaines",
+    "hrEmployees": "Employés",
+    "hrLeave": "Congés & Absences",
+    "hrRecruitment": "Recrutement",
+    "hrPayroll": "Paie & Commissions",
+    "hrAttendance": "Présence & Pointage",
+    "hrTraining": "Formations",
+    "hrEvaluations": "Évaluations & Performance",
+    "hrContracts": "Contrats & Documents"
   },
   "navbar": {
     "searchPlaceholder": "Rechercher...",
@@ -208,7 +223,7 @@
     "actions": "Actions",
     "allCategories": "Toutes les catégories"
   },
-   "profile": {
+  "profile": {
     "editButton": "Modifier",
     "storeInformation": "Informations du magasin",
     "email": "Email",

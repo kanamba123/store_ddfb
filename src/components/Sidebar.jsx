@@ -11,94 +11,109 @@ import {
   BarChart3,
   FileText,
   ShoppingCart,
-  CreditCard, 
-  Megaphone 
-
+  CreditCard,
+  Megaphone,
+  Users,
 } from "lucide-react";
 import { FaUsers } from "react-icons/fa";
 import { useAuth } from "@/contexts/AuthContext";
 import { getInitials } from "../utils/getInitials";
-import { useTranslation } from 'react-i18next';
-
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 export default function Sidebar({ isOpen, onClose }) {
   const pathname = usePathname();
   const { user } = useAuth();
   const { t } = useTranslation();
 
+  // ✅ en JSX pas besoin de <string | null>
+  const [openMenu, setOpenMenu] = useState(null);
+
+  // ✅ enlever ": string"
+  const toggleMenu = (key) => {
+    setOpenMenu(openMenu === key ? null : key);
+  };
+
   const sidebarLinks = [
-  {
-    label: t('sidebar.dashboard'),
-    href: "/dashboard",
-    icon: LayoutDashboard,
-    color: "from-blue-500 to-cyan-500",
-    darkColor: "from-blue-600 to-cyan-600",
-  },
-  {
-    label: t('sidebar.products'),
-    href: "/dashboard/products",
-    icon: ShoppingCart,
-    color: "from-orange-400 to-yellow-400",
-    darkColor: "from-orange-500 to-yellow-500",
-  },
-  {
-    label: t('sidebar.sales'),
-    href: "/dashboard/sales",
-    icon: FaUsers,
-    color: "from-purple-500 to-pink-500",
-    darkColor: "from-purple-600 to-pink-600",
-  },
-  {
-    label: t('sidebar.analytics'),
-    href: "/dashboard/analytics",
-    icon: BarChart3,
-    color: "from-green-500 to-emerald-500",
-    darkColor: "from-green-600 to-emerald-600",
-  },
-  {
-    label: t('sidebar.orders'),
-    href: "/dashboard/orders",
-    icon: ShoppingCart,
-    color: "from-yellow-500 to-orange-500",
-    darkColor: "from-yellow-600 to-orange-600",
-  },
-  {
-    label: t('sidebar.payments'),
-    href: "/dashboard/payments",
-    icon: CreditCard, // ✅ Icône dédiée
-    color: "from-emerald-500 to-teal-500",
-    darkColor: "from-emerald-600 to-teal-600",
-  },
-  {
-    label: t('sidebar.promotions'),
-    href: "/dashboard/promotions",
-    icon: Megaphone, // ✅ Icône dédiée
-    color: "from-pink-500 to-rose-500",
-    darkColor: "from-pink-600 to-rose-600",
-  },
-  {
-    label: t('sidebar.reports'),
-    href: "/dashboard/reports",
-    icon: FileText,
-    color: "from-indigo-500 to-purple-500",
-    darkColor: "from-indigo-600 to-purple-600",
-  },
-  {
-    label: t('sidebar.settings'),
-    href: "/dashboard/settings",
-    icon: Settings,
-    color: "from-red-500 to-pink-500",
-    darkColor: "from-red-600 to-pink-600",
-  },
-];
+    {
+      label: t("sidebar.dashboard"),
+      href: "/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      label: t("sidebar.products"),
+      icon: ShoppingCart,
+      children: [
+        { label: t("sidebar.productsList"), href: "/dashboard/products" },
+        { label: t("sidebar.productsCategories"), href: "/dashboard/products/categories" },
+        { label: t("sidebar.productsInventory"), href: "/dashboard/products/inventory" },
+        { label: t("sidebar.productsVariants"), href: "/dashboard/products/variants" },
+        { label: t("sidebar.productsReviews"), href: "/dashboard/products/reviews" },
+        { label: t("sidebar.productsAttributes"), href: "/dashboard/products/attributes" }
+      ],
+    }
+    ,
+    {
+      label: t("sidebar.sales"),
+      icon: FaUsers,
+      children: [
+        { label: "Commandes", href: "/dashboard/sales" },
+        { label: "Clients", href: "/dashboard/sales/customers" },
+      ],
+    },
+    {
+      label: t("sidebar.analytics"),
+      href: "/dashboard/analytics",
+      icon: BarChart3,
+    },
+    {
+      label: t("sidebar.hr"),
+      icon: Users,
+      children: [
+        { label: t("sidebar.hrEmployees"), href: "/dashboard/hr/employees" },
+        { label: t("sidebar.hrLeave"), href: "/dashboard/hr/leave" },
+        { label: t("sidebar.hrRecruitment"), href: "/dashboard/hr/recruitment" },
+        { label: t("sidebar.hrPayroll"), href: "/dashboard/hr/payroll" },
+        { label: t("sidebar.hrAttendance"), href: "/dashboard/hr/attendance" },
+        { label: t("sidebar.hrTraining"), href: "/dashboard/hr/training" },
+        { label: t("sidebar.hrEvaluations"), href: "/dashboard/hr/evaluations" },
+        { label: t("sidebar.hrContracts"), href: "/dashboard/hr/contracts" },
+      ],
+    }
+    ,
+    {
+      label: t("sidebar.orders"),
+      href: "/dashboard/orders",
+      icon: ShoppingCart,
+    },
+    {
+      label: t("sidebar.payments"),
+      href: "/dashboard/payments",
+      icon: CreditCard,
+    },
+    {
+      label: t("sidebar.promotions"),
+      href: "/dashboard/promotions",
+      icon: Megaphone,
+    },
+    {
+      label: t("sidebar.reports"),
+      href: "/dashboard/reports",
+      icon: FileText,
+    },
+    {
+      label: t("sidebar.settings"),
+      href: "/dashboard/settings",
+      icon: Settings,
+    },
+  ];
 
   return (
     <>
       {/* Mobile overlay */}
       <div
-        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-all duration-300 lg:hidden ${
-          isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 transition-all duration-300 lg:hidden ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
         onClick={onClose}
       />
 
@@ -136,63 +151,69 @@ export default function Sidebar({ isOpen, onClose }) {
             </button>
           </div>
         </div>
-
         {/* Navigation */}
         <nav className="flex-1 p-2 sm:p-2 space-y-1 sm:space-y-2 overflow-y-auto max-h-full">
           {sidebarLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href;
 
+            // ✅ gestion des sous-items
+            if (link.children) {
+              const isOpenMenu = openMenu === link.label;
+              return (
+                <div key={link.label}>
+                  <button
+                    onClick={() => toggleMenu(link.label)}
+                    className="w-full flex items-center text-left space-x-3 px-3 sm:px-4 py-2 rounded-xl transition-all duration-200 text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-text-primary)]"
+                  >
+                    <Icon className="w-5 h-5" />
+                    <span className="font-medium flex-1 text-sm sm:text-base truncate">
+                      {link.label}
+                    </span>
+                    <ChevronRight
+                      className={`w-4 h-4 transform transition-transform ${isOpenMenu ? "rotate-90" : ""
+                        }`}
+                    />
+                  </button>
+                  {isOpenMenu && (
+                    <div className="ml-8 mt-1 space-y-1">
+                      {link.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          onClick={onClose}
+                          className={`block px-3 py-1.5 rounded-lg text-sm ${pathname === child.href
+                            ? "bg-[var(--color-primary)]/10 text-[var(--color-primary)] font-medium"
+                            : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-bg-secondary)]"
+                            }`}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
             return (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={onClose}
-                className={`group relative flex items-center space-x-3 px-3 sm:px-4 py-1 sm:py-0 rounded-xl transition-all duration-200 ${
-                  isActive
-                    ? "bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 text-[var(--color-primary)] shadow-md"
-                    : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-text-primary)]"
-                }`}
+                className={`group relative flex items-center space-x-3 px-3 sm:px-4 py-2 rounded-xl transition-all duration-200 ${isActive
+                  ? "bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 text-[var(--color-primary)] shadow-md"
+                  : "text-[var(--color-text-secondary)] hover:bg-[var(--color-bg-secondary)] hover:text-[var(--color-text-primary)]"
+                  }`}
               >
-                {/* Active indicator */}
-                {isActive && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 sm:h-8 bg-gradient-to-b from-blue-500 to-purple-500 rounded-r-full" />
-                )}
-
-                {/* Icon with gradient background */}
-                <div
-                  className={`relative p-1.5 sm:p-2 rounded-lg flex-shrink-0 ${
-                    isActive
-                      ? `bg-gradient-to-r ${link.darkColor || link.color}`
-                      : "bg-[var(--color-bg-secondary)] group-hover:bg-[var(--color-bg-alt)]"
-                  } transition-all duration-200`}
-                >
-                  <Icon
-                    className={`w-4 h-4 sm:w-5 sm:h-5 ${
-                      isActive
-                        ? "text-white"
-                        : "text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)]"
-                    }`}
-                  />
-                </div>
-
+                <Icon className="w-5 h-5" />
                 <span className="font-medium flex-1 text-sm sm:text-base truncate">
                   {link.label}
                 </span>
-
-                {/* Arrow indicator */}
-                <ChevronRight
-                  className={`w-3 h-3 sm:w-4 sm:h-4 transition-all duration-200 flex-shrink-0 ${
-                    isActive
-                      ? "text-[var(--color-primary)] translate-x-1"
-                      : "text-[var(--color-text-secondary)] group-hover:text-[var(--color-text-primary)] group-hover:translate-x-1"
-                  }`}
-                />
               </Link>
             );
           })}
         </nav>
-
         {/* Bottom section */}
         <div className="p-2 sm:p-2 flex-shrink-0 border-t border-[var(--color-border)]/50">
           <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-xl p-1 sm:p-1 border border-[var(--color-border)]/30">

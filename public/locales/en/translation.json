@@ -111,6 +111,12 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "products": "Products",
+    "productsList": "List/Add",
+    "productsCategories": "Categories",
+    "productsInventory": "Inventory / Stock",
+    "productsVariants": "Variants",
+    "productsReviews": "Customer Reviews",
+    "productsAttributes": "Attributes",
     "sales": "Sales",
     "analytics": "Analytics",
     "orders": "Orders",
@@ -120,7 +126,16 @@
     "support_customers": "Supports customers",
     "settings": "Settings",
     "dashboardPro": "Pro Dashboard",
-    "userProfile": "User Profile"
+    "userProfile": "User Profile",
+    "hr": "Human Resources",
+    "hrEmployees": "Employees",
+    "hrLeave": "Leave & Absences",
+    "hrRecruitment": "Recruitment",
+    "hrPayroll": "Payroll & Commissions",
+    "hrAttendance": "Attendance & Check-in",
+    "hrTraining": "Training",
+    "hrEvaluations": "Evaluations & Performance",
+    "hrContracts": "Contracts & Documents"
   },
   "navbar": {
     "searchPlaceholder": "Search...",

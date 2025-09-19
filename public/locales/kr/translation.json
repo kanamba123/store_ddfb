@@ -111,6 +111,12 @@
   "sidebar": {
     "dashboard": "Ibiro vy'ibanze",
     "products": "Ibicuruzwa",
+    "productsList": "Urutonde/Kongeza",
+    "productsCategories": "Ibigabanywa",
+    "productsInventory": "Ububiko / Stock",
+    "productsVariants": "Ubwoko butandukanye",
+    "productsReviews": "Inyishu z’Abaguzi",
+    "productsAttributes": "Ibiranga",
     "sales": "Ugurisha",
     "analytics": "Umwihwezo",
     "orders": "Amabwirizwa",
@@ -120,7 +126,16 @@
     "support_customers": "Gufasha abakiriya",
     "settings": "Gutunganya ibirimwo",
     "dashboardPro": "Ibiro vy'ibanze Pro",
-    "userProfile": "Umwidondoro w'umukoresha"
+    "userProfile": "Umwidondoro w'umukoresha",
+    "hr": "Abakozi n’Ubuyobozi",
+    "hrEmployees": "Abakozi",
+    "hrLeave": "Ikiruhuko n’Ukutaba mu kazi",
+    "hrRecruitment": "Gutoranya Abakozi",
+    "hrPayroll": "Imishahara n’Indishi",
+    "hrAttendance": "Ukwinjira n’Ukwitabira",
+    "hrTraining": "Amahugurwa",
+    "hrEvaluations": "Ugenzura n’Ukugaragaza ivyo wakoze",
+    "hrContracts": "Amasezerano n’Ibipapuro"
   },
   "navbar": {
     "searchPlaceholder": "Rondera...",
