@@ -76,7 +76,7 @@ export default function EmployeesPage() {
           </div>
 
           {/* Table */}
-          <div className="overflow-x-auto text-[var(--color-text-primary)] rounded-lg shadow border border-[var(--color-border)]">
+          <div className="overflow-x-auto text-[var(--color-text-primary)] rounded-lg shadow ">
             <table className="min-w-full table-auto divide-y divide-gray-200 whitespace-nowrap">
               <thead className="bg-[var(--color-bg-primary)]">
                 <tr>
