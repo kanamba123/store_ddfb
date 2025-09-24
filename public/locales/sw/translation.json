@@ -346,11 +346,14 @@
   "required": "Sehemu hii ni lazima",
   "passwordMin": "Angalau herufi 6",
   "errorSubmit": "Hitilafu wakati wa kuunda mfanyakazi",
+  "confirmDelete":"Je mutaka kufuta mtumishi?",
 
   "createUser": "Unda akaunti ya mtumiaji",
   "createUserForEmployee": "Unda kitambulisho cha kuingia kwa mfanyakazi huyu",
   "userCreated": "Akaunti ya mtumiaji imeundwa na kuunganishwa na mfanyakazi huyu kwa mafanikio",
   "userExists": "Mfanyakazi huyu tayari ana akaunti ya mtumiaji",
+  "deteleEmployee": "Futa mfanyakazi",
+  "deleteTitle": "Futa ",
 
   "submit": "Unda",
   "cancel": "Ghairi",

@@ -41,6 +41,13 @@ const deleteEmployee = async (id: string) => {
   return data;
 };
 
+
+// Delete employee
+const deleteUserForEmployee = async (id: string) => {
+  const { data } = await API.delete(`/employees/userForEmploye/${id}`);
+  return data;
+};
+
 // ========================
 // HOOKS
 // ========================
@@ -112,3 +119,15 @@ export const useDeleteEmployee = () => {
     },
   });
 };
+
+// Delete employee
+export const useDeleteUserForEmployee = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: deleteUserForEmployee,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
+  });
+};
+

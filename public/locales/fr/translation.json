@@ -345,11 +345,14 @@
   "required": "Champ obligatoire",
   "passwordMin": "Minimum 6 caractères",
   "errorSubmit": "Erreur lors de la création de l’employé",
+  "confirmDelete":"Voulez Suprimer l'utilisateur? ",
 
   "createUser": "Créer un compte utilisateur",
   "createUserForEmployee": "Créer des identifiants de connexion pour cet employé",
   "userCreated": "Le compte utilisateur a été créé et lié à cet employé avec succès",
   "userExists": "Cet employé a déjà un compte utilisateur",
+  "deteleEmployee": "Supprimer l’employé",
+  "deleteTitle": "Supprimer ",
 
   "submit": "Créer",
   "cancel": "Annuler",

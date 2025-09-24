@@ -3,23 +3,31 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useParams, useRouter } from "next/navigation";
-import { useEmployeeDetail } from "@/hooks/apis/useEmployee";
+import { useDeleteUserForEmployee, useEmployeeDetail } from "@/hooks/apis/useEmployee";
 import FullScreenLoaderMain from "@/components/ui/FullScreenLoaderMain";
 import { Edit, Trash, Mail, User, Calendar, MapPin, Phone, Briefcase, Slash } from "lucide-react";
+import { on } from "events";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
 
 export default function EmployeeDetailPage() {
     const { t } = useTranslation();
     const router = useRouter();
     const { id } = useParams();
     const { data: employee, isLoading, isError } = useEmployeeDetail(id as string);
+    const deleteUserForEmployee = useDeleteUserForEmployee();
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
 
     const handleEdit = () => router.push(`/dashboard/hr/employees/${id}/edit`);
 
     const handleDelete = () => {
-        console.log("Delete employee", id);
-        router.push("/dashboard/hr/employees");
+        deleteUserForEmployee.mutate(id as string, {
+            onSuccess: () => {
+                alert(t("employees.deleteSuccess"));
+                router.push("/dashboard/hr/employees");
+            }
+        });
+
     };
 
     const handleDisableUser = async () => {
@@ -135,28 +143,15 @@ export default function EmployeeDetailPage() {
                 </div>
             </div>
 
-            {/* Confirmation Delete */}
-            {showConfirmDelete && (
-                <div className="fixed inset-0 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] flex items-center justify-center">
-                    <div className=" p-6 rounded shadow space-y-4">
-                        <p>{t("employees.confirmDelete")}</p>
-                        <div className="flex justify-end space-x-2">
-                            <button
-                                onClick={() => setShowConfirmDelete(false)}
-                                className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
-                            >
-                                {t("common.cancel")}
-                            </button>
-                            <button
-                                onClick={handleDelete}
-                                className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
-                            >
-                                {t("common.delete")}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
+            <ConfirmDialog
+                isOpen={showConfirmDelete}
+                title={t("employees.deleteTitle")}
+                message={t("employees.confirmDelete")}
+                confirmLabel={t("common.delete")}
+                cancelLabel={t("common.cancel")}
+                onConfirm={handleDelete}
+                onCancel={() => setShowConfirmDelete(false)}
+            />
         </div>
     );
 }

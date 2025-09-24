@@ -134,7 +134,7 @@ export default function EmployeesPage() {
                       <button className="relative group">
                         <Trash className="w-5 h-5 text-red-600 hover:text-red-800" />
                         <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-700 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition">
-                          {t("employees.delete")}
+                          {t("employees.deteleEmployee")}
                         </span>
                       </button>
 

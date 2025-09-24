@@ -382,11 +382,14 @@
   "required": "Iki kibanza kirakenewe",
   "passwordMin": "Bikeneye inyuguti 6 canke izirenga",
   "errorSubmit": "Ikosa mu gukora umukozi",
+  "confirmDelete":"Murashaka gufuta umukozi?",
 
   "createUser": "Kora konti y’umukoresha",
   "createUserForEmployee": "Kora ibanga ryo kwinjira kuri uyu mukozi",
   "userCreated": "Konti y’umukoresha yakozwe kandi irahuza n’uyu mukozi neza",
   "userExists": "Uyu mukozi asanzwe afise konti y’umukoresha",
+  "deteleEmployee": "Siba umukozi",
+  "deleteTitle": "Siba ",
 
   "submit": "Kora",
   "cancel": "Sivya",

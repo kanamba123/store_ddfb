@@ -385,11 +385,14 @@
   "required": "Required field",
   "passwordMin": "Minimum 6 characters",
   "errorSubmit": "Error creating employee",
+  "confirmDelete":"Do you want to delete a employee?",
 
   "createUser": "Create user account",
   "createUserForEmployee": "Create login credentials for this employee",
   "userCreated": "User account successfully created and linked to this employee",
   "userExists": "This employee already has a user account",
+  "deteleEmployee": "Delete employee",
+  "deleteTitle": "Delete ",
 
   "submit": "Create",
   "cancel": "Cancel",
