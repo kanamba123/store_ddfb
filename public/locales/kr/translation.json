@@ -1,0 +1,383 @@
+{
+  "header": {
+    "business": "Ubucuruzi",
+    "login": "Injira",
+    "getStarted": "Tangira"
+  },
+  "hero": {
+    "title": "Tunganya iduka ryawe vyoroshe",
+    "description": "Vyose ukeneye kugira utere imbere mu bucuruzi bwawe, hamwe n’ishirahamwe ry’ugutwara ibicuruzwa kugira woroshe ubucuruzi bwawe.",
+    "tryFree": "Gerageza ku buntu",
+    "viewFeatures": "Raba ibikogwa"
+  },
+  "features": {
+    "title": "Vyose vyo gutunganya ubucuruzi bwawe",
+    "productManagement": {
+      "title": "Igenzura ry’ibicuruzwa",
+      "description": "Shiraho kandi utunganye ibicuruzwa vyawe mu minota mike, ushizemwo amashusho n'ivyanditswe vyuzuye."
+    },
+    "orderTracking": {
+      "title": "Kurikirana amategeko y’ugutumiza",
+      "description": "Kurikirana ibigurishwa vyawe vyose kumwanya kumwanya ."
+    },
+    "deliveryService": {
+      "title": "Akaryo ko gutwara imizigo",
+      "description": "Iyo ukurikirana iduka ryawe aha kwiyi application, uraronka ubufasha mugutwara ibicuruzwa vyawe mumicungararo itandukanye."
+    },
+    "advancedAnalytics": {
+      "title": "Isuzuma rihanitse",
+      "description": "Raba ingene bikora ukoresheje raporo zihanitse ku bijanye n’ibigurishwa, stock hamwe n'ibindi bikogwa."
+    },
+    "customerManagement": {
+      "title": "Gukwirikirana abakiriya",
+      "description": "Kwirikirana abakiriya bawe hamwe no kububakira ukwizigigwa ukoresheje ibikoresho vyo kwamamaza."
+    },
+    "multiPlatform": {
+      "title": "Platforme nyinshi",
+      "description": "Guhuza amakuru yawe hagati y’amaduka menshi hamwe n’inzira zo kugurisha kuri internet."
+    }
+  },
+  "delivery": {
+    "title": "Akaryo ko gutwara imizigo muhabwa n’ishirahamwe",
+    "description": "Iduka ryose ryinjijwe muri Win2cop riraronka ako kanya serivisi yacu y’ugutwara ikomeye. Ongera akarere k’uburangu bwawe, terekerereza abakiriya serivisi y’ugutwara mu rugo, kandi kurikirana buri paki mu kanya nyako.",
+    "benefits": {
+      "trackedDelivery": "Ugutwara gukurikirwa kumwanya kumwanya",
+      "preferentialRates": "Amafaranga yoroheje ku maduka y’abagenzi",
+      "returnsManagement": "Gutunganya vyoroshe gusubiza ibicuruzwa"
+    },
+    "learnMore": "Menya vyinshi",
+    "expressDelivery": "Ugutwara vuba",
+    "available": "Biraboneka",
+    "secureDelivery": "Ugutwara kwizewe",
+    "insurance": "Buri paki irafise kwishingirwa gushika kuri €1000"
+  },
+  "footer": {
+    "description": "Igisubizo cose mu gutunganya no guteza imbere ubucuruzi bwawe.",
+    "features": "Ibiranga",
+    "featuresList": {
+      "productManagement": "Igenzura ry’ibicuruzwa",
+      "orderTracking": "Kurikirana amategeko",
+      "deliveryService": "Serivisi y’ugutwara",
+      "analytics": "Isuzuma n’inyandiko"
+    },
+    "legal": "Amategeko",
+    "legalList": {
+      "terms": "Amategeko y’ikoreshwa",
+      "privacy": "Politike y’ibanga",
+      "legal": "Inyandiko zemewe n’amategeko",
+      "cookies": "Cookies"
+    },
+    "copyright": "© {{year}} Win2cop. Uburenganzira bwose burabitswe."
+  },
+  "common": {
+    "requiredField": "Iki kibanza kirakenewe",
+    "chooseOption": "-- Hitamwo --"
+  },
+  "uploadVariantForm": {
+    "title": "Gushirako ikidandazwa",
+    "successMessage": "✅ Igicuruzwa mwagishizemwo neza!",
+    "labels": {
+      "store": "Iduka ry'igicuruzwa",
+      "variantName": "Izina ry'igicuruzwa",
+      "variantType": "Ubwoko",
+      "description": "Insiguro",
+      "product": "Cagura ubwoko bw'igicuruzwa",
+      "purchasePrice": "Igiciro co kugura",
+      "specifications": "Kudondora ibigize igiciruzwa",
+      "images": "Amashusho"
+    },
+    "placeholders": {
+      "variantName": "Izina ry'igicuruzwa",
+      "description": "Insiguro  y'igicuruzwa...",
+      "purchasePrice": "Akarorero: 1200.00",
+      "specificationName": "Izina ry'igisobanuro",
+      "specificationValue": "Agaciro"
+    },
+    "options": {
+      "product": "Igicuruzwa nyamukuru",
+      "accessory": "Igiciruzwa y'inyongerako"
+    },
+    "buttons": {
+      "submitting": "⏳ Biriko birungikwa...",
+      "submit": "Birunguke"
+    },
+    "errors": {
+      "failedLoadProducts": "Ntivyashobotse kurungika ibicuruzwa",
+      "submissionFailed": "❌ Kurungika vyaranse. Raba neza ibisabwa.",
+      "imageUploadError": "Ikosa mu kurungika amashusho:",
+      "imageUploadFailed": "❌ Ikosa mu kurungika amashusho. Gerageza wongere."
+    }
+  },
+  "sidebar": {
+    "dashboard": "Ibiro vy'ibanze",
+    "products": "Ibicuruzwa",
+    "productsList": "Urutonde/Kongeza",
+    "productsCategories": "Ibigabanywa",
+    "productsInventory": "Ububiko / Stock",
+    "productsVariants": "Ubwoko butandukanye",
+    "productsReviews": "Inyishu z’Abaguzi",
+    "productsAttributes": "Ibiranga",
+    "sales": "Ugurisha",
+    "analytics": "Umwihwezo",
+    "orders": "Amabwirizwa",
+    "payments": "Ibijanye no kuriha",
+    "promotions": "Ubukangurambaga",
+    "reports": "Raporo",
+    "support_customers": "Gufasha abakiriya",
+    "settings": "Gutunganya ibirimwo",
+    "dashboardPro": "Ibiro vy'ibanze Pro",
+    "userProfile": "Umwidondoro w'umukoresha",
+    "hr": "Abakozi n’Ubuyobozi",
+    "hrEmployees": "Abakozi",
+    "hrLeave": "Ikiruhuko n’Ukutaba mu kazi",
+    "hrRecruitment": "Gutoranya Abakozi",
+    "hrPayroll": "Imishahara n’Indishi",
+    "hrAttendance": "Ukwinjira n’Ukwitabira",
+    "hrTraining": "Amahugurwa",
+    "hrEvaluations": "Ugenzura n’Ukugaragaza ivyo wakoze",
+    "hrContracts": "Amasezerano n’Ibipapuro"
+  },
+  "navbar": {
+    "searchPlaceholder": "Rondera...",
+    "notifications": "Amatangazo",
+    "profile": "Umwidondoro",
+    "settings": "Gutunganya ibirimwo",
+    "logout": "Gusohoka",
+    "language": "Ururimi",
+    "theme": {
+      "light": "Uburyo bw’urumuri",
+      "dark": "Uburyo bw’ijoro"
+    },
+    "languageOptions": {
+      "en": "Icongereza",
+      "fr": "Igifaransa",
+      "es": "Ihesipanya"
+    }
+  },
+  "notifications": {
+    "newUser": "Umukoresha mushasha yiyandikishije",
+    "systemUpdate": "Ivugururwa rya sisiteme",
+    "ago5min": "Imitwe 5 iheze",
+    "ago1hour": "Isaha 1 iheze",
+    "viewAll": "Raba amatangazo yose"
+  },
+  "dashboard": {
+    "welcome": "Urakaza neza ku biro vy'ibanze vyawe",
+    "totalOrders": "Amabwirizwa yose",
+    "activeUsers": "Abakoresha bakiri ku murongo",
+    "productsInStock": "Ibicuruzwa biri mu bubiko",
+    "alerts": "Amaburo",
+    "recentActivity": "Ibikorwa vyiheruka",
+    "newProduct": "Igicuruzwa gishasha cashizweko",
+    "exampleProduct": "Inkweto za Nike Air Max",
+    "newOrder": "Itegeko rishasha ryashizweko na",
+    "newUser": "Umukoresha mushasha yiyandikishije"
+  },
+  "settings": {
+    "title": "Igenamiterere",
+    "saveSuccess": "Amagenamiterere yabitswe neza!",
+    "tabs": {
+      "profile": "Umwidondoro",
+      "appearance": "Isura",
+      "security": "Umutekano",
+      "privacy": "Ivyibanga",
+      "notifications": "Amatangazo"
+    }
+  },
+  "security": {
+    "twoFactor": "Ukwemeza mu nzira zibiri",
+    "twoFactorDesc": "Shiraho urwego rw’inyongera rw’umutekano",
+    "biometric": "Ukwemeza ukoresheje kibiometrike",
+    "biometricDesc": "Koresha urutoke rwawe canke ishusho y’amaso",
+    "changePassword": "Hindura ijambo ry'ibanga",
+    "currentPassword": "Ijambo ry'ibanga risanzwe",
+    "newPassword": "Ijambo ry'ibanga rishasha",
+    "confirmPassword": "Emeza ijambo ry'ibanga rishasha"
+  },
+  "LoginPage": {
+    "title": "Injira",
+    "email": "Imeyili",
+    "emailPlaceholder": "win2cop@gmail.com",
+    "password": "Ijambo ry'ibanga",
+    "forgotPassword": "Wibagiwe ijambo ry'ibanga?",
+    "accept": "Nemera",
+    "terms": "Amategeko y'ikoreshwa",
+    "and": "n'ay",
+    "privacy": "Politiki y'Ibanga",
+    "login": "Injira",
+    "loading": "Kwinjira...",
+    "fingerprint": "Koresha ikimenyetso c’akiganza",
+    "orContinue": "Cana komeza na",
+    "google": "Injira ukoresheje Google",
+    "noAccount": "Uratanguye konti?",
+    "createAccount": "Hanga konti",
+    "errors": {
+      "mustAcceptTerms": "Ugomba kwemera amategeko yo gukoresha kugira ngo winjire.",
+      "loginFailed": "Kwinjira kwabaye ikibazo.",
+      "noFingerprintUser": "Nta mukoresha yanditse kuri biometrics.",
+      "fingerprintFailed": "Kwinjira ukoresheje ikimenyetso c’akiganza kwabaye ikibazo."
+    }
+  },
+  "SearchableSelect": {
+    "searchPlaceholder": "Cagura kurutonde cank urondera...",
+    "result": "Ntanyishu yabonetse"
+  },
+  "AddKeyValuePairs": {
+    "add": "Ongereza",
+    "added": "Ivyo mwashizemwo",
+    "delete": "Gufuta",
+    "require": "Ni ngombwa kuzuza"
+  },
+  "ImageUploader": {
+    "uploadImages": "Gushiramwo amashusho"
+  },
+  "authExpired": {
+    "title": "Igihe c'umukoresha caheze",
+    "message": "Igihe co gukoresha uruhusha gwiyi application caheze, subira mwinjire kandi.",
+    "loginButton": "Subira mwinjire",
+    "close": "Funga"
+  },
+  "products": {
+    "addProduct": "+ Ongerako igicuruzwa",
+    "loading": "Biriko birapakira...",
+    "loadError": "Habayeho ikosa mu gukurura ibicuruzwa",
+    "search": "Rondera igicuruzwa...",
+    "allLoaded": "Ibicuruzwa vyose nivyo",
+    "noImage": "Nta shusho",
+    "visible": "Birashobora kugaragara",
+    "hidden": "Bihishwe",
+    "edit": "Hindura",
+    "share": "Sangira",
+    "delete": "Siba",
+    "deleteConfirm": "Urashaka koko gusiba iki gicuruzwa?",
+    "deleteSuccess": "Igicuruzwa casibwe neza!",
+    "deleteError": "Habayeho ikosa mu gusiba",
+    "shareText": "Rondera {{name}} ku {{price}} fbu",
+    "copied": "Uruhushya rwakoporowe muri clipboard!",
+    "image": "Ifoto",
+    "name": "Izina",
+    "description": "Ibisobanuro",
+    "price": "Igiciro",
+    "status": "Imiterere",
+    "actions": "Ibikorwa",
+    "allCategories": "Ubwoko yose"
+  },
+  "profile": {
+    "editButton": "Hindura",
+    "storeInformation": "Amakuru y’Iduka",
+    "email": "Imeli",
+    "phone": "Terefone",
+    "businessPhone": "Ubucuruzi",
+    "whatsapp": "WhatsApp",
+    "communication": "Ugutumanaho",
+    "address": "Aderesi",
+    "website": "Urubuga",
+    "visitStore": "Sura Iduka",
+    "notProvided": "Ntivyatanzwe",
+    "status": "Imimerere",
+    "businessPapers": "Amadosiye y’Ubucuruzi",
+    "market": "Isoko",
+    "createdAt": "Vyaremwe ku",
+    "lastUpdated": "Vyahinduwe bwa nyuma",
+    "personReferences": "Indango z’Abantu",
+    "ownerInformation": "Amakuru y’Umwinyi",
+    "business": "Ubucuruzi",
+    "verification": "Kugenzurwa",
+    "verificationStatus": {
+      "verified": "Vyemejwe",
+      "pending": "Birindiriye",
+      "rejected": "Byanse"
+    },
+    "verificationMessage": {
+      "verified": "Iduka ryawe ryemejwe neza",
+      "pending": "Igenzura riracabandanya",
+      "rejected": "Ntugire utangure urangure igenzura"
+    },
+    "verifiedOn": "Vyemejwe ku",
+    "storeImages": "Amafoto y’Iduka",
+    "storeImage": "Ifoto y’Iduka"
+  },
+ "employees": {
+  "loading": "Kuriko kurungika abakozi...",
+  "error": "Ikosa ryabaye mukurungika abakozi",
+  "noData": "Nta mukozi yabonetse",
+
+  "name": "Izina",
+  "gender": "Igitsina",
+  "selectGender": "Hitamwo igitsina",
+  "male": "Umugabo",
+  "female": "Umugore",
+
+  "birth": "Itariki / Ahabereye ivuka",
+  "dateOfBirth": "Itariki y’ivuka",
+  "placeOfBirth": "Ahabereye ivuka",
+  "nationality": "Ubwenegihugu",
+  "selectNationality": "Hitamwo ubwenegihugu",
+
+  "status": "Uruhara",
+  "actions": "Ibikorwa",
+  "view": "Raba",
+  "edit": "Hindura",
+  "addNew": "Ongeramwo Umukozi",
+
+  "user": "Umukoresha",
+  "email": "Imeri",
+  "password": "Ijambo ry’ibanga",
+  "role": "Uruhara",
+  "roleDefault": "Umukozi",
+  "roleAdmin": "Umuyobozi",
+  "roleManager": "Umucungera",
+
+  "identity": "Umwidondoro",
+  "firstName": "Izina ryambere",
+  "lastName": "Izina rya nyuma",
+
+  "contract": "Amasezerano & Icicaro",
+  "contractType": "Ubwoko bw’amasezerano",
+  "selectContract": "Hitamwo ubwoko bw’amasezerano",
+  "department": "Ishami",
+  "selectDepartment": "Hitamwo ishami",
+  "baseSalary": "Umushahara wa mushinge",
+  "position": "Icicaro",
+  "selectPosition": "Hitamwo icicaro",
+  "contractStartDate": "Itariki y’ugutangura amasezerano",
+  "contractEndDate": "Itariki y’ukurangiza amasezerano",
+  "employeeCategory": "Ubwoko bw’umukozi",
+
+  "family": "Amakuru y’umuryango",
+  "maritalStatus": "Ishingiro ry’ingo",
+  "selectMaritalStatus": "Hitamwo ishingiro ry’ingo",
+  "single": "Inyifato imwe",
+  "married": "Yarubatse",
+  "widowed": "Uwapfakaye",
+  "spouseName": "Izina ry’umugabo/umugore",
+  "address": "Aderesi",
+  "phoneNumbers": "Numero ya terefone",
+
+  "bankInfo": "Amakuru ya banki",
+  "bankName": "Banki",
+  "selectBank": "Hitamwo banki",
+  "bankAccountNumber": "Numero ya konti",
+  "socialSecurityNumber": "Numero y’ubwishingizi bw’igihugu",
+  "insuranceNumber": "Numero y’ubwishingizi",
+
+  "city": "Umujyi",
+  "country": "Igihugu",
+  "storeId": "Iduka",
+
+  "save": "Bika",
+  "saving": "Biriko birabikwa...",
+  "required": "Iki kibanza kirakenewe",
+  "passwordMin": "Bikeneye inyuguti 6 canke izirenga",
+  "errorSubmit": "Ikosa mu gukora umukozi",
+
+  "createUser": "Kora konti y’umukoresha",
+  "createUserForEmployee": "Kora ibanga ryo kwinjira kuri uyu mukozi",
+  "userCreated": "Konti y’umukoresha yakozwe kandi irahuza n’uyu mukozi neza",
+  "userExists": "Uyu mukozi asanzwe afise konti y’umukoresha",
+
+  "submit": "Kora",
+  "cancel": "Sivya"
+}
+
+}

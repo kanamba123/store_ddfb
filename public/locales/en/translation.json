@@ -1,0 +1,384 @@
+{
+  "header": {
+    "business": "Business",
+    "login": "Login",
+    "getStarted": "Get Started"
+  },
+  "hero": {
+    "title": "Manage your store easily",
+    "description": "Everything you need to grow your business, with an integrated delivery service to maximize your sales.",
+    "tryFree": "Try for free",
+    "viewFeatures": "View features"
+  },
+  "features": {
+    "title": "Everything to manage your business",
+    "productManagement": {
+      "title": "Product management",
+      "description": "Add and manage your products in a few clicks with photos and detailed descriptions."
+    },
+    "orderTracking": {
+      "title": "Order tracking",
+      "description": "Track all your sales in real time and manage the status of each order."
+    },
+    "deliveryService": {
+      "title": "Delivery service",
+      "description": "Connected stores benefit from our integrated delivery service to extend their reach."
+    },
+    "advancedAnalytics": {
+      "title": "Advanced analytics",
+      "description": "Analyze your performance with detailed reports on sales, stock, and trends."
+    },
+    "customerManagement": {
+      "title": "Customer management",
+      "description": "Centralize customer information and build loyalty with marketing tools."
+    },
+    "multiPlatform": {
+      "title": "Multi-platform",
+      "description": "Sync your data across multiple stores and online sales channels."
+    }
+  },
+  "delivery": {
+    "title": "Integrated delivery service",
+    "description": "Every store connected to Win2cop automatically benefits from our efficient delivery service. Expand your sales area, offer home delivery to your customers, and track each package in real time.",
+    "benefits": {
+      "trackedDelivery": "Real-time tracked delivery",
+      "preferentialRates": "Preferential rates for partner stores",
+      "returnsManagement": "Simplified returns management"
+    },
+    "learnMore": "Learn more",
+    "expressDelivery": "Express delivery",
+    "available": "Available",
+    "secureDelivery": "Secure delivery",
+    "insurance": "Each package is insured up to €1000"
+  },
+  "footer": {
+    "description": "The all-in-one solution to manage and grow your business.",
+    "features": "Features",
+    "featuresList": {
+      "productManagement": "Product management",
+      "orderTracking": "Order tracking",
+      "deliveryService": "Delivery service",
+      "analytics": "Analytics and reports"
+    },
+    "legal": "Legal",
+    "legalList": {
+      "terms": "Terms of use",
+      "privacy": "Privacy policy",
+      "legal": "Legal notice",
+      "cookies": "Cookies"
+    },
+    "copyright": "© {{year}} Win2cop. All rights reserved."
+  },
+  "common": {
+    "requiredField": "This field is required",
+    "chooseOption": "-- Choose --"
+  },
+  "uploadVariantForm": {
+    "title": "Add Product Variant",
+    "successMessage": "✅ Variant submitted successfully!",
+    "labels": {
+      "store": "Product store",
+      "variantName": "Variant name",
+      "variantType": "Variant type",
+      "description": "Description",
+      "product": "Product",
+      "purchasePrice": "Purchase price",
+      "specifications": "Specifications",
+      "images": "Images"
+    },
+    "placeholders": {
+      "variantName": "Variant name",
+      "description": "Detailed product description...",
+      "purchasePrice": "Ex: 1200.00",
+      "specificationName": "Specification name",
+      "specificationValue": "Value"
+    },
+    "options": {
+      "product": "Product",
+      "accessory": "Accessory"
+    },
+    "buttons": {
+      "submitting": "⏳ Submitting...",
+      "submit": "✅ Submit Variant"
+    },
+    "errors": {
+      "failedLoadProducts": "Failed to load products",
+      "submissionFailed": "❌ Submission failed. Please check the fields.",
+      "imageUploadError": "Error uploading images:",
+      "imageUploadFailed": "❌ Error uploading images. Please try again."
+    }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "products": "Products",
+    "productsList": "List/Add",
+    "productsCategories": "Categories",
+    "productsInventory": "Inventory / Stock",
+    "productsVariants": "Variants",
+    "productsReviews": "Customer Reviews",
+    "productsAttributes": "Attributes",
+    "sales": "Sales",
+    "analytics": "Analytics",
+    "orders": "Orders",
+    "payments": "Payments",
+    "promotions": "Promotions",
+    "reports": "Reports",
+    "support_customers": "Supports customers",
+    "settings": "Settings",
+    "dashboardPro": "Pro Dashboard",
+    "userProfile": "User Profile",
+    "hr": "Human Resources",
+    "hrEmployees": "Employees",
+    "hrLeave": "Leave & Absences",
+    "hrRecruitment": "Recruitment",
+    "hrPayroll": "Payroll & Commissions",
+    "hrAttendance": "Attendance & Check-in",
+    "hrTraining": "Training",
+    "hrEvaluations": "Evaluations & Performance",
+    "hrContracts": "Contracts & Documents"
+  },
+  "navbar": {
+    "searchPlaceholder": "Search...",
+    "notifications": "Notifications",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "language": "Language",
+    "theme": {
+      "light": "Light Mode",
+      "dark": "Dark Mode"
+    },
+    "languageOptions": {
+      "en": "English",
+      "fr": "French",
+      "es": "Spanish"
+    }
+  },
+  "notifications": {
+    "newUser": "New user registered",
+    "systemUpdate": "System update",
+    "ago5min": "5 minutes ago",
+    "ago1hour": "1 hour ago",
+    "viewAll": "View all notifications"
+  },
+  "dashboard": {
+    "welcome": "Welcome to your dashboard",
+    "totalOrders": "Total Orders",
+    "activeUsers": "Active Users",
+    "productsInStock": "Products in Stock",
+    "alerts": "Alerts",
+    "recentActivity": "Recent Activity",
+    "newProduct": "New product added",
+    "exampleProduct": "Nike Air Max Shoes",
+    "newOrder": "New order placed by",
+    "newUser": "New user registered"
+  },
+  "settings": {
+    "title": "Settings",
+    "saveSuccess": "Settings saved successfully!",
+    "tabs": {
+      "profile": "Profile",
+      "appearance": "Appearance",
+      "security": "Security",
+      "privacy": "Privacy",
+      "notifications": "Notifications"
+    }
+  },
+  "security": {
+    "twoFactor": "Two-Factor Authentication",
+    "twoFactorDesc": "Add an extra layer of security",
+    "biometric": "Biometric Authentication",
+    "biometricDesc": "Use your fingerprint or facial recognition",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmPassword": "Confirm New Password"
+  },
+  "LoginPage": {
+    "title": "Login",
+    "email": "Email",
+    "emailPlaceholder": "win2cop@email.com",
+    "password": "Password",
+    "forgotPassword": "Forgot password?",
+    "accept": "I accept the",
+    "terms": "Terms of Service",
+    "and": "and the",
+    "privacy": "Privacy Policy",
+    "login": "Log in",
+    "loading": "Logging in...",
+    "fingerprint": "Use fingerprint",
+    "orContinue": "Or continue with",
+    "google": "Sign in with Google",
+    "noAccount": "Don't have an account?",
+    "createAccount": "Create account",
+    "errors": {
+      "mustAcceptTerms": "You must accept the terms of use to log in.",
+      "loginFailed": "Login failed.",
+      "noFingerprintUser": "No user registered for biometric authentication.",
+      "fingerprintFailed": "Fingerprint authentication failed."
+    }
+  },
+  "SearchableSelect": {
+    "searchPlaceholder": "Search...",
+    "result": "Empty result"
+  },
+  "AddKeyValuePairs": {
+    "add": "Add",
+    "added": "Added",
+    "delete": "Delete",
+    "require": "This field is require"
+  },
+  "ImageUploader": {
+    "uploadImages": "Upload Images"
+  },
+  "authExpired": {
+    "title": "Session Expired",
+    "message": "Your session has expired or you need to log in again to continue.",
+    "loginButton": "Log in again",
+    "close": "Close"
+  },
+  "products": {
+    "addProduct": "+ Add Product",
+    "loading": "Loading...",
+    "loadError": "An error occurred while loading products",
+    "search": "Search for a product...",
+    "allLoaded": "All products have been loaded",
+    "noImage": "No image",
+    "visible": "Visible",
+    "hidden": "Hidden",
+    "edit": "Edit",
+    "share": "Share",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure you want to delete this product?",
+    "deleteSuccess": "Product deleted successfully!",
+    "deleteError": "Error while deleting",
+    "shareText": "Check out {{name}} for {{price}} fbu",
+    "copied": "Link copied to clipboard!",
+    "image": "Image",
+    "name": "Name",
+    "description": "Description",
+    "price": "Price",
+    "status": "Status",
+    "actions": "Actions",
+    "allCategories": "All Categories"
+  },
+  "profile": {
+    "editButton": "Edit",
+    "storeInformation": "Store Information",
+    "email": "Email",
+    "phone": "Phone",
+    "businessPhone": "Business",
+    "whatsapp": "WhatsApp",
+    "communication": "Communication",
+    "address": "Address",
+    "website": "Website",
+    "visitStore": "Visit Store",
+    "notProvided": "Not provided",
+    "status": "Status",
+    "businessPapers": "Business Papers",
+    "market": "Market",
+    "createdAt": "Created At",
+    "lastUpdated": "Last updated",
+    "personReferences": "Person References",
+    "ownerInformation": "Owner Information",
+    "business": "Business",
+    "verification": "Verification",
+    "verificationStatus": {
+      "verified": "Verified",
+      "pending": "Pending",
+      "rejected": "Rejected"
+    },
+    "verificationMessage": {
+      "verified": "Your store is fully verified",
+      "pending": "Verification is in progress",
+      "rejected": "Please complete verification"
+    },
+    "verifiedOn": "Verified on",
+    "storeImages": "Store Images",
+    "storeImage": "Store image"
+  },
+"employees": {
+  "loading": "Loading employees...",
+  "error": "Error fetching employees",
+  "noData": "No employees found",
+
+  "name": "Name",
+  "gender": "Gender",
+  "selectGender": "Select gender",
+  "male": "Male",
+  "female": "Female",
+
+  "birth": "Birth Date / Place",
+  "dateOfBirth": "Date of Birth",
+  "placeOfBirth": "Place of Birth",
+  "nationality": "Nationality",
+  "selectNationality": "Select nationality",
+
+  "status": "Status",
+  "actions": "Actions",
+  "view": "View",
+  "edit": "Edit",
+  "addNew": "Add Employee",
+
+  "user": "User",
+  "email": "Email",
+  "password": "Password",
+  "role": "Role",
+  "roleDefault": "Employee",
+  "roleAdmin": "Administrator",
+  "roleManager": "Manager",
+
+  "identity": "Identity",
+  "firstName": "First Name",
+  "lastName": "Last Name",
+
+  "contract": "Contract & Position",
+  "contractType": "Contract Type",
+  "selectContract": "Select contract type",
+  "department": "Department",
+  "selectDepartment": "Select department",
+  "baseSalary": "Base Salary",
+  "position": "Position",
+  "selectPosition": "Select position",
+  "contractStartDate": "Contract Start Date",
+  "contractEndDate": "Contract End Date",
+  "employeeCategory": "Employee Category",
+
+  "family": "Family Information",
+  "maritalStatus": "Marital Status",
+  "selectMaritalStatus": "Select marital status",
+  "single": "Single",
+  "married": "Married",
+  "widowed": "Widowed",
+  "spouseName": "Spouse Name",
+  "address": "Address",
+  "phoneNumbers": "Phone Number(s)",
+
+  "bankInfo": "Bank Information",
+  "bankName": "Bank",
+  "selectBank": "Select bank",
+  "bankAccountNumber": "Account Number",
+  "socialSecurityNumber": "Social Security Number",
+  "insuranceNumber": "Insurance Number",
+
+  "city": "City",
+  "country": "Country",
+  "storeId": "Store",
+
+  "save": "Save",
+  "saving": "Saving...",
+  "required": "Required field",
+  "passwordMin": "Minimum 6 characters",
+  "errorSubmit": "Error creating employee",
+
+  "createUser": "Create user account",
+  "createUserForEmployee": "Create login credentials for this employee",
+  "userCreated": "User account successfully created and linked to this employee",
+  "userExists": "This employee already has a user account",
+
+  "submit": "Create",
+  "cancel": "Cancel"
+}
+
+
+}

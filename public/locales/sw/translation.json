@@ -1,0 +1,344 @@
+{
+  "header": {
+    "business": "Biashara",
+    "login": "Ingia",
+    "getStarted": "Anza"
+  },
+  "hero": {
+    "title": "Simamia duka lako kwa urahisi",
+    "description": "Vyote unavyohitaji kukuza biashara yako, ukiwa na huduma ya usafirishaji iliyojumuishwa ili kuongeza mauzo yako.",
+    "tryFree": "Jaribu bure",
+    "viewFeatures": "Tazama vipengele"
+  },
+  "features": {
+    "title": "Vyote vya kusimamia biashara yako",
+    "productManagement": {
+      "title": "Usimamizi wa bidhaa",
+      "description": "Ongeza na simamia bidhaa zako kwa urahisi ukiambatanisha picha na maelezo kamili."
+    },
+    "orderTracking": {
+      "title": "Ufuatiliaji wa maagizo",
+      "description": "Fuata mauzo yako yote kwa wakati halisi na simamia hali ya kila agizo."
+    },
+    "deliveryService": {
+      "title": "Huduma ya usafirishaji",
+      "description": "Maduka yaliyounganishwa yanapata huduma yetu ya usafirishaji iliyojumuishwa ili kupanua wateja wao."
+    },
+    "advancedAnalytics": {
+      "title": "Uchambuzi wa kina",
+      "description": "Chambua utendaji wako kwa ripoti za kina kuhusu mauzo, hisa na mwenendo."
+    },
+    "customerManagement": {
+      "title": "Usimamizi wa wateja",
+      "description": "Weka taarifa za wateja pamoja na ujenge uaminifu kwa kutumia zana za masoko."
+    },
+    "multiPlatform": {
+      "title": "Jukwaa nyingi",
+      "description": "Linganishwa data zako kati ya maduka mengi na njia za mauzo mtandaoni."
+    }
+  },
+  "delivery": {
+    "title": "Huduma ya usafirishaji iliyojumuishwa",
+    "description": "Kila duka lililounganishwa na Win2cop linapata moja kwa moja huduma yetu bora ya usafirishaji. Panua eneo lako la mauzo, toa huduma ya kusafirisha hadi nyumbani kwa wateja, na fuatilia kila kifurushi kwa wakati halisi.",
+    "benefits": {
+      "trackedDelivery": "Usafirishaji unaofuatiliwa kwa wakati halisi",
+      "preferentialRates": "Viwango vya upendeleo kwa maduka washirika",
+      "returnsManagement": "Usimamizi rahisi wa marejesho"
+    },
+    "learnMore": "Jifunze zaidi",
+    "expressDelivery": "Usafirishaji wa haraka",
+    "available": "Inapatikana",
+    "secureDelivery": "Usafirishaji salama",
+    "insurance": "Kila kifurushi kimehakikishwa hadi €1000"
+  },
+  "footer": {
+    "description": "Suluhisho la kila kitu kwa kusimamia na kukuza biashara yako.",
+    "features": "Vipengele",
+    "featuresList": {
+      "productManagement": "Usimamizi wa bidhaa",
+      "orderTracking": "Ufuatiliaji wa maagizo",
+      "deliveryService": "Huduma ya usafirishaji",
+      "analytics": "Uchambuzi na ripoti"
+    },
+    "legal": "Kisheria",
+    "legalList": {
+      "terms": "Masharti ya matumizi",
+      "privacy": "Sera ya faragha",
+      "legal": "Taarifa za kisheria",
+      "cookies": "Vidakuzi"
+    },
+    "copyright": "© {{year}} Win2cop. Haki zote zimehifadhiwa."
+  },
+  "sidebar": {
+    "dashboard": "Dashibodi",
+    "products": "Bidhaa",
+    "productsList": "Orodha/Kuongeza",
+    "productsCategories": "Makundi",
+    "productsInventory": "Hisa / Ghala",
+    "productsVariants": "Aina tofauti",
+    "productsReviews": "Mapitio ya Wateja",
+    "productsAttributes": "Sifa",
+    "sales": "Mauzo",
+    "analytics": "Takwimu",
+    "orders": "Oda",
+    "payments": "Malipo",
+    "promotions": "Promosheni",
+    "reports": "Ripoti",
+    "support_customers": "Msaada kwa wateja",
+    "settings": "Mipangilio",
+    "dashboardPro": "Dashibodi Pro",
+    "userProfile": "Profaili ya mtumiaji",
+    "hr": "Rasilimali Watu",
+    "hrEmployees": "Wafanyakazi",
+    "hrLeave": "Likizo na Uwakosefu",
+    "hrRecruitment": "Uajiri",
+    "hrPayroll": "Mishahara na Kamisheni",
+    "hrAttendance": "Mahudhurio na Kuhudhuria",
+    "hrTraining": "Mafunzo",
+    "hrEvaluations": "Tathmini na Utendaji",
+    "hrContracts": "Mikataba na Nyaraka"
+  },
+  "navbar": {
+    "searchPlaceholder": "Tafuta...",
+    "notifications": "Taarifa",
+    "profile": "Profaili",
+    "settings": "Mipangilio",
+    "logout": "Kutoka",
+    "language": "Lugha",
+    "theme": {
+      "light": "Mwanga",
+      "dark": "Giza"
+    },
+    "languageOptions": {
+      "en": "Kiingereza",
+      "fr": "Kifaransa",
+      "es": "Kihispania"
+    }
+  },
+  "notifications": {
+    "newUser": "Mtumiaji mpya amejiandikisha",
+    "systemUpdate": "Sasisho la mfumo",
+    "ago5min": "Dakika 5 zilizopita",
+    "ago1hour": "Saa 1 iliyopita",
+    "viewAll": "Tazama taarifa zote"
+  },
+  "dashboard": {
+    "welcome": "Karibu kwenye dashibodi yako",
+    "totalOrders": "Jumla ya Oda",
+    "activeUsers": "Watumiaji Hai",
+    "productsInStock": "Bidhaa zilizopo",
+    "alerts": "Tahadhari",
+    "recentActivity": "Shughuli za Hivi Karibuni",
+    "newProduct": "Bidhaa mpya imeongezwa",
+    "exampleProduct": "Viatu vya Nike Air Max",
+    "newOrder": "Agizo jipya limewekwa na",
+    "newUser": "Mtumiaji mpya amesajiliwa"
+  },
+  "settings": {
+    "title": "Mipangilio",
+    "saveSuccess": "Mipangilio imehifadhiwa kwa mafanikio!",
+    "tabs": {
+      "profile": "Wasifu",
+      "appearance": "Mwonekano",
+      "security": "Usalama",
+      "privacy": "Faragha",
+      "notifications": "Arifa"
+    }
+  },
+  "security": {
+    "twoFactor": "Uthibitishaji wa hatua mbili",
+    "twoFactorDesc": "Ongeza safu ya ziada ya usalama",
+    "biometric": "Uthibitishaji wa kibiometria",
+    "biometricDesc": "Tumia alama ya kidole au utambuzi wa uso",
+    "changePassword": "Badilisha nenosiri",
+    "currentPassword": "Nenosiri la sasa",
+    "newPassword": "Nenosiri jipya",
+    "confirmPassword": "Thibitisha nenosiri jipya"
+  },
+  "LoginPage": {
+    "title": "Ingia",
+    "email": "Barua pepe",
+    "emailPlaceholder": "win2cop@gmail.com",
+    "password": "Nenosiri",
+    "forgotPassword": "Umesahau nenosiri?",
+    "accept": "Nakubali",
+    "terms": "Masharti ya Huduma",
+    "and": "na",
+    "privacy": "Sera ya Faragha",
+    "login": "Ingia",
+    "loading": "Ingia kwa sasa...",
+    "fingerprint": "Tumia alama ya kidole",
+    "orContinue": "Au endelea na",
+    "google": "Ingia kwa Google",
+    "noAccount": "Bado huna akaunti?",
+    "createAccount": "Tengeneza akaunti",
+    "errors": {
+      "mustAcceptTerms": "Lazima ukubali masharti ya matumizi ili kuingia.",
+      "loginFailed": "Kuingia kumeshindikana.",
+      "noFingerprintUser": "Hakuna mtumiaji aliyesajiliwa kwa uthibitishaji wa kibayometri.",
+      "fingerprintFailed": "Uthibitishaji wa alama ya kidole umeshindikana."
+    }
+  },
+  "SearchableSelect": {
+    "searchPlaceholder": "Tafuta",
+    "result": "Hakuna jibu "
+  },
+  "AddKeyValuePairs": {
+    "add": "Ongeza",
+    "added": "Added",
+    "delete": "Futa",
+    "require": "Hiyi ni lazima"
+  },
+  "ImageUploader": {
+    "uploadImages": "Pakia picha"
+  },
+  "authExpired": {
+    "title": "Kikao Kimeisha",
+    "message": "Kikao chako kimeisha au unahitaji kuingia tena ili kuendelea.",
+    "loginButton": "Ingia Tena",
+    "close": "Funga"
+  },
+  "products": {
+    "addProduct": "+ Ongeza Bidhaa",
+    "loading": "Inapakia...",
+    "loadError": "Kulikuwa na hitilafu wakati wa kupakia bidhaa",
+    "search": "Tafuta bidhaa...",
+    "allLoaded": "Bidhaa zote zimepakuliwa",
+    "noImage": "Hakuna picha",
+    "visible": "Inaonekana",
+    "hidden": "Imefichwa",
+    "edit": "Hariri",
+    "share": "Shiriki",
+    "delete": "Futa",
+    "deleteConfirm": "Una hakika unataka kufuta bidhaa hii?",
+    "deleteSuccess": "Bidhaa imefutwa kwa mafanikio!",
+    "deleteError": "Kuna hitilafu wakati wa kufuta",
+    "shareText": "Angalia {{name}} kwa {{price}} fbu",
+    "copied": "Kiungo kimekopiishwa kwenye clipboard!",
+    "image": "Picha",
+    "name": "Jina",
+    "description": "Maelezo",
+    "price": "Bei",
+    "status": "Hali",
+    "actions": "Vitendo",
+    "allCategories": "Aina Zote"
+  },
+  "profile": {
+    "editButton": "Hariri",
+    "storeInformation": "Taarifa za Duka",
+    "email": "Barua pepe",
+    "phone": "Simu",
+    "businessPhone": "Biashara",
+    "whatsapp": "WhatsApp",
+    "communication": "Mawasiliano",
+    "address": "Anwani",
+    "website": "Tovuti",
+    "visitStore": "Tembelea Duka",
+    "notProvided": "Haijatolewa",
+    "status": "Hali",
+    "businessPapers": "Hati za Biashara",
+    "market": "Soko",
+    "createdAt": "Imeundwa tarehe",
+    "lastUpdated": "Imesasishwa mwisho",
+    "personReferences": "Marejeleo ya Watu",
+    "ownerInformation": "Taarifa za Mmiliki",
+    "business": "Biashara",
+    "verification": "Uhakiki",
+    "verificationStatus": {
+      "verified": "Umehakikishwa",
+      "pending": "Inasubiri",
+      "rejected": "Imekataliwa"
+    },
+    "verificationMessage": {
+      "verified": "Duka lako limehakikishwa kikamilifu",
+      "pending": "Uhakiki unaendelea",
+      "rejected": "Tafadhali kamilisha uhakiki"
+    },
+    "verifiedOn": "Imehakikishwa tarehe",
+    "storeImages": "Picha za Duka",
+    "storeImage": "Picha ya duka"
+  },
+"employees": {
+  "loading": "Inapakia wafanyakazi...",
+  "error": "Hitilafu wakati wa kupakua wafanyakazi",
+  "noData": "Hakuna mfanyakazi aliyepatikana",
+
+  "name": "Jina",
+  "gender": "Jinsia",
+  "selectGender": "Chagua jinsia",
+  "male": "Mwanaume",
+  "female": "Mwanamke",
+
+  "birth": "Tarehe / Mahali pa kuzaliwa",
+  "dateOfBirth": "Tarehe ya kuzaliwa",
+  "placeOfBirth": "Mahali pa kuzaliwa",
+  "nationality": "Uraia",
+  "selectNationality": "Chagua uraia",
+
+  "status": "Hali",
+  "actions": "Vitendo",
+  "view": "Angalia",
+  "edit": "Hariri",
+  "addNew": "Ongeza Mfanyakazi",
+
+  "user": "Mtumiaji",
+  "email": "Barua pepe",
+  "password": "Nenosiri",
+  "role": "Wajibu",
+  "roleDefault": "Mfanyakazi",
+  "roleAdmin": "Msimamizi",
+  "roleManager": "Meneja",
+
+  "identity": "Utambulisho",
+  "firstName": "Jina la kwanza",
+  "lastName": "Jina la mwisho",
+
+  "contract": "Mkataba & Nafasi",
+  "contractType": "Aina ya mkataba",
+  "selectContract": "Chagua aina ya mkataba",
+  "department": "Idara",
+  "selectDepartment": "Chagua idara",
+  "baseSalary": "Mshahara wa msingi",
+  "position": "Nafasi",
+  "selectPosition": "Chagua nafasi",
+  "contractStartDate": "Tarehe ya kuanza mkataba",
+  "contractEndDate": "Tarehe ya kumalizika mkataba",
+  "employeeCategory": "Kategoria ya mfanyakazi",
+
+  "family": "Taarifa za kifamilia",
+  "maritalStatus": "Hali ya ndoa",
+  "selectMaritalStatus": "Chagua hali ya ndoa",
+  "single": "Hajaoa/Hajaolewa",
+  "married": "Ameoa/Ameolewa",
+  "widowed": "Mjane",
+  "spouseName": "Jina la mwenzi",
+  "address": "Anwani",
+  "phoneNumbers": "Namba ya simu",
+
+  "bankInfo": "Taarifa za benki",
+  "bankName": "Benki",
+  "selectBank": "Chagua benki",
+  "bankAccountNumber": "Namba ya akaunti",
+  "socialSecurityNumber": "Namba ya hifadhi ya jamii",
+  "insuranceNumber": "Namba ya bima",
+
+  "city": "Jiji",
+  "country": "Nchi",
+  "storeId": "Duka",
+
+  "save": "Hifadhi",
+  "saving": "Inahifadhi...",
+  "required": "Sehemu hii ni lazima",
+  "passwordMin": "Angalau herufi 6",
+  "errorSubmit": "Hitilafu wakati wa kuunda mfanyakazi",
+
+  "createUser": "Unda akaunti ya mtumiaji",
+  "createUserForEmployee": "Unda kitambulisho cha kuingia kwa mfanyakazi huyu",
+  "userCreated": "Akaunti ya mtumiaji imeundwa na kuunganishwa na mfanyakazi huyu kwa mafanikio",
+  "userExists": "Mfanyakazi huyu tayari ana akaunti ya mtumiaji",
+
+  "submit": "Unda",
+  "cancel": "Ghairi"
+}
+
+}

@@ -1,0 +1,345 @@
+{
+  "header": {
+    "business": "Business",
+    "login": "Connexion",
+    "getStarted": "Commencer"
+  },
+  "hero": {
+    "title": "Gérez votre boutique simplement",
+    "description": "Tout ce dont vous avez besoin pour faire grandir votre business, avec un service de livraison intégré pour maximiser vos ventes.",
+    "tryFree": "Essayer gratuitement",
+    "viewFeatures": "Voir les fonctionnalités"
+  },
+  "features": {
+    "title": "Tout pour gérer votre business",
+    "productManagement": {
+      "title": "Gestion des produits",
+      "description": "Ajoutez et gérez vos produits en quelques clics avec des photos et descriptions détaillées."
+    },
+    "orderTracking": {
+      "title": "Suivi des commandes",
+      "description": "Suivez toutes vos ventes en temps réel et gérez les statuts de chaque commande."
+    },
+    "deliveryService": {
+      "title": "Service de livraison",
+      "description": "Les magasins connectés bénéficient de notre service de livraison intégré pour étendre leur zone de chalandise."
+    },
+    "advancedAnalytics": {
+      "title": "Analytiques avancées",
+      "description": "Analysez vos performances avec des rapports détaillés sur les ventes, stocks et tendances."
+    },
+    "customerManagement": {
+      "title": "Gestion des clients",
+      "description": "Centralisez les informations clients et fidélisez votre audience avec des outils marketing."
+    },
+    "multiPlatform": {
+      "title": "Multi-plateformes",
+      "description": "Synchronisez vos données entre plusieurs points de vente et canaux de vente en ligne."
+    }
+  },
+  "delivery": {
+    "title": "Service de livraison intégré",
+    "description": "Chaque magasin connecté à Win2cop bénéficie automatiquement de notre service de livraison performant. Étendez votre zone de vente, proposez la livraison à domicile à vos clients et suivez chaque colis en temps réel.",
+    "benefits": {
+      "trackedDelivery": "Livraison suivie en temps réel",
+      "preferentialRates": "Tarifs préférentiels pour les magasins partenaires",
+      "returnsManagement": "Gestion simplifiée des retours"
+    },
+    "learnMore": "En savoir plus",
+    "expressDelivery": "Livraison express",
+    "available": "Disponible",
+    "secureDelivery": "Livraison sécurisée",
+    "insurance": "Chaque colis est assuré jusqu'à 1000€"
+  },
+  "footer": {
+    "description": "La solution tout-en-un pour gérer et développer votre commerce.",
+    "features": "Fonctionnalités",
+    "featuresList": {
+      "productManagement": "Gestion des produits",
+      "orderTracking": "Suivi des commandes",
+      "deliveryService": "Service de livraison",
+      "analytics": "Analyses et rapports"
+    },
+    "legal": "Légal",
+    "legalList": {
+      "terms": "Conditions d'utilisation",
+      "privacy": "Politique de confidentialité",
+      "legal": "Mentions légales",
+      "cookies": "Cookies"
+    },
+    "copyright": "© {{year}} Win2cop. Tous droits réservés."
+  },
+  "sidebar": {
+    "dashboard": "Tableau de bord",
+    "products": "Produits",
+    "productsList": "Liste/Ajouter",
+    "productsCategories": "Catégories",
+    "productsInventory": "Inventaire / Stock",
+    "productsVariants": "Variantes",
+    "productsReviews": "Avis clients",
+    "productsAttributes": "Attributs",
+    "sales": "Ventes",
+    "analytics": "Analytique",
+    "orders": "Commandes",
+    "payments": "Paiements",
+    "promotions": "Promotions",
+    "reports": "Rapports",
+    "support_customers": "Support clients",
+    "settings": "Paramètres",
+    "dashboardPro": "Tableau de bord Pro",
+    "userProfile": "Profil utilisateur",
+    "hr": "Ressources Humaines",
+    "hrEmployees": "Employés",
+    "hrLeave": "Congés & Absences",
+    "hrRecruitment": "Recrutement",
+    "hrPayroll": "Paie & Commissions",
+    "hrAttendance": "Présence & Pointage",
+    "hrTraining": "Formations",
+    "hrEvaluations": "Évaluations & Performance",
+    "hrContracts": "Contrats & Documents"
+  },
+  "navbar": {
+    "searchPlaceholder": "Rechercher...",
+    "notifications": "Notifications",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "logout": "Déconnexion",
+    "language": "Langue",
+    "theme": {
+      "light": "Mode clair",
+      "dark": "Mode sombre"
+    },
+    "languageOptions": {
+      "en": "Anglais",
+      "fr": "Français",
+      "es": "Espagnol"
+    }
+  },
+  "notifications": {
+    "newUser": "Nouveau utilisateur inscrit",
+    "systemUpdate": "Mise à jour système",
+    "ago5min": "Il y a 5 minutes",
+    "ago1hour": "Il y a 1 heure",
+    "viewAll": "Voir toutes les notifications"
+  },
+  "dashboard": {
+    "welcome": "Bienvenue sur votre tableau de bord",
+    "totalOrders": "Total Commandes",
+    "activeUsers": "Utilisateurs actifs",
+    "productsInStock": "Produits en stock",
+    "alerts": "Alertes",
+    "recentActivity": "Activité récente",
+    "newProduct": "Nouveau produit ajouté",
+    "exampleProduct": "Chaussure Nike Air Max",
+    "newOrder": "Nouvelle commande passée par",
+    "newUser": "Nouvel utilisateur enregistré"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "saveSuccess": "Paramètres sauvegardés avec succès !",
+    "tabs": {
+      "profile": "Profil",
+      "appearance": "Apparence",
+      "security": "Sécurité",
+      "privacy": "Confidentialité",
+      "notifications": "Notifications"
+    }
+  },
+  "security": {
+    "twoFactor": "Authentification à deux facteurs",
+    "twoFactorDesc": "Ajoutez une couche de sécurité supplémentaire",
+    "biometric": "Authentification biométrique",
+    "biometricDesc": "Utilisez votre empreinte digitale ou reconnaissance faciale",
+    "changePassword": "Changer le mot de passe",
+    "currentPassword": "Mot de passe actuel",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le nouveau mot de passe"
+  },
+  "LoginPage": {
+    "title": "Connexion",
+    "email": "Email",
+    "emailPlaceholder": "win2cop@email.com",
+    "password": "Mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "accept": "J'accepte les",
+    "terms": "Conditions Générales",
+    "and": "et la",
+    "privacy": "Politique de Confidentialité",
+    "login": "Se connecter",
+    "loading": "Connexion...",
+    "fingerprint": "Utiliser l'empreinte digitale",
+    "orContinue": "Ou continuer avec",
+    "google": "Se connecter avec Google",
+    "noAccount": "Pas encore de compte ?",
+    "createAccount": "Créer un compte",
+    "errors": {
+      "mustAcceptTerms": "Vous devez accepter les conditions d'utilisation pour vous connecter.",
+      "loginFailed": "Erreur lors de la connexion.",
+      "noFingerprintUser": "Aucun utilisateur enregistré pour l'authentification biométrique.",
+      "fingerprintFailed": "Échec de l'authentification par empreinte."
+    }
+  },
+  "SearchableSelect": {
+    "searchPlaceholder": "Chercher...",
+    "result": "Aucun resultat trouvé"
+  },
+  "AddKeyValuePairs": {
+    "add": "Ajouter",
+    "added": "Ajoutés",
+    "delete": "Suprimer",
+    "require": "Ce champs est obligatoire"
+  },
+  "ImageUploader": {
+    "uploadImages": "Télécharger une image"
+  },
+  "authExpired": {
+    "title": "Session expirée",
+    "message": "Votre session a expiré ou vous devez vous reconnecter pour continuer.",
+    "loginButton": "Se reconnecter",
+    "close": "Fermer"
+  },
+  "products": {
+    "addProduct": "+ Ajouter un produit",
+    "loading": "Chargement...",
+    "loadError": "Une erreur est survenue lors du chargement des produits",
+    "search": "Rechercher un produit...",
+    "allLoaded": "Tous les produits ont été chargés",
+    "noImage": "Pas d'image",
+    "visible": "Visible",
+    "hidden": "Masqué",
+    "edit": "Modifier",
+    "share": "Partager",
+    "delete": "Supprimer",
+    "deleteConfirm": "Voulez-vous vraiment supprimer ce produit ?",
+    "deleteSuccess": "Produit supprimé avec succès !",
+    "deleteError": "Erreur lors de la suppression",
+    "shareText": "Découvrez {{name}} à {{price}} fbu",
+    "copied": "Lien copié dans le presse-papiers !",
+    "image": "Image",
+    "name": "Nom",
+    "description": "Description",
+    "price": "Prix",
+    "status": "Statut",
+    "actions": "Actions",
+    "allCategories": "Toutes les catégories"
+  },
+  "profile": {
+    "editButton": "Modifier",
+    "storeInformation": "Informations du magasin",
+    "email": "Email",
+    "phone": "Téléphone",
+    "businessPhone": "Professionnel",
+    "whatsapp": "WhatsApp",
+    "communication": "Communication",
+    "address": "Adresse",
+    "website": "Site web",
+    "visitStore": "Visiter le magasin",
+    "notProvided": "Non fourni",
+    "status": "Statut",
+    "businessPapers": "Documents d'entreprise",
+    "market": "Marché",
+    "createdAt": "Créé le",
+    "lastUpdated": "Dernière mise à jour",
+    "personReferences": "Références personnelles",
+    "ownerInformation": "Informations du propriétaire",
+    "business": "Entreprise",
+    "verification": "Vérification",
+    "verificationStatus": {
+      "verified": "Vérifié",
+      "pending": "En attente",
+      "rejected": "Rejeté"
+    },
+    "verificationMessage": {
+      "verified": "Votre magasin est entièrement vérifié",
+      "pending": "La vérification est en cours",
+      "rejected": "Veuillez compléter la vérification"
+    },
+    "verifiedOn": "Vérifié le",
+    "storeImages": "Images du magasin",
+    "storeImage": "Image du magasin"
+  },
+ "employees": {
+  "loading": "Chargement des employés...",
+  "error": "Erreur lors de la récupération des employés",
+  "noData": "Aucun employé trouvé",
+
+  "name": "Nom",
+  "gender": "Sexe",
+  "selectGender": "Sélectionner le sexe",
+  "male": "Homme",
+  "female": "Femme",
+
+  "birth": "Date / Lieu de naissance",
+  "dateOfBirth": "Date de naissance",
+  "placeOfBirth": "Lieu de naissance",
+  "nationality": "Nationalité",
+  "selectNationality": "Sélectionner la nationalité",
+
+  "status": "Statut",
+  "actions": "Actions",
+  "view": "Voir",
+  "edit": "Modifier",
+  "addNew": "Ajouter un employé",
+
+  "user": "Utilisateur",
+  "email": "Email",
+  "password": "Mot de passe",
+  "role": "Rôle",
+  "roleDefault": "Employé",
+  "roleAdmin": "Administrateur",
+  "roleManager": "Manager",
+
+  "identity": "Identité",
+  "firstName": "Prénom",
+  "lastName": "Nom",
+
+  "contract": "Contrat & Poste",
+  "contractType": "Type de contrat",
+  "selectContract": "Sélectionner le type de contrat",
+  "department": "Département",
+  "selectDepartment": "Sélectionner le département",
+  "baseSalary": "Salaire de base",
+  "position": "Poste",
+  "selectPosition": "Sélectionner le poste",
+  "contractStartDate": "Date de début du contrat",
+  "contractEndDate": "Date de fin du contrat",
+  "employeeCategory": "Catégorie d’employé",
+
+  "family": "Informations familiales",
+  "maritalStatus": "Statut matrimonial",
+  "selectMaritalStatus": "Sélectionner le statut matrimonial",
+  "single": "Célibataire",
+  "married": "Marié(e)",
+  "widowed": "Veuf(ve)",
+  "spouseName": "Nom du conjoint",
+  "address": "Adresse",
+  "phoneNumbers": "Numéro(s) de téléphone",
+
+  "bankInfo": "Informations bancaires",
+  "bankName": "Banque",
+  "selectBank": "Sélectionner la banque",
+  "bankAccountNumber": "Numéro de compte",
+  "socialSecurityNumber": "Numéro de sécurité sociale",
+  "insuranceNumber": "Numéro d’assurance",
+
+  "city": "Ville",
+  "country": "Pays",
+  "storeId": "Magasin",
+
+  "save": "Enregistrer",
+  "saving": "Enregistrement...",
+  "required": "Champ obligatoire",
+  "passwordMin": "Minimum 6 caractères",
+  "errorSubmit": "Erreur lors de la création de l’employé",
+
+  "createUser": "Créer un compte utilisateur",
+  "createUserForEmployee": "Créer des identifiants de connexion pour cet employé",
+  "userCreated": "Le compte utilisateur a été créé et lié à cet employé avec succès",
+  "userExists": "Cet employé a déjà un compte utilisateur",
+
+  "submit": "Créer",
+  "cancel": "Annuler"
+}
+
+
+}
