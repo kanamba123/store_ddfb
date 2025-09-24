@@ -1,4 +1,19 @@
 {
+  "common": {
+    "loading": "Inapakia...",
+    "error": "Kuna hitilafu",
+    "save": "Hifadhi",
+    "cancel": "Ghairi",
+    "delete": "Futa",
+    "edit": "Hariri",
+    "view": "Angalia",
+    "confirm": "Thibitisha",
+    "close": "Funga",
+    "yes": "Ndio",
+    "no": "Hapana",
+    "search": "Tafuta...",
+    "select": "Chagua"
+  },
   "header": {
     "business": "Biashara",
     "login": "Ingia",

@@ -1,4 +1,20 @@
 {
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "view": "Voir",
+    "search": "Rechercher...",
+    "submit": "Soumettre",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "yes": "Oui",
+    "no": "Non",
+    "back": "Retour"
+  },
   "header": {
     "business": "Ubucuruzi",
     "login": "Injira",
@@ -68,10 +84,6 @@
       "cookies": "Cookies"
     },
     "copyright": "© {{year}} Win2cop. Uburenganzira bwose burabitswe."
-  },
-  "common": {
-    "requiredField": "Iki kibanza kirakenewe",
-    "chooseOption": "-- Hitamwo --"
   },
   "uploadVariantForm": {
     "title": "Gushirako ikidandazwa",

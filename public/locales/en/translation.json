@@ -1,4 +1,22 @@
 {
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "noData": "No data available",
+    "requiredField": "This field is required",
+    "chooseOption": "-- Choose --",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "view": "View",
+    "confirm": "Confirm",
+    "close": "Close",
+    "yes": "Yes",
+    "no": "No",
+    "back": "Back"
+  },
   "header": {
     "business": "Business",
     "login": "Login",
@@ -69,10 +87,7 @@
     },
     "copyright": "© {{year}} Win2cop. All rights reserved."
   },
-  "common": {
-    "requiredField": "This field is required",
-    "chooseOption": "-- Choose --"
-  },
+  
   "uploadVariantForm": {
     "title": "Add Product Variant",
     "successMessage": "✅ Variant submitted successfully!",

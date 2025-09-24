@@ -1,4 +1,18 @@
 {
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur est survenue",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "view": "Voir",
+    "confirm": "Confirmer",
+    "yes": "Oui",
+    "no": "Non",
+    "search": "Rechercher...",
+    "back": "Retour"
+  },
   "header": {
     "business": "Business",
     "login": "Connexion",
@@ -355,8 +369,6 @@
   "viewEmployee": "Détails de l’employé",
   "search": "Rechercher un employé...",
   "notFound": "Aucun employé trouvé"
-
-  
 }
 
 
