@@ -338,7 +338,25 @@
   "userExists": "Cet employé a déjà un compte utilisateur",
 
   "submit": "Créer",
-  "cancel": "Annuler"
+  "cancel": "Annuler",
+
+
+  "disableUser": "Désactiver le compte utilisateur",
+  "enableUser": "Activer le compte utilisateur",
+  "userDisabled": "Le compte utilisateur a été désactivé",
+  "deleteUser":"Suprimer l'utilisateur",
+
+  "editEmployee": "Modifier l’employé",
+  "editSuccess": "Employé modifié avec succès",
+  "editError": "Erreur lors de la modification de l’employé",
+  "deleteConfirm": "Voulez-vous vraiment supprimer cet employé ?",
+  "deleteSuccess": "Employé supprimé avec succès",
+  "deleteError": "Erreur lors de la suppression de l’employé",
+  "viewEmployee": "Détails de l’employé",
+  "search": "Rechercher un employé...",
+  "notFound": "Aucun employé trouvé"
+
+  
 }
 
 

@@ -68,7 +68,7 @@ export default function EmployeesPage() {
           <div className="flex justify-end">
             <input
               type="text"
-              placeholder={t("employees.searchPlaceholder")}
+              placeholder={t("employees.search")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="p-2 border rounded w-full sm:w-64"
@@ -80,6 +80,7 @@ export default function EmployeesPage() {
             <table className="min-w-full table-auto divide-y divide-gray-200 whitespace-nowrap">
               <thead className="bg-[var(--color-bg-primary)]">
                 <tr>
+                  <th className="px-2 py-1.5">id</th>
                   <th className="px-2 py-1.5">{t("employees.name")}</th>
                   <th className="px-2 py-1.5">{t("employees.email")}</th>
                   <th className="px-2 py-1.5">{t("employees.role")}</th>
@@ -96,6 +97,7 @@ export default function EmployeesPage() {
               <tbody className="divide-y divide-gray-200">
                 {paginatedEmployees.map((emp: any) => (
                   <tr key={emp.id}>
+                    <td className="px-2 py-1.5">{emp.id}</td>
                     <td className="px-2 py-1.5">{emp.firstName} {emp.lastName}</td>
                     <td className="px-2 py-1.5">{emp.User?.email || "-"}</td>
                     <td className="px-2 py-1.5">{emp.User?.role || "-"}</td>
@@ -106,25 +108,37 @@ export default function EmployeesPage() {
                     <td className="px-2 py-1.5">{emp.department || "-"}</td>
                     <td className="px-2 py-1.5">{emp.employeeStatus}</td>
                     <td className="text-right flex justify-end space-x-2 px-2 py-1.5">
-                      {/* Actions */}
-                      <Link href={`/dashboard/hr/employees/${emp.id}/detail`} className="relative group">
+                      {/* View */}
+                      <Link
+                        href={`/dashboard/hr/employees/${emp.id}/detail`}
+                        className="relative group"
+                      >
                         <Eye className="w-5 h-5 text-blue-600 hover:text-blue-800" />
                         <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-700 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition">
                           {t("employees.view")}
                         </span>
                       </Link>
-                      <Link href={`/dashboard/hr/employees/${emp.id}/detail`} className="relative group">
+
+                      {/* Edit */}
+                      <Link
+                        href={`/dashboard/hr/employees/${emp.id}/edit`}
+                        className="relative group"
+                      >
                         <Edit className="w-5 h-5 text-green-600 hover:text-green-800" />
                         <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-700 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition">
                           {t("employees.edit")}
                         </span>
                       </Link>
+
+                      {/* Delete */}
                       <button className="relative group">
                         <Trash className="w-5 h-5 text-red-600 hover:text-red-800" />
                         <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-700 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition">
                           {t("employees.delete")}
                         </span>
                       </button>
+
+                      {/* Create User (if no user linked) */}
                       {!emp.User && (
                         <button onClick={() => openModal(emp)} className="relative group">
                           <UserPlus className="w-5 h-5 text-purple-600 hover:text-purple-800" />
@@ -134,6 +148,7 @@ export default function EmployeesPage() {
                         </button>
                       )}
                     </td>
+
                   </tr>
                 ))}
               </tbody>

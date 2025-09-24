@@ -14,7 +14,6 @@ export default function EmployeeDetailPage() {
     const { data: employee, isLoading, isError } = useEmployeeDetail(id as string);
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
-    const [currentEmployee, setCurrentEmployee] = useState(employee);
 
     const handleEdit = () => router.push(`/dashboard/hr/employees/${id}/edit`);
 
@@ -24,15 +23,13 @@ export default function EmployeeDetailPage() {
     };
 
     const handleDisableUser = async () => {
-        if (!currentEmployee?.User) return;
+        if (!employee?.User) return;
         setIsProcessing(true);
         try {
             // Ici tu appelleras ton API pour désactiver le user ou retirer le service
-            // Exemple fictif : await disableUserAPI(currentEmployee.User.id);
-            console.log("Disable user", currentEmployee.User.id);
+            // Exemple fictif : await disableUserAPI(employee.User.id);
+            console.log("Disable user", employee.User.id);
 
-            // Mise à jour locale : retirer l'utilisateur
-            setCurrentEmployee({ ...currentEmployee, User: null });
         } catch (err) {
             console.error(err);
             alert("Erreur lors de la désactivation de l'utilisateur.");
@@ -41,15 +38,16 @@ export default function EmployeeDetailPage() {
         }
     };
 
+    // pas besoin de employee ici
     if (isLoading) return <FullScreenLoaderMain message={t("employees.loading")} />;
     if (isError) return <p className="p-6 text-red-500">{t("employees.error")}</p>;
-    if (!currentEmployee) return <p className="p-6">{t("employees.notFound")}</p>;
+    if (!employee) return <p className="p-6">{t("employees.notFound")}</p>;
 
     return (
         <div className="p-4 space-y-6">
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
-                <h1 className="text-2xl font-bold">{currentEmployee.firstName} {currentEmployee.lastName}</h1>
+                <h1 className="text-2xl font-bold">{employee.firstName} {employee.lastName}</h1>
                 <div className="flex flex-col sm:flex-row sm:space-x-2 w-full sm:w-auto space-y-2 sm:space-y-0">
                     <button
                         onClick={handleEdit}
@@ -57,7 +55,7 @@ export default function EmployeeDetailPage() {
                     >
                         <Edit className="w-4 h-4 mr-1" /> {t("employees.edit")}
                     </button>
-                    {currentEmployee.User && (
+                    {employee.User && (
                         <button
                             onClick={handleDisableUser}
                             disabled={isProcessing}
@@ -70,7 +68,7 @@ export default function EmployeeDetailPage() {
                         onClick={() => setShowConfirmDelete(true)}
                         className="flex items-center justify-center px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition w-full sm:w-auto"
                     >
-                        <Trash className="w-4 h-4 mr-1" /> {t("employees.delete")}
+                        <Trash className="w-4 h-4 mr-1" /> {t("employees.deleteUser")}
                     </button>
                 </div>
             </div>
@@ -82,27 +80,27 @@ export default function EmployeeDetailPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex items-center gap-2">
                         <Mail className="w-5 h-5 text-blue-500" />
-                        <span>{currentEmployee.User?.email || "-"}</span>
+                        <span>{employee.User?.email || "-"}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <User className="w-5 h-5 text-purple-500" />
-                        <span>{currentEmployee.User?.role || "-"}</span>
+                        <span>{employee.User?.role || "-"}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <User className="w-5 h-5 text-pink-500" />
-                        <span>{currentEmployee.gender || currentEmployee.User?.gender || "-"}</span>
+                        <span>{employee.gender || employee.User?.gender || "-"}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <Calendar className="w-5 h-5 text-green-500" />
-                        <span>{currentEmployee.dateOfBirth ? new Date(currentEmployee.dateOfBirth).toLocaleDateString() : "-"} / {currentEmployee.placeOfBirth || "-"}</span>
+                        <span>{employee.dateOfBirth ? new Date(employee.dateOfBirth).toLocaleDateString() : "-"} / {employee.placeOfBirth || "-"}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <MapPin className="w-5 h-5 text-red-500" />
-                        <span>{currentEmployee.address || "-"}</span>
+                        <span>{employee.address || "-"}</span>
                     </div>
                     <div className="flex items-center gap-2">
                         <Phone className="w-5 h-5 text-yellow-500" />
-                        <span>{currentEmployee.employeeContactPhone || "-"}</span>
+                        <span>{employee.employeeContactPhone || "-"}</span>
                     </div>
                 </div>
             </div>
@@ -113,26 +111,26 @@ export default function EmployeeDetailPage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex items-center gap-2">
                         <Briefcase className="w-5 h-5 text-indigo-500" />
-                        <span>{currentEmployee.position || "-"}</span>
+                        <span>{employee.position || "-"}</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        <span className="font-semibold">Département:</span> <span>{currentEmployee.department || "-"}</span>
+                        <span className="font-semibold">Département:</span> <span>{employee.department || "-"}</span>
                     </div>
                     <div>
                         <span className="font-semibold">Contrat:</span><br />
-                        {currentEmployee.contractType || "-"} ({currentEmployee.contractStartDate ? new Date(currentEmployee.contractStartDate).toLocaleDateString() : "-"} - {currentEmployee.contractEndDate ? new Date(currentEmployee.contractEndDate).toLocaleDateString() : "-"})
+                        {employee.contractType || "-"} ({employee.contractStartDate ? new Date(employee.contractStartDate).toLocaleDateString() : "-"} - {employee.contractEndDate ? new Date(employee.contractEndDate).toLocaleDateString() : "-"})
                     </div>
                     <div>
-                        <span className="font-semibold">Salaire de base:</span> {currentEmployee.baseSalary || "0.00"}
+                        <span className="font-semibold">Salaire de base:</span> {employee.baseSalary || "0.00"}
                     </div>
                     <div>
                         <span className="font-semibold">Statut:</span>
-                        <span className={`ml-2 px-2 py-0.5 rounded text-white ${currentEmployee.employeeStatus === 'active' ? 'bg-green-500' : 'bg-red-500'}`}>
-                            {currentEmployee.employeeStatus}
+                        <span className={`ml-2 px-2 py-0.5 rounded text-white ${employee.employeeStatus === 'active' ? 'bg-green-500' : 'bg-red-500'}`}>
+                            {employee.employeeStatus}
                         </span>
                     </div>
                     <div>
-                        <span className="font-semibold">Ville / Pays:</span> {currentEmployee.city || "-"} / {currentEmployee.country || "-"}
+                        <span className="font-semibold">Ville / Pays:</span> {employee.city || "-"} / {employee.country || "-"}
                     </div>
                 </div>
             </div>

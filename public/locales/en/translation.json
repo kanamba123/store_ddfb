@@ -377,7 +377,22 @@
   "userExists": "This employee already has a user account",
 
   "submit": "Create",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+
+ "disableUser": "Disable user",
+  "enableUser": "Enable user",
+  "userDisabled": "User disable successfully",
+  "deleteUser":"Delete user",
+
+  "editEmployee": "Edit Employee",
+  "editSuccess": "Employee successfully edited",
+  "editError": "Error editing employee",
+  "deleteConfirm": "Are you sure you want to delete this employee?",
+  "deleteSuccess": "Employee successfully deleted",
+  "deleteError": "Error deleting employee",
+  "viewEmployee": "Employee Details",
+  "search": "Search for an employee...",
+  "notFound": "No employee found"
 }
 
 

@@ -377,7 +377,16 @@
   "userExists": "Uyu mukozi asanzwe afise konti y’umukoresha",
 
   "submit": "Kora",
-  "cancel": "Sivya"
+  "cancel": "Sivya",
+  "editEmployee": "Hindura Umukozi",
+  "editSuccess": "Umukozi yahinduwe neza",
+  "editError": "Ikosa mu guhindura umukozi",
+  "deleteConfirm": "Urashaka koko gusiba uyu mukozi?",
+  "deleteSuccess": "Umukozi yasibwe neza",
+  "deleteError": "Ikosa mu gusiba umukozi",
+  "viewEmployee": "Amakuru y’Umukozi",
+  "search": "Rondera umukozi...",
+  "notFound": "Nta mukozi yabonetse"
 }
 
 }

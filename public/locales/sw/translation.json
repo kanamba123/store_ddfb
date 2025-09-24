@@ -338,7 +338,24 @@
   "userExists": "Mfanyakazi huyu tayari ana akaunti ya mtumiaji",
 
   "submit": "Unda",
-  "cancel": "Ghairi"
+  "cancel": "Ghairi",
+
+  "disableUser": "Zima akaunti ya mtumiaji",
+  "enable": "Washa akaunti ya mtumiaji",
+  "userDisabled": "Akaunti ya mtumiaji imezimwa",
+  "userEnabled": "Akaunti ya mtumiaji imewashwa tena",
+  "noUser": "Hakuna akaunti ya mtumiaji imeunganishwa na mfanyakazi huyu",
+  "deleteUser":"Futa",
+
+  "editEmployee": "Hariri Mfanyakazi",
+  "editSuccess": "Mfanyakazi amehaririwa kwa mafanikio",
+  "editError": "Hitilafu wakati wa kuhariri mfanyakazi",
+  "deleteConfirm": "Una hakika unataka kufuta mfanyakazi huyu?",
+  "deleteSuccess": "Mfanyakazi amefutwa kwa mafanikio",
+  "deleteError": "Hitilafu wakati wa kufuta mfanyakazi",
+  "viewEmployee": "Maelezo ya Mfanyakazi",
+  "search": "Tafuta mfanyakazi...",
+  "notFound": "Hakuna mfanyakazi aliyepatikana"
 }
 
 }
