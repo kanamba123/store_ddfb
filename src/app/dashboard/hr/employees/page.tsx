@@ -13,6 +13,7 @@ export default function EmployeesPage() {
   const { data: employees, isLoading, isError } = useEmployees();
   const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
