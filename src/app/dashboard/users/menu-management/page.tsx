@@ -9,7 +9,7 @@ import {
     Edit, MenuIcon, ChevronRight, ChevronDown, X
 } from "lucide-react"
 import type { MenuRoute } from "@/types/admin"
-import { usefetchAllMenus, useAddMenu, useUpdateMenu } from "@/hooks/apis/useMenus"
+import { useFetchAllMenus, useAddMenu, useUpdateMenu } from "@/hooks/apis/useMenus"
 import Routes from "@/stores/Routes"
 import iconOptions from "@/stores/iconOptions"
 import { MenuItem } from '@/types/menu'
@@ -18,7 +18,7 @@ import { useTranslation } from "react-i18next"
 
 export default function MenuManager() {
 
-    const { data: menus = [], isLoading, error } = usefetchAllMenus();
+    const { data: menus = [], isLoading, error } = useFetchAllMenus();
     const { t } = useTranslation();
     const [searchTerm, setSearchTerm] = useState("")
     const [isModalOpen, setIsModalOpen] = useState(false)
