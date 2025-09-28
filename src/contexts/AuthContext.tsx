@@ -9,21 +9,33 @@ import {
   ReactNode,
 } from "react";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/config/API";
 
+interface MenuItem {
+  id: number;
+  key: string;
+  label: string;
+  route: string;
+  icon: string;
+  order: string;
+  parent_id: number | null;
+  is_active: boolean;
+  is_deleted: boolean;
+  children: MenuItem[];
+}
 
 interface Store {
-  id: string,
-  storeName: string,
-  storeType: string,
-  storeAddress: string
-
+  id: string;
+  storeName: string;
+  storeType: string;
+  storeAddress: string;
 }
 
 interface User {
   id: string;
   name: string;
   email: string;
-  store: Store
+  store: Store;
 }
 
 interface AuthContextType {
@@ -33,6 +45,8 @@ interface AuthContextType {
   login: (token: string, user: User) => Promise<void>;
   logout: () => void;
   showWarning: boolean;
+  menuItems: MenuItem[];
+  loadingMenu: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -45,8 +59,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
   const [hydrated, setHydrated] = useState(false);
-
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  // Add new states for menu
+  const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
+  const [loadingMenu, setLoadingMenu] = useState(false);
+
+  // Add fetchMenuItems function
+  const fetchMenuItems = useCallback(async (userId: string, userToken: string) => {
+    try {
+      setLoadingMenu(true);
+      const response = await fetch(`${API_URL}/user-menus/sidebar/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+          cache: 'force-cache'
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setMenuItems(data);
+      }
+    } catch (error) {
+      console.error('Error fetching menu items:', error);
+    } finally {
+      setLoadingMenu(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -54,13 +94,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const storedUser = localStorage.getItem("user");
 
       if (storedToken && storedUser) {
+        const parsedUser = JSON.parse(storedUser);
         setToken(storedToken);
-        setUser(JSON.parse(storedUser));
+        setUser(parsedUser);
         setIsAuthenticated(true);
+        // Fetch menu items when restoring session
+        fetchMenuItems(parsedUser.id, storedToken);
       }
       setHydrated(true);
     }
-  }, []);
+  }, [fetchMenuItems]);
 
   const login = async (newToken: string, newUser: User) => {
     setIsLoggingIn(true);
@@ -69,6 +112,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setToken(newToken);
     setUser(newUser);
     setIsAuthenticated(true);
+    // Fetch menu items after login
+    await fetchMenuItems(newUser.id, newToken);
     setIsLoggingIn(false);
   };
 
@@ -80,6 +125,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     setIsAuthenticated(false);
     setShowWarning(false);
+    setMenuItems([]); // Clear menu items on logout
     router.push("/login");
   }, [router]);
 
@@ -96,6 +142,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         login,
         logout,
         showWarning,
+        menuItems,
+        loadingMenu,
       }}
     >
       {children}

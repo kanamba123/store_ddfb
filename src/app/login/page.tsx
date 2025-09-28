@@ -50,7 +50,7 @@ export default function LoginPage() {
         router.push(redirectUrl);
         setRedirectUrl(null);
       } else {
-        router.push("/dashboard");
+        router.push("/dashboard/welcome");
       }
     }
   }, [isAuthenticated, redirectUrl, router, setRedirectUrl]);
@@ -84,7 +84,7 @@ export default function LoginPage() {
       if (redirectUrl) {
         window.location.href = redirectUrl;
       } else {
-        router.push("/dashboard");
+        router.push("/dashboard/welcome");
       }
     } catch (err: any) {
       setErrorMsg(err.message || t("errors.loginFailed"));
@@ -123,7 +123,7 @@ export default function LoginPage() {
         if (redirectUrl) {
           window.location.href = redirectUrl;
         } else {
-          router.push("/dashboard");
+          router.push("/dashboard/welcome");
         }
       }
     });
@@ -164,7 +164,7 @@ export default function LoginPage() {
       if (redirectUrl) {
         window.location.href = redirectUrl;
       } else {
-        router.push("/dashboard");
+        router.push("/dashboard/welcome");
       }
     } catch (err: any) {
       // setErrorMsg(err.message || t('errors.fingerprintFailed'));
