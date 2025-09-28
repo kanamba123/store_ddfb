@@ -1,7 +1,7 @@
+"use client";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { getMenus, createMenu,getSidebar, updateMenu, getUserMenus } from "../api-services/menu"
-
-
 
 export const useSidebarMenus = (user:any, token:any) => {
     return useQuery({
@@ -23,7 +23,6 @@ export const usefetchAllMenus = () => {
     return useQuery({
         queryKey: ['all-menus'],
         queryFn: getMenus,
-        enabled: true,
     })
 }
 
