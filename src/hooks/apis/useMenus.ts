@@ -22,7 +22,7 @@ export const useGetUserMenus = (user:any) => {
 export const usefetchAllMenus = () => {
     return useQuery({
         queryKey: ['all-menus'],
-        queryFn: () => getMenus(),
+        queryFn: getMenus,
         enabled: true,
     })
 }
