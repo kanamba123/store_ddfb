@@ -1,8 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { getMenus, createMenu,getSidebar, updateMenu, getUserMenus } from "../api-services/menu"
 
-
-
 export const useSidebarMenus = (user:any, token:any) => {
     return useQuery({
         queryKey: ['sidebar-menus'],
@@ -19,11 +17,10 @@ export const useGetUserMenus = (user:any) => {
     })
 }
 
-export const usefetchAllMenus = () => {
+export const useFetchAllMenus = () => {
     return useQuery({
         queryKey: ['all-menus'],
-        queryFn: () => getMenus(),
-        enabled: true,
+        queryFn: getMenus,
     })
 }
 
