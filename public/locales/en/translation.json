@@ -411,7 +411,35 @@
   "viewEmployee": "Employee Details",
   "search": "Search for an employee...",
   "notFound": "No employee found"
-}
+},
+ "welcomeDashboard": {
+    "title": "Welcome to",
+    "startButton": "Get Started",
+    "description": "A modern platform for sellers, marketers, and partners. Grow your sales, manage your products, and reach new customers easily.",
+    "cards": {
+      "products": {
+        "title": "Products",
+        "desc": "Add, manage, and optimize your products to maximize sales."
+      },
+      "clients": {
+        "title": "Clients",
+        "desc": "Analyze your clients and understand their needs to sell better."
+      },
+      "statistics": {
+        "title": "Statistics",
+        "desc": "Track your performance and improve your marketing strategies."
+      }
+    },
+    "guidelines": {
+      "motivation": "Here are some tips to get you started:",
+      "points": [
+        "Always keep your product info up-to-date",
+        "Engage with your customers regularly",
+        "Monitor your sales metrics frequently",
+        "Stay consistent and motivated"
+      ]
+    }
+  }
 
 
 }
