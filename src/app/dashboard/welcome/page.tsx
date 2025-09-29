@@ -5,11 +5,8 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { ShoppingCart, Users, BarChart, ArrowRight, CheckCircle } from "lucide-react";
 
-interface WelcomePageProps {
-  userName?: string; // Nom de l'utilisateur connecté
-}
 
-export default function WelcomePage({ userName }: WelcomePageProps) {
+export default function WelcomePage() {
   const { t } = useTranslation();
 
   return (
@@ -22,12 +19,7 @@ export default function WelcomePage({ userName }: WelcomePageProps) {
             <span className="text-blue-600">StoreDDFB</span>
           </h1>
 
-          {/* Bienvenue personnalisé */}
-          {userName && (
-            <p className="mt-2 text-lg text-gray-600 dark:text-gray-300">
-              {t("welcomeDashboard.personalGreeting", { name: userName })}
-            </p>
-          )}
+         
         </div>
 
         <Link
