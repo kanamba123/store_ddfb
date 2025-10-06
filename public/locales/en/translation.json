@@ -15,7 +15,8 @@
     "close": "Close",
     "yes": "Yes",
     "no": "No",
-    "back": "Back"
+    "back": "Back",
+    "confirmDelete":"Do you want to delete?"
   },
   "header": {
     "business": "Business",

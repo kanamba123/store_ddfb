@@ -6,11 +6,14 @@ import URLUploader from "@/components/ui/URLUploader";
 import ImageUploader from "./ImageUploader";
 import { API_URL } from "@/config/API";
 import { Trash2, Edit2 } from "lucide-react";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
+import { useTranslation } from "react-i18next";
+import Image from "next/image";
 
 const SimpleDataManyPhotosEditInline = ({
   id,
   field,
-  value ,
+  value,
   onSave,
   endpoint,
   editable = false,
@@ -24,11 +27,12 @@ const SimpleDataManyPhotosEditInline = ({
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedUploader, setSelectedUploader] = useState("image");
   const [loading, setLoading] = useState(false);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+   const { t } = useTranslation();
 
   const apiUrl = `${API_URL}/${endpoint}/${id}`;
-  const nameForFile = `${namePitch}${
-    (suffixName && suffixName.replace(/\s+/g, "_").toLowerCase()) || ""
-  }`;
+  const nameForFile = `${namePitch}${(suffixName && suffixName.replace(/\s+/g, "_").toLowerCase()) || ""
+    }`;
 
   // Ajouter une image depuis fichier
   const addNewPhoto = async () => {
@@ -106,18 +110,17 @@ const SimpleDataManyPhotosEditInline = ({
   };
 
   // Supprimer une image
-  const handleDeleteImage = async (index) => {
-    if (!window.confirm("Supprimer cette image ?")) return;
+  const handleDeleteImage = async () => {
     setLoading(true);
     try {
-      const updatedImages = images.filter((_, i) => i !== index);
+      const updatedImages = images.filter((_, i) => i !== selectedImageIndex);
       const res = await fetch(apiUrl, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ field, value: updatedImages }),
       });
       if (!res.ok) throw new Error("Erreur suppression");
-      await deleteImageFromFirebase(images[index]);
+      await deleteImageFromFirebase(images[selectedImageIndex]);
       setImages(updatedImages);
       if (onSave) onSave(await res.json());
       notifySuccess("Image supprimée !");
@@ -137,11 +140,15 @@ const SimpleDataManyPhotosEditInline = ({
       {/* Image principale */}
       {images.length > 0 && (
         <div className="relative group mb-3 sm:mb-4">
-          <div className="aspect-square bg-gray-100 rounded-lg sm:rounded-xl overflow-hidden">
-            <img
+          <div className="relative aspect-square bg-[var(--color-bg-primary)] rounded-lg sm:rounded-xl overflow-hidden">
+            <Image
               src={images[selectedImageIndex] || images[0]}
               alt={`Image ${selectedImageIndex + 1}`}
-              className="w-full h-full object-cover"
+              fill
+              className={`object-cover transition-opacity duration-500 ${loading ? "opacity-0" : "opacity-100"}`}
+              onLoadingComplete={() => setLoading(false)}
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxwYXRoIGZpbGw9IiMwMDhGRkYiIGQ9Ik0wIDBoMTAwdjEwMEgweiIvPjwvc3ZnPg==" // bleu clair
             />
           </div>
 
@@ -151,7 +158,9 @@ const SimpleDataManyPhotosEditInline = ({
               opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200"
             >
               <button
-                onClick={() => handleDeleteImage(selectedImageIndex)}
+                onClick={() => {
+                  setShowConfirmDelete(true)
+                }}
                 className="bg-red-600 text-white rounded-full p-2"
               >
                 <Trash2 size={16} />
@@ -174,11 +183,10 @@ const SimpleDataManyPhotosEditInline = ({
             <button
               key={index}
               onClick={() => setSelectedImageIndex(index)}
-              className={`flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded overflow-hidden transition-all duration-200 ${
-                selectedImageIndex === index
-                  ? "ring-2 ring-blue-500 scale-105"
-                  : "hover:scale-105 opacity-70 hover:opacity-100"
-              }`}
+              className={`flex-shrink-0 w-12 h-12 sm:w-16 sm:h-16 rounded overflow-hidden transition-all duration-200 ${selectedImageIndex === index
+                ? "ring-2 ring-blue-500 scale-105"
+                : "hover:scale-105 opacity-70 hover:opacity-100"
+                }`}
             >
               <img src={img} alt={`Vue ${index + 1}`} className="w-full h-full object-cover" />
             </button>
@@ -191,17 +199,15 @@ const SimpleDataManyPhotosEditInline = ({
         <div className="mt-4 space-y-3">
           <div className="flex gap-2">
             <button
-              className={`px-3 py-1 rounded border ${
-                selectedUploader === "image" ? "bg-blue-600 text-[var(--color-text-primary)]" : "bg-[var(--color-bg-primary)]"
-              }`}
+              className={`px-3 py-1 rounded border ${selectedUploader === "image" ? "bg-blue-600 text-[var(--color-text-primary)]" : "bg-[var(--color-bg-primary)]"
+                }`}
               onClick={() => setSelectedUploader("image")}
             >
               Ajouter Image
             </button>
             <button
-              className={`px-3 py-1 rounded border ${
-                selectedUploader === "url" ? "bg-blue-600 text-[var(--color-text-primary)]" : "bg-[var(--color-bg-primary)]"
-              }`}
+              className={`px-3 py-1 rounded border ${selectedUploader === "url" ? "bg-blue-600 text-[var(--color-text-primary)]" : "bg-[var(--color-bg-primary)]"
+                }`}
               onClick={() => setSelectedUploader("url")}
             >
               Ajouter URL
@@ -233,6 +239,16 @@ const SimpleDataManyPhotosEditInline = ({
               Ajouter
             </button>
           )}
+
+          <ConfirmDialog
+                      isOpen={showConfirmDelete}
+                      title={t("common.delete")}
+                      message={t("common.confirmDelete")}
+                      confirmLabel={t("common.delete")}
+                      cancelLabel={t("common.cancel")}
+                      onConfirm={handleDeleteImage}
+                      onCancel={() => setShowConfirmDelete(false)}
+                    /> 
         </div>
       )}
     </div>

@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowLeft, Edit, Trash2, Share2, QrCode, Eye, EyeOff, Tag, Package, Calendar, BarChart3, Settings, Copy, Download, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Edit, Trash2, Share2, QrCode, Eye, EyeOff, Tag, Package,BarChart3, Download, AlertCircle } from 'lucide-react';
 import { useParams, useRouter } from "next/navigation";
 import { getVariantById, deleteVariant, fetchProductCategories } from "@/libs/api/products";
-import { VariantsProduct } from '@/types/VariantsProduct';
 import TdCustomViewEdit from '@/components/ui/TdCustomViewEdit';
 import ItemViewer from '@/components/ui/ItemViewer';
 import EditForeignViewEdit from '@/components/ui/EditForeignViewEdit';
@@ -25,6 +24,7 @@ interface VariantData {
   id: number;
   variantProductName: string;
   variantType: string;
+  purchasePrice: number;
   recommendedPrice: number;
   slug: string;
   description?: string;
@@ -44,7 +44,6 @@ interface VariantData {
 const ProductDetailBackoffice = () => {
   const router = useRouter();
   const { id } = useParams();
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [variant, setVariant] = useState<VariantData | null>(null);
@@ -110,7 +109,7 @@ const ProductDetailBackoffice = () => {
       setDeleting(true);
       await deleteVariant(variant.id);
       setShowDeleteModal(false);
-      setTimeout(() => router.push("/products"), 1500);
+      setTimeout(() => router.push("/dashboard/products"), 1500);
     } catch (error) {
       console.error("Failed to delete variant", error);
       setError("Échec de la suppression du produit");
@@ -201,7 +200,6 @@ const ProductDetailBackoffice = () => {
     );
   }
 
-  const specificationsArray = getSpecificationsArray(variant.specifications);
 
   return (
     <div className=" bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] overflow-y-auto max-h-full">
@@ -241,7 +239,7 @@ const ProductDetailBackoffice = () => {
               </button>
 
               <button
-                onClick={() => router.push(`/products/edit/${variant.id}`)}
+                onClick={() => router.push(`/dashboard/products//${variant.id}`)}
                 className="flex items-center space-x-1 bg-blue-600 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
               >
                 <Edit className="w-4 h-4" />
@@ -294,7 +292,7 @@ const ProductDetailBackoffice = () => {
 
       {/* Modal Suppression */}
       {showDeleteModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 from-blue-500/40 to-red-500/40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-[var(--color-bg-primary)] p-4 sm:p-6 rounded-2xl shadow-xl w-full max-w-md">
             <div className="text-center">
               <div className="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900/30 mb-4">
@@ -453,6 +451,22 @@ const ProductDetailBackoffice = () => {
                 </div>
 
                 <div>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Prix d'achat</label>
+                  <div className="text-lg sm:text-2xl font-bold text-blue-900 dark:text-blue-400">
+                    <TdCustomViewEdit
+                      id={variant.id}
+                      field="purchasePrice"
+                      value={formatPrice(variant?.purchasePrice)}
+                      endpoint={dataendPoint}
+                      editable
+                      useDialog
+                      onSave={handleSave}
+                    />
+                  </div>
+                </div>
+
+
+                 <div>
                   <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Prix recommandé</label>
                   <div className="text-lg sm:text-2xl font-bold text-green-600 dark:text-green-400">
                     <TdCustomViewEdit
@@ -466,6 +480,8 @@ const ProductDetailBackoffice = () => {
                     />
                   </div>
                 </div>
+
+                
 
                 <div>
                   <label className="text-xs sm:text-sm font-medium ">Slug URL</label>

@@ -11,6 +11,7 @@ import FullScreenLoaderMain from "@/components/ui/FullScreenLoaderMain";
 import { useTranslation } from "react-i18next";
 import SearchBarWithCategory from "@/components/ui/SearchBarWithCategory.tsx";
 import { useCategories } from "@/hooks/apis/useCategoris";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
 
 interface ProductListProps {
   products: VariantsProduct[];
@@ -32,12 +33,11 @@ export default function ProductList({
   const desktopScrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const { data: categories } = useCategories();
+  const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [showConfirmDelete, setShowConfirmDelete] = useState(false);
   const router = useRouter();
   const { t } = useTranslation();
-
-  // Exemple de catégories (tu peux remplacer par des données dynamiques venant de l’API)
-
 
   useEffect(() => {
     const checkIsMobile = () => setIsMobile(window.innerWidth < 768);
@@ -150,13 +150,10 @@ export default function ProductList({
   };
 
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("Voulez-vous vraiment supprimer ce produit ?")) return;
-
+  const handleDelete = async () => {
     try {
-      await fetch(`/api/products/${id}`, { method: "DELETE" });
+      await fetch(`/api/products/${selectedProductId}`, { method: "DELETE" });
       alert("Produit supprimé avec succès !");
-      // Ici, tu peux recharger la liste ou mettre à jour ton état local
     } catch (err) {
       alert("Erreur lors de la suppression");
     }
@@ -169,8 +166,6 @@ export default function ProductList({
 
   return (
     <>
-
-
       <SearchBarWithCategory
         categories={categories}
         selectedCategory={selectedCategory}
@@ -179,7 +174,6 @@ export default function ProductList({
         onSearchChange={setFilterText}
         onSubmit={handleSearch}
       />
-
 
       {/* Mobile View */}
       <div className="block md:hidden space-y-4 pb-24">
@@ -239,8 +233,11 @@ export default function ProductList({
                         <Image
                           src={product?.image[0]}
                           alt={product.variantProductName}
+                          className={` rounded-md object-cover transition-opacity duration-500 ${loading ? "opacity-0" : "opacity-100"}`}
+                          onLoadingComplete={() => setLoading(false)}
                           fill
-                          className="rounded-md object-cover"
+                          placeholder="blur"
+                          blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxwYXRoIGZpbGw9IiMwMDhGRkYiIGQ9Ik0wIDBoMTAwdjEwMEgweiIvPjwvc3ZnPg=="
                         />
                       </div>
                     ) : (
@@ -298,8 +295,10 @@ export default function ProductList({
                     {/* Supprimer */}
                     <button
                       onClick={(e) => {
+                        setShowConfirmDelete(true)
+                        setSelectedProductId(product.id)
                         e.stopPropagation();
-                        handleDelete(product.id);
+                        
                       }}
                       className=" text-red-600 p-2 rounded-md hover:bg-red-100  dark:text-red-400 dark:hover:bg-red-900/70"
                     >
@@ -328,6 +327,16 @@ export default function ProductList({
               {t("products.allLoaded")}
             </div>
           )}
+
+          <ConfirmDialog
+            isOpen={showConfirmDelete}
+            title={t("common.delete")}
+            message={t("common.confirmDelete")}
+            confirmLabel={t("common.delete")}
+            cancelLabel={t("common.cancel")}
+            onConfirm={handleDelete}
+            onCancel={() => setShowConfirmDelete(false)}
+          />
         </div>
       </div>
     </>

@@ -12,7 +12,8 @@
     "yes": "Ndio",
     "no": "Hapana",
     "search": "Tafuta...",
-    "select": "Chagua"
+    "select": "Chagua",
+    "deleteSuccess": "Imefutwa kwa mafanikio"
   },
   "header": {
     "business": "Biashara",

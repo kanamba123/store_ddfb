@@ -4,6 +4,7 @@ import { useForm, Controller } from "react-hook-form"
 import { useCreateVariantProduct } from "@/hooks/apis/useVariants"
 import ImageUploader from "@/components/ui/ImageUploader"
 import AddKeyValuePairs from "@/components/ui/AddKeyValuePairs"
+import { useRouter } from "next/navigation";
 import { useFetchStoresByConditionFilters } from "@/hooks/apis/useStores"
 import { Product } from "@/types/Product"
 import { StoreData } from "@/types/registration"
@@ -73,6 +74,7 @@ export default function UploadVariantForm() {
   const [specifications, setSpecifications] = useState<Record<string, string>>({})
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
   const { t } = useTranslation();
+  const router = useRouter();
 
   const {
     watch,
@@ -141,6 +143,7 @@ export default function UploadVariantForm() {
           setSpecifications({});
           setPreviews([]);
           setUploadedFiles([]);
+          setTimeout(() => router.push("/dashboard/products"), 1500);
         },
         onError: (error) => {
           console.error(error);

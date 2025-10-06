@@ -5,24 +5,20 @@ import { VariantsProduct } from "@/types/VariantsProduct";
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import ConfirmDialog from "@/components/ui/ConfirmDialog";
+import { useTranslation } from "react-i18next";
+import { deleteVariant } from "@/libs/api/products";
 
 interface ProductCardProps {
     product: VariantsProduct;
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-
-    const [isMobile, setIsMobile] = useState(false);
-    const [editingProduct, setEditingProduct] = useState<VariantsProduct | null>(null);
-    const [modalOpen, setModalOpen] = useState(false);
-    const [formData, setFormData] = useState({
-        variantProductName: "",
-        sellingPrice: "",
-        stock: "",
-    });
-    const [isDetailOpen, setIsDetailOpen] = useState(false);
-    const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+   
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+    const { t } = useTranslation();
 
     const handleShare = (product: VariantsProduct) => {
         const shareData = {
@@ -66,23 +62,22 @@ export default function ProductCard({ product }: ProductCardProps) {
     };
 
 
-
-    const openModalForEdit = (product: VariantsProduct) => {
-        setEditingProduct(product);
-        setFormData({
-            variantProductName: product.variantProductName,
-            sellingPrice: product.recommendedPrice?.toString() || "",
-            stock: "0", // You might want to add stock to your product model
-        });
-        setModalOpen(true);
-    };
-
-
-
     const handleRowClick = (product: VariantsProduct) => {
-        setSelectedProductId(product.id);
         router.push(`/dashboard/products/view/${product.id}`);
     };
+
+    //Delete product
+    const handleDelete = async () => {
+
+         try {
+              await deleteVariant(product.id);
+              setShowConfirmDelete(false)
+              router.push("/dashboard/products");
+            } catch (error) {
+              console.error("Failed to delete variant", error);
+            } 
+    };
+
 
     return (
         <div onClick={() => {
@@ -98,8 +93,12 @@ export default function ProductCard({ product }: ProductCardProps) {
                                 src={product?.image[0]}
                                 alt={product.variantProductName}
                                 fill
-                                className="rounded-lg object-cover"
+                                className={` rounded-lg object-cover transition-opacity duration-500 ${loading ? "opacity-0" : "opacity-100"}`}
+                                onLoadingComplete={() => setLoading(false)}
                                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                placeholder="blur"
+                                blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnPjxwYXRoIGZpbGw9IiMwMDhGRkYiIGQ9Ik0wIDBoMTAwdjEwMEgweiIvPjwvc3ZnPg=="
+
                             />
                         </div>
                     ) : (
@@ -144,7 +143,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                             "Aucune description"}
                     </p>
                 </div>
-            
+
             </div>
 
             {/* Actions */}
@@ -192,7 +191,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 </button>
                 <button
                     onClick={(e) => {
-                        handleShare(product)
+                        setShowConfirmDelete(true)
                         e.stopPropagation();
                     }
                     } className="flex-1  text-red-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-red-100  dark:text-red-400 dark:hover:bg-red-900/70 transition-colors flex items-center justify-center">
@@ -211,6 +210,16 @@ export default function ProductCard({ product }: ProductCardProps) {
                     </svg>
                 </button>
             </div>
+
+            <ConfirmDialog
+                isOpen={showConfirmDelete}
+                title={t("common.delete")}
+                message={t("common.confirmDelete")}
+                confirmLabel={t("common.delete")}
+                cancelLabel={t("common.cancel")}
+                onConfirm={handleDelete}
+                onCancel={() => setShowConfirmDelete(false)}
+            />
         </div>
     );
 }

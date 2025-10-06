@@ -23,7 +23,9 @@ export default function DescriptionPreview({
         <span>{preview}</span>
         {isTruncated && (
           <button
-            onClick={() => setIsOpen(true)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsOpen(true)}}
             className="relative text-indigo-600 hover:text-indigo-800"
           >
             <Eye className="w-4 h-4" />
@@ -44,7 +46,8 @@ export default function DescriptionPreview({
               {text}
             </p>
             <button
-              onClick={() => setIsOpen(false)}
+              onClick={(e) => {e.stopPropagation();
+                setIsOpen(false)}}
               className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
             >
               ✕

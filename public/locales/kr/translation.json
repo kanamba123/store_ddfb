@@ -13,7 +13,8 @@
     "confirm": "Confirmer",
     "yes": "Oui",
     "no": "Non",
-    "back": "Retour"
+    "back": "Retour",
+    "confirmDelete":"Voulez-vous supprimer?"
   },
   "header": {
     "business": "Ubucuruzi",

@@ -5,7 +5,6 @@ import { useParams, useRouter } from "next/navigation"
 import { useForm, useFieldArray } from "react-hook-form"
 import Image from "next/image"
 import { fetchProductCategories, getVariantById, updateVariant } from "@/libs/api/products"
-import { API_URL } from "@/config/API"
 
 interface Specification {
   key: string

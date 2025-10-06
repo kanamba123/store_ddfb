@@ -11,7 +11,8 @@
     "yes": "Oui",
     "no": "Non",
     "search": "Rechercher...",
-    "back": "Retour"
+    "back": "Retour",
+    "confirmDelete":"Voulez-vous supprimer?"
   },
   "header": {
     "business": "Business",
