@@ -64,6 +64,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([]);
   const [loadingMenu, setLoadingMenu] = useState(false);
 
+
   // Add fetchMenuItems function
   const fetchMenuItems = useCallback(async (userId: string, userToken: string) => {
     try {

@@ -36,6 +36,8 @@ export default function Navbar({ onToggleSidebar }) {
   const { t } = useTranslation();
 
 
+  console.log("User ", user)
+
 
   const changeLanguage = languageContext?.changeLanguage || ((lang) => {
     localStorage.setItem("language", lang);
@@ -47,7 +49,7 @@ export default function Navbar({ onToggleSidebar }) {
   const [currentLang, setCurrentLang] = useState(ListLanguage[0]);
 
   const handleLanguageChange = (lang) => {
-    changeLanguage(lang.code); 
+    changeLanguage(lang.code);
     setCurrentLang(lang);
   };
 
@@ -88,14 +90,20 @@ export default function Navbar({ onToggleSidebar }) {
             {/* Sidebar toggle (mobile) */}
             <button
               className="lg:hidden p-2 rounded-xl 
-              hover:bg-[var(--color-bg-secondary)]/50 
-              transition-colors flex-shrink-0"
+    hover:bg-[var(--color-bg-secondary)]/50 
+    transition-colors flex-shrink-0"
               onClick={onToggleSidebar}
               aria-label="Ouvrir la sidebar"
             >
-              <Menu className="w-5 h-5 sm:w-6 sm:h-6 " />
+              <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
+            {/* Store Name - Always visible */}
+            <div className="flex items-center">
+              <h1 className="text-lg font-semibold text-[var(--color-text-primary)] truncate max-w-40 lg:max-w-60">
+                {user?.store?.storeName || 'Win2Cop'}
+              </h1>
+            </div>
 
             {/* Search bar */}
             <div
@@ -109,13 +117,13 @@ export default function Navbar({ onToggleSidebar }) {
                 type="text"
                 placeholder={t('navbar.searchPlaceholder', 'Rechercher...')}
                 className="w-full md:w-64 lg:w-80 pl-9 sm:pl-10 pr-10 sm:pr-4 py-2 
-                  bg-[var(--color-bg-secondary)]/50 
-                  shadow-xs shadow-action-add rounded-xl 
-                  focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-light)]/30 
-                  focus:border-[var(--color-primary-light)]/40 
-                  transition-all duration-200 text-sm sm:text-base 
-                  text-[var(--color-text-primary)] 
-                  placeholder-[var(--color-text-secondary)] "
+        bg-[var(--color-bg-secondary)]/50 
+        shadow-xs shadow-action-add rounded-xl 
+        focus:outline-none focus:ring-2 focus:ring-[var(--color-primary-light)]/30 
+        focus:border-[var(--color-primary-light)]/40 
+        transition-all duration-200 text-sm sm:text-base 
+        text-[var(--color-text-primary)] 
+        placeholder-[var(--color-text-secondary)]"
               />
               {/* Close search (mobile) */}
               <button
@@ -129,10 +137,10 @@ export default function Navbar({ onToggleSidebar }) {
             {/* Search toggle (mobile) */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className={`md:hidden p-2 rounded-xl hover:bg-[var(--color-bg-secondary)]/50  transition-colors ${isSearchOpen ? "hidden" : "block"
+              className={`md:hidden p-2 rounded-xl hover:bg-[var(--color-bg-secondary)]/50 transition-colors ${isSearchOpen ? "hidden" : "block"
                 }`}
             >
-              <Search className="w-5 h-5 text-[var(--color-text-secondary)] " />
+              <Search className="w-5 h-5 text-[var(--color-text-secondary)]" />
             </button>
           </div>
 
@@ -181,7 +189,7 @@ export default function Navbar({ onToggleSidebar }) {
                   <div className="max-h-64 overflow-y-auto">
                     <div className="p-2 sm:p-3 hover:bg-[var(--color-bg-secondary)]/50 cursor-pointer border-b border-[var(--color-border)]/50">
                       <p className="text-xs sm:text-sm font-medium text-[var(--color-text-secondary)]">
-                        {t("notifications.newUser")} 
+                        {t("notifications.newUser")}
                       </p>
                       <p className="text-xs text-[var(--color-text-secondary)] mt-1">
                         {t("notifications.ago5min")}
@@ -258,12 +266,12 @@ export default function Navbar({ onToggleSidebar }) {
               >
                 <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-dark)] rounded-full flex items-center justify-center flex-shrink-0">
                   <span className="text-white font-semibold text-xs sm:text-sm">
-                    {getInitials(user?.fullName) || "W"}
+                    {getInitials(user?.email) || "W"}
                   </span>
                 </div>
                 <div className="hidden lg:block text-left min-w-0">
                   <p className="text-sm font-medium text-[var(--color-text-primary)]  truncate">
-                    {user?.fullName}
+                    {user?.email}
                   </p>
                   <p className="text-xs text-[var(--color-text-secondary)] truncate">
                     Admin
