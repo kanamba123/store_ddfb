@@ -23,14 +23,6 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen  space-y-6 bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] transition-colors duration-200">
 
-      <div className="flex justify-end m-2">
-        <Link
-          href="/dashboard/products/create"
-          className="px-3 py-2 rounded-md font-medium text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] transition-colors duration-200 dark:bg-[var(--color-primary-dark)] dark:hover:bg-[var(--color-primary)]"
-        >
-          {t("products.addProduct")}
-        </Link>
-      </div>
 
       {/* Liste des produits */}
       <div className="space-y-4">
