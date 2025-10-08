@@ -12,7 +12,8 @@ import { useTranslation } from "react-i18next";
 import SearchBarWithCategory from "@/components/ui/SearchBarWithCategory.tsx";
 import { useCategories } from "@/hooks/apis/useCategoris";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
-import { deleteVariant } from "@/libs/api/products";
+import API from "@/config/Axios";
+import { API_URL } from "@/config/API";
 
 interface ProductListProps {
   products: VariantsProduct[];
@@ -117,7 +118,6 @@ export default function ProductList({
     };
 
     if (navigator.share) {
-      // Mobile / navigateur supporté
       navigator.share(shareData).catch(console.error);
     } else {
       // Desktop fallback
@@ -127,7 +127,6 @@ export default function ProductList({
       navigator.clipboard.writeText(shareText)
         .then(() => alert("Lien copié dans le presse-papiers !"))
         .catch(() => {
-          // fallback plus ancien
           const textArea = document.createElement('textarea');
           textArea.value = shareText;
           document.body.appendChild(textArea);
@@ -153,13 +152,8 @@ export default function ProductList({
 
   const handleDelete = async () => {
     try {
-      try {
-        await deleteVariant(selectedProductId as number);
-        setShowConfirmDelete(false)
-        window.location.reload();
-      } catch (error) {
-        console.error("Failed to delete variant", error);
-      }
+      await API.delete(`${API_URL}/variantesProduits/permanent-delete/${selectedProductId}`);
+       window.location.reload();
     } catch (err) {
       alert("Erreur lors de la suppression");
     }
@@ -169,6 +163,17 @@ export default function ProductList({
     setSelectedProductId(product.id);
     router.push(`/dashboard/products/view/${product.id}`);
   };
+
+
+  const handleRestore = async (id: number) => {
+    try {
+      await API.put(`${API_URL}/variantesProduits/restore/${id}`);
+      setTimeout(() => router.push("/dashboard/products"), 1500);
+    } catch (err) {
+      alert("Erreur lors de la restauration");
+    }
+  };
+
 
   return (
     <>
@@ -214,6 +219,7 @@ export default function ProductList({
           <table className="min-w-full divide-y divide-gray-200 ">
             <thead className="bg-[var(--color-bg-primary)] text-[var(--color-text-primary)]">
               <tr>
+                <th className="px-6 py-3">Id</th>
                 <th className="px-6 py-3">{t("products.image")}</th>
                 <th className="px-6 py-3">{t("products.name")}</th>
                 <th className="px-6 py-3">{t("products.description")}</th>
@@ -233,6 +239,7 @@ export default function ProductList({
                     : "hover:bg-[var(--color-bg-secondary)] border-b border-[var(--color-border)] "
                     }`}
                 >
+                  <td className="px-6 py-4">{product.id}</td>
                   <td className="px-6 py-4">
                     {product?.image?.length > 0 ? (
                       <div className="relative h-10 w-10">
@@ -298,17 +305,55 @@ export default function ProductList({
                       </svg>
                     </button>
 
-                    {/* Supprimer */}
+                    {/* 🔄 Restaurer */}
                     <button
                       onClick={(e) => {
-                        setShowConfirmDelete(true)
-                        setSelectedProductId(product.id)
                         e.stopPropagation();
-
+                        if (!product.deletedAt) return; 
+                        handleRestore(product.id);
                       }}
-                      className=" text-red-600 p-2 rounded-md hover:bg-red-100  dark:text-red-400 dark:hover:bg-red-900/70"
+                      disabled={!product.deletedAt}
+                      className={`p-2 rounded-md ${product.deletedAt
+                        ? "text-green-600 hover:bg-green-100 dark:text-green-400 dark:hover:bg-green-900/70"
+                        : "text-gray-400 cursor-not-allowed dark:text-gray-500"
+                        }`}
+                      title={
+                        product.deletedAt
+                          ? t("products.restore")
+                          : t("products.restoreDisabled")
+                      }
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M3 12a9 9 0 0118 0h-3l4 4-4 4h3a9 9 0 10-9 9v-3"
+                        />
+                      </svg>
+                    </button>
+
+                    {/* 🗑 Supprimer définitivement */}
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowConfirmDelete(true);
+                        setSelectedProductId(product.id);
+                      }}
+                      className="text-red-600 p-2 rounded-md hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-900/70"
+                      title={t("products.deletePermanent")}
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -317,6 +362,7 @@ export default function ProductList({
                         />
                       </svg>
                     </button>
+
                   </td>
 
                 </tr>

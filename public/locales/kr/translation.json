@@ -148,7 +148,8 @@
     "hrAttendance": "Ukwinjira n’Ukwitabira",
     "hrTraining": "Amahugurwa",
     "hrEvaluations": "Ugenzura n’Ukugaragaza ivyo wakoze",
-    "hrContracts": "Amasezerano n’Ibipapuro"
+    "hrContracts": "Amasezerano n’Ibipapuro",
+    "trash": "Ibitarikoreshwa / gusubiza"
   },
   "navbar": {
     "searchPlaceholder": "Rondera...",

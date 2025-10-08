@@ -61,12 +61,44 @@ export const useProductsCategorie = () => {
 };
 
 
+//get variants products by store
 export const useVariantsProductByStore = (ownerProducstoreId?: number) => {
   return useInfiniteQuery({
     queryKey: ["productsFeatured", ownerProducstoreId],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await API.get(
         `/variantesProduits/byStore`,
+        {
+          params: {
+            ownerProducstoreId,
+            page: pageParam,
+            limit: 5,
+          }
+        }
+      );
+      return response.data;
+    },
+    enabled: !!ownerProducstoreId, // only run when ID exists
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => {
+      if (lastPage.meta && lastPage.meta.currentPage < lastPage.meta.totalPages) {
+        return lastPage.meta.currentPage + 1;
+      }
+      return undefined;
+    },
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
+};
+
+
+//get variants products deleted by store
+export const useVariantsProductByStoreDeleted = (ownerProducstoreId?: number) => {
+  return useInfiniteQuery({
+    queryKey: ["productsFeatured", ownerProducstoreId],
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await API.get(
+        `/variantesProduits/trash`,
         {
           params: {
             ownerProducstoreId,

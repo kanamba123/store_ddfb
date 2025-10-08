@@ -112,7 +112,8 @@
     "hrAttendance": "Mahudhurio na Kuhudhuria",
     "hrTraining": "Mafunzo",
     "hrEvaluations": "Tathmini na Utendaji",
-    "hrContracts": "Mikataba na Nyaraka"
+    "hrContracts": "Mikataba na Nyaraka",
+    "trash": "Takataka / rejesha"
   },
   "navbar": {
     "searchPlaceholder": "Tafuta...",

@@ -16,5 +16,8 @@ export interface VariantsProduct {
   variantType: string;
   productId: string;
   storeId: string;
+  deletedAt: string | null;
+  createdAt: string;
+  updatedAt: string;  
 
 }

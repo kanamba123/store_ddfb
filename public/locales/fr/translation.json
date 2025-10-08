@@ -111,7 +111,8 @@
     "hrAttendance": "Présence & Pointage",
     "hrTraining": "Formations",
     "hrEvaluations": "Évaluations & Performance",
-    "hrContracts": "Contrats & Documents"
+    "hrContracts": "Contrats & Documents",
+    "trash": "Corbeille / restaurer"
   },
   "navbar": {
     "searchPlaceholder": "Rechercher...",

@@ -17,6 +17,7 @@
     "no": "No",
     "back": "Back",
     "confirmDelete":"Do you want to delete?"
+    
   },
   "header": {
     "business": "Business",
@@ -151,7 +152,8 @@
     "hrAttendance": "Attendance & Check-in",
     "hrTraining": "Training",
     "hrEvaluations": "Evaluations & Performance",
-    "hrContracts": "Contracts & Documents"
+    "hrContracts": "Contracts & Documents",
+    "trash": "Trash / restore"
   },
   "navbar": {
     "searchPlaceholder": "Search...",
