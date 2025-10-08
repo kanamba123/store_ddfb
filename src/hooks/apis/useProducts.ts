@@ -95,7 +95,7 @@ export const useVariantsProductByStore = (ownerProducstoreId?: number) => {
 //get variants products deleted by store
 export const useVariantsProductByStoreDeleted = (ownerProducstoreId?: number) => {
   return useInfiniteQuery({
-    queryKey: ["productsFeatured", ownerProducstoreId],
+    queryKey: ["productsDeleted", ownerProducstoreId],
     queryFn: async ({ pageParam = 1 }) => {
       const response = await API.get(
         `/variantesProduits/trash`,
