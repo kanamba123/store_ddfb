@@ -73,13 +73,13 @@ export const addStoreToOwner = async (
 
 // Ajouter un magasin à un propriétaire existant
 export const valideAddStore = async (
-  ownerId: number,
-  storeId: number
+  owner: OwnerData,
+  store: StoreData
 ): Promise<StoreResponse> => {
   try {
     const response = await apiClient.post(
       `/stores/complete-registration`, 
-      { ownerId, storeId }
+      { owner, store }
     );
     return response.data;
   } catch (error) {

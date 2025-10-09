@@ -26,7 +26,6 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const { login, isAuthenticated } = useAuth();
   const { redirectUrl, setRedirectUrl } = useRedirectContext();
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [fingerprintAvailable, setFingerprintAvailable] = useState(false);
 
@@ -58,10 +57,6 @@ export default function LoginPage() {
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!acceptedTerms) {
-      setErrorMsg(t("errors.mustAcceptTerms"));
-      return;
-    }
 
     setLoading(true);
     setErrorMsg("");
@@ -261,50 +256,21 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={handleForgotPassword}
-              className={`mt-2 text-sm underline `}
+              className={`mt-2 text-sm underline flex justify-end w-full text-blue-600 `}
             >
               {t('LoginPage.forgotPassword')}
             </button>
           </div>
 
-          {/* Terms */}
-          <div className="flex items-start ">
-            <input
-              id="terms"
-              type="checkbox"
-              checked={acceptedTerms}
-              onChange={(e) => setAcceptedTerms(e.target.checked)}
-              className={`focus:ring-blue-500 h-4 w-4 rounded  `}
-            />
-            <label
-              htmlFor="terms"
-              className={`ml-3 text-sm font-light `}
-            >
-              {t('LoginPage.accept')}{" "}
-              <Link
-                href="/terms-of-service"
-                className={`underline `}
-              >
-                {t("terms")}
-              </Link>{" "}
-              {t('LoginPage.and')}{" "}
-              <Link
-                href="/privacy-policy"
-                className={`underline `}
-              >
-                {t('.LoginPage.privacy')}
-              </Link>
-            </label>
-          </div>
-
+          
           {errorMsg && (
             <p className="text-sm text-red-500 text-center">{errorMsg}</p>
           )}
 
           <button
             type="submit"
-            disabled={loading || !acceptedTerms}
-            className={`w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition ${loading || !acceptedTerms ? "opacity-50 cursor-not-allowed" : ""
+            disabled={loading}
+            className={`w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition ${loading ? "opacity-50 cursor-not-allowed" : ""
               } `}
           >
             {loading ? t('LoginPage.loading') : t('LoginPage.login')}

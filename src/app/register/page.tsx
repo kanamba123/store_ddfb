@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { OwnerForm } from "@/components/forms/OwnerForm";
 import { StoreForm } from "@/components/forms/StoreForm";
 import { ConfirmationStep } from "@/components/forms/ConfirmationStep";
+import { useTranslation } from "react-i18next";
 import {
   createTemporaryOwner,
   addStoreToOwner,
@@ -20,12 +21,13 @@ import { Check, Store, UserRoundPlus } from "lucide-react";
 
 export default function RegisterPage() {
   const [currentStep, setCurrentStep] = useState<RegistrationStep>("owner");
+  const { t } = useTranslation();
   const [ownerData, setOwnerData] = useState<OwnerData>({
     fullName: "",
     email: "",
     phoneNumber: "",
     password: "",
-    confirmPassword:"",
+    confirmPassword: "",
     profil: "",
   });
 
@@ -46,13 +48,13 @@ export default function RegisterPage() {
   const [successMessage, setSuccessMessage] = useState("");
   const [ownerId, setOwnerId] = useState<number | null>(null);
   const [storeId, setStoreId] = useState<number | null>(null);
-  
+
   // État pour les conditions d'utilisation
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   const clearErrors = () => setErrors({});
 
-  const handleOwnerSubmit = async (data: OwnerData) => {
+  const handleOwnerToNextStore = async (data: OwnerData) => {
     // Vérifier que les conditions sont acceptées
     if (!acceptedTerms) {
       setErrors({
@@ -61,67 +63,72 @@ export default function RegisterPage() {
       return;
     }
 
-    setLoading(true);
+    // setLoading(true);
     clearErrors();
 
-    try {
-      const response = await createTemporaryOwner(data);
+    setOwnerData(data);
+    setCurrentStep("store");
 
-      if (response.success && response.data) {
-        setOwnerData(response.data);
-        setOwnerId(response.data.id!);
-        setCurrentStep("store");
-        setSuccessMessage("Propriétaire créé avec succès !");
-      } else {
-        setErrors({
-          general:
-            response.error || "Erreur lors de la création du propriétaire",
-        });
-      }
-    } catch (error: any) {
-      console.error("Erreur propriétaire:", error);
-      setErrors({ general: error.message || "Erreur de connexion" });
-    } finally {
-      setLoading(false);
-    }
+    // try {
+    //   const response = await createTemporaryOwner(data);
+
+    //   if (response.success && response.data) {
+    //     setOwnerData(response.data);
+    //     setOwnerId(response.data.id!);
+    //     setCurrentStep("store");
+    //     setSuccessMessage("Propriétaire créé avec succès !");
+    //   } else {
+    //     setErrors({
+    //       general:
+    //         response.error || "Erreur lors de la création du propriétaire",
+    //     });
+    //   }
+    // } catch (error: any) {
+    //   console.error("Erreur propriétaire:", error);
+    //   setErrors({ general: error.message || "Erreur de connexion" });
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   const handleStoreSubmit = async (data: StoreData) => {
-    if (!ownerId) {
+    if (!ownerData) {
       setErrors({ general: "Erreur: Aucun propriétaire trouvé" });
       return;
     }
 
-    setLoading(true);
+    // setLoading(true);
     clearErrors();
+    setStoreData(data);
+    setCurrentStep("confirmation");
 
-    try {
-      // Ajouter le magasin au propriétaire existant
-      const response = await addStoreToOwner(ownerId, data);
-      if (response.success && response.data) {
-        setSuccessMessage(
-          "🎉 Magasin créé avec succès ! Main confirmé l'enregistement"
-        );
-        setCurrentStep("confirmation");
-        setStoreData(response.data);
-        setStoreId(response.data.id!);
-      } else {
-        setErrors({
-          general: response.error || "Erreur lors de la création du magasin",
-        });
-      }
-    } catch (error: any) {
-      console.error("Erreur magasin:", error);
-      setErrors({ general: error.message || "Erreur de connexion" });
-      
-    }finally{
-      setLoading(false)
-    }
+    // try {
+    //   // Ajouter le magasin au propriétaire existant
+    //   const response = await addStoreToOwner(ownerId, data);
+    //   if (response.success && response.data) {
+    //     setSuccessMessage(
+    //       "🎉 Magasin créé avec succès ! Main confirmé l'enregistement"
+    //     );
+    //     setCurrentStep("confirmation");
+    //     setStoreData(response.data);
+    //     setStoreId(response.data.id!);
+    //   } else {
+    //     setErrors({
+    //       general: response.error || "Erreur lors de la création du magasin",
+    //     });
+    //   }
+    // } catch (error: any) {
+    //   console.error("Erreur magasin:", error);
+    //   setErrors({ general: error.message || "Erreur de connexion" });
+
+    // } finally {
+    //   setLoading(false)
+    // }
   };
 
   const handleFinalConfirmation = async () => {
-    if (!ownerId) {
-      setErrors({ general: "Erreur: Aucun propriétaire trouvé" });
+    if (!storeData || !ownerData) {
+      setErrors({ general: "Erreur: Aucun propriétaire ou magasin trouvé" });
       return;
     }
 
@@ -130,7 +137,7 @@ export default function RegisterPage() {
 
 
     try {
-      const response = await valideAddStore(ownerId, storeId!);
+      const response = await valideAddStore(ownerData, storeData);
 
       if (response.success && response.data) {
         // Optionnel: rediriger vers une page de succès ou de connexion
@@ -141,7 +148,7 @@ export default function RegisterPage() {
           window.location.href = "/login";
         }, 3000);
       }
-      
+
     } catch (error: any) {
       console.error("Erreur magasin:", error);
       setErrors({ general: error.message || "Erreur de connexion" });
@@ -176,10 +183,9 @@ export default function RegisterPage() {
               <div
                 className={`
                   flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full border-2 transition-colors
-                  ${
-                    index <= currentIndex
-                      ? "bg-blue-600 border-blue-600 text-white dark:bg-blue-500 dark:border-blue-500"
-                      : "bg-gray-200 border-gray-300 text-gray-500 dark:bg-gray-700 dark:border-gray-600"
+                  ${index <= currentIndex
+                    ? "bg-blue-600 border-blue-600 text-white dark:bg-blue-500 dark:border-blue-500"
+                    : "bg-gray-200 border-gray-300 text-gray-500 dark:bg-gray-700 dark:border-gray-600"
                   }
                 `}
               >
@@ -187,11 +193,10 @@ export default function RegisterPage() {
               </div>
               <div className="ml-2 mr-2 md:mr-8 text-center">
                 <p
-                  className={`text-xs md:text-sm font-medium ${
-                    index <= currentIndex
+                  className={`text-xs md:text-sm font-medium ${index <= currentIndex
                       ? "text-blue-600 dark:text-blue-400"
                       : "text-gray-500 dark:text-gray-400"
-                  }`}
+                    }`}
                 >
                   {step.label}
                 </p>
@@ -200,10 +205,9 @@ export default function RegisterPage() {
                 <div
                   className={`
                     w-8 h-1 mx-2 md:w-16 md:mx-4 transition-colors
-                    ${
-                      index < currentIndex
-                        ? "bg-blue-600 dark:bg-blue-500"
-                        : "bg-gray-300 dark:bg-gray-600"
+                    ${index < currentIndex
+                      ? "bg-blue-600 dark:bg-blue-500"
+                      : "bg-gray-300 dark:bg-gray-600"
                     }
                   `}
                 />
@@ -241,18 +245,18 @@ export default function RegisterPage() {
               </label>
               <p className="text-[var(--color-text-primary)] mt-1">
                 En cochant cette case, vous acceptez nos{" "}
-                <a 
-                  href="/terms-of-service" 
-                  target="_blank" 
+                <a
+                  href="/terms-of-service"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
                 >
                   conditions d'utilisation
                 </a>
                 {" "}et notre{" "}
-                <a 
-                  href="/privacy-policy" 
-                  target="_blank" 
+                <a
+                  href="/privacy-policy"
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 underline"
                 >
@@ -287,31 +291,7 @@ export default function RegisterPage() {
         {/* Terms and Conditions Checkbox - Affiché uniquement sur l'étape propriétaire */}
         {currentStep === "owner" && <TermsCheckbox />}
 
-        {/* Error messages */}
-        {errors.general && (
-          <div className="max-w-2xl mx-auto mb-6 p-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-400 dark:border-red-500 rounded-lg">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg
-                  className="h-5 w-5 text-red-400 dark:text-red-500"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-red-700 dark:text-red-300">
-                  {errors.general}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
+
 
         {/* Success messages */}
         {successMessage && (
@@ -344,7 +324,7 @@ export default function RegisterPage() {
           {currentStep === "owner" && (
             <OwnerForm
               initialData={ownerData}
-              onSubmit={handleOwnerSubmit}
+              onSubmit={handleOwnerToNextStore}
               loading={loading}
               errors={errors}
             />
@@ -370,6 +350,32 @@ export default function RegisterPage() {
             />
           )}
         </div>
+
+        {/* Error messages */}
+        {errors.general && (
+          <div className="max-w-2xl mx-auto mb-6 p-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-400 dark:border-red-500 rounded-lg">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg
+                  className="h-5 w-5 text-red-400 dark:text-red-500"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-red-700 dark:text-red-300">
+                  {errors.general}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Footer */}
         <div className="text-center mt-8 md:mt-12 pt-6 md:pt-8 border-t border-gray-200 dark:border-gray-700">
