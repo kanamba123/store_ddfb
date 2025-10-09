@@ -98,13 +98,6 @@ export default function Navbar({ onToggleSidebar }) {
               <Menu className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
 
-            {/* Store Name - Always visible */}
-            <div className="flex items-center">
-              <h1 className="text-lg font-semibold text-[var(--color-text-primary)] truncate max-w-40 lg:max-w-60">
-                {user?.store?.storeName || 'Win2Cop'}
-              </h1>
-            </div>
-
             {/* Search bar */}
             <div
               className={`relative transition-all duration-200 ${isSearchOpen ? "flex-1" : "hidden md:flex"
