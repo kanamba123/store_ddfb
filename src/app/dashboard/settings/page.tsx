@@ -18,19 +18,33 @@ export default function SettingsPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
 
-  // Shared state
+  // Shared state - mis à jour avec toutes les propriétés requises
   const [settings, setSettings] = useState({
+    // Profile
     name: "John Doe",
     email: "john@example.com",
+    
+    // Appearance
     theme: "system",
     language: "fr",
+    
+    // Notifications
     notifications: true,
+    
+    // Security
     biometricAuth: false,
     twoFactorAuth: false,
-    privacyMode: false,
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
+    
+    // Privacy - toutes les propriétés requises par PrivacyTab
+    privacyMode: false,
+    dataCollection: true,
+    analyticsTracking: true,
+    cookieConsent: true,
+    searchHistory: true,
+    autoDeleteData: "never",
   });
 
   const handleChange = (e: InputChangeEvent) => {
