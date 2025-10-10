@@ -1,6 +1,5 @@
 import API from "@/config/Axios";
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 
 const fetchMarkets = async () => {
   const response = await API.get(`/markets/fromDashS`);

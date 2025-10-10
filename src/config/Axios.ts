@@ -23,10 +23,6 @@ API.interceptors.response.use(
             const status = error.response.status;
 
             if (status === 401 || status === 403) {
-                console.warn("⚠️ Token expiré ou invalide, ouverture du panneau de login.");
-
-                localStorage.removeItem("authToken");
-
                 const event = new Event("auth:expired");
                 window.dispatchEvent(event);
             }

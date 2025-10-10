@@ -59,5 +59,5 @@ export async function getProductById(id: string | number) {
 // Supprime une variante par son ID
 export const deleteVariant = async (id: string | number) => {
   const { data } = await API.delete(`/variantesProduits/${id}`);
-  return data as { message: string }; // ou adapte selon la réponse de ton API
+  return data as { message: string }; 
 };

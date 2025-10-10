@@ -1,6 +1,7 @@
+import { deleteAcountStore } from "@/libs/api/settingsActount";
 import { Shield, Download, Trash2, Eye, EyeOff, Lock, Database, Key, Cookie } from "lucide-react";
 import { useState } from "react";
-
+import { loginUser } from "@/services/authService";
 interface PrivacyTabProps {
   settings: {
     privacyMode: boolean;
@@ -29,7 +30,7 @@ export default function PrivacyTab({
   // Fonction pour exporter les données
   const handleExportData = () => {
     console.log("Exportation des données au format:", exportFormat);
-    
+
     // Simulation d'export de données
     const userData = {
       profile: { name: "Utilisateur", email: "user@example.com" },
@@ -40,27 +41,15 @@ export default function PrivacyTab({
 
     const dataStr = JSON.stringify(userData, null, 2);
     const dataBlob = new Blob([dataStr], { type: "application/json" });
-    
+
     // Création d'un lien de téléchargement
     const link = document.createElement("a");
     link.href = URL.createObjectURL(dataBlob);
     link.download = `mes-donnees-${new Date().getTime()}.${exportFormat}`;
     link.click();
-    
+
     setShowExportModal(false);
     alert("Exportation terminée !");
-  };
-
-  // Fonction pour vérifier le mot de passe (simulation)
-  const verifyPassword = async (password: string): Promise<boolean> => {
-    // Simulation d'une vérification de mot de passe
-    // En réalité, vous devriez envoyer ce mot de passe à votre backend
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        // Pour la démo, on accepte n'importe quel mot de passe non vide
-        resolve(password.length >= 6);
-      }, 1000);
-    });
   };
 
   // Fonction pour supprimer les données avec confirmation par mot de passe
@@ -87,9 +76,8 @@ export default function PrivacyTab({
     setPasswordError("");
 
     try {
-      const isValid = await verifyPassword(password);
-      
-      if (!isValid) {
+      const data = await loginUser(password);
+      if (!data) {
         setPasswordError("Mot de passe incorrect");
         setIsLoading(false);
         return;
@@ -101,9 +89,20 @@ export default function PrivacyTab({
         // Ici, appeler l'API pour supprimer les données
         alert("Toutes vos données ont été supprimées avec succès.");
       } else {
-        console.log("Suppression du compte utilisateur");
-        // Ici, appeler l'API pour supprimer le compte
-        alert("Votre compte a été supprimé avec succès.");
+
+        try {
+          try {
+
+            await deleteAcountStore();
+
+            alert("Votre compte a été supprimé avec succès.");
+            window.location.reload();
+          } catch (error) {
+            console.error("Failed to delete variant", error);
+          }
+        } catch (err) {
+          alert("Erreur lors de la suppression");
+        }
       }
 
       // Réinitialiser les états
@@ -131,7 +130,7 @@ export default function PrivacyTab({
           checked: false
         }
       } as React.ChangeEvent<HTMLInputElement>;
-      
+
       handleChange(event);
       alert("Consentements réinitialisés.");
     }
@@ -381,7 +380,7 @@ export default function PrivacyTab({
           </h3>
 
           <div className="space-y-3">
-            <button 
+            <button
               onClick={() => setShowExportModal(true)}
               className="w-full flex items-center justify-between p-3 border rounded-lg hover:bg-gray-50 text-action-add-hover dark:border-gray-600 dark:hover:bg-gray-800 transition-colors"
             >
@@ -392,7 +391,7 @@ export default function PrivacyTab({
               <span className="text-xs text-gray-500">JSON, CSV</span>
             </button>
 
-            <button 
+            <button
               onClick={() => handleDeleteData("data")}
               className="w-full flex items-center justify-between p-3 border border-red-200 rounded-lg hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-900/20 transition-colors"
             >
@@ -403,7 +402,7 @@ export default function PrivacyTab({
               <span className="text-xs text-red-500">Irréversible</span>
             </button>
 
-            <button 
+            <button
               onClick={() => handleDeleteData("account")}
               className="w-full flex items-center justify-between p-3 border border-red-200 rounded-lg hover:bg-red-50 dark:border-red-800 dark:hover:bg-red-900/20 transition-colors"
             >
@@ -464,14 +463,14 @@ export default function PrivacyTab({
                 {deleteType === "account" ? "Supprimer mon compte" : "Supprimer mes données"}
               </h3>
             </div>
-            
+
             <div className="space-y-4">
               <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md p-3">
                 <p className="text-sm text-red-700 dark:text-red-300 font-medium">
                   ⚠️ Action irréversible
                 </p>
                 <p className="text-xs text-red-600 dark:text-red-400 mt-1">
-                  {deleteType === "account" 
+                  {deleteType === "account"
                     ? "Votre compte et toutes vos données seront définitivement supprimés. Cette action ne peut pas être annulée."
                     : "Toutes vos données personnelles seront définitivement supprimées. Cette action ne peut pas être annulée."
                   }
