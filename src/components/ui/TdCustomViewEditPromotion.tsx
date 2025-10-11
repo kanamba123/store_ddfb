@@ -140,6 +140,7 @@ const TdCustomViewEditPromotion: React.FC<PromotionProps> = ({
                 >
                     <span className="line-through text-gray-400">{oldPrice || emptyText}</span>
                     <span className="font-bold text-green-600">{promotionGeted?.value?.newPrice || emptyText}</span>
+
                 </div>
             ) : loading ? (
                 <div className="w-6 h-6 border-4 border-blue-400 border-dashed rounded-full animate-spin"></div>
@@ -157,7 +158,6 @@ const TdCustomViewEditPromotion: React.FC<PromotionProps> = ({
                 </div>
             )}
 
-            {/* --- Popup modal Tailwind --- */}
             {(showPromotion || showAddForm) && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div
@@ -250,28 +250,38 @@ const TdCustomViewEditPromotion: React.FC<PromotionProps> = ({
 
                                 {/* Montant ou % */}
                                 {newPromotion.type === "percentage" && (
-                                    <div className="flex flex-col gap-2">
+                                    <div className="flex flex-col gap-3">
+                                        <label className="text-sm font-medium text-gray-700">
+                                            Pourcentage de réduction : <span className="text-blue-600 font-semibold">{newPromotion.value.percentage || 0}%</span>
+                                        </label>
+
+                                        {/* Barre d’ajustement */}
                                         <input
-                                            type="number"
-                                            placeholder="Pourcentage"
+                                            type="range"
                                             min={1}
                                             max={50}
-                                            value={newPromotion.value.percentage || ""}
+                                            step={1}
+                                            value={newPromotion.value.percentage || 0}
                                             onChange={(e) => handleDetailChange("percentage", e.target.value)}
-                                            className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                            className="w-full accent-blue-500"
                                         />
-                                        {newPromotion.value.discountAmount && (
-                                            <p className="text-blue-600">
-                                                Montant réduction: {newPromotion.value.discountAmount} fbu
-                                            </p>
-                                        )}
-                                        {newPromotion.value.newPrice && (
-                                            <p className="text-green-600">
-                                                Nouveau prix: {newPromotion.value.newPrice} fbu
-                                            </p>
-                                        )}
+
+                                        {/* Valeurs dynamiques */}
+                                        <div className="flex flex-col gap-1 text-sm">
+                                            {newPromotion.value.discountAmount && (
+                                                <p className="text-blue-600">
+                                                    Montant réduction : <span className="font-semibold">{newPromotion.value.discountAmount} fbu</span>
+                                                </p>
+                                            )}
+                                            {newPromotion.value.newPrice && (
+                                                <p className="text-green-600">
+                                                    Nouveau prix : <span className="font-semibold">{newPromotion.value.newPrice} fbu</span>
+                                                </p>
+                                            )}
+                                        </div>
                                     </div>
                                 )}
+
 
                                 {newPromotion.type === "fixedAmount" && (
                                     <div className="flex flex-col gap-2">

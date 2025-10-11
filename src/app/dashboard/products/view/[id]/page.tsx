@@ -412,11 +412,10 @@ const ProductDetailBackoffice = () => {
               <div className="space-y-3 sm:space-y-4">
                 <div>
                   <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Nom du produit</label>
-                  {/* <p className="text-sm sm:text-lg font-semibold text-[var(--color-text-primary)]">{variant.variantProductName}</p> */}
                   <div className="text-sm sm:text-lg font-semibold text-[var(--color-text-primary)]">
                     <TdCustomViewEdit
                       id={variant.id}
-                      field="sellingPrice"
+                      field="variantProductName"
                       value={variant?.variantProductName}
                       endpoint={dataendPoint}
                       editable
@@ -472,7 +471,7 @@ const ProductDetailBackoffice = () => {
 
 
                 <div>
-                  <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Prix recommandé</label>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Prix de vente</label>
                   <div className="text-lg sm:text-2xl font-bold text-green-600 dark:text-green-400">
                     <TdCustomViewEdit
                       id={variant.id}

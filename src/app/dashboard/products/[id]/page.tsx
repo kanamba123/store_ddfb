@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation"
 import { useForm, useFieldArray } from "react-hook-form"
 import Image from "next/image"
 import { fetchProductCategories, getVariantById, updateVariant } from "@/libs/api/products"
+import ConfirmDialog from "@/components/ui/ConfirmDialog"
+import { useTranslation } from "react-i18next";
 
 interface Specification {
   key: string
@@ -31,7 +33,7 @@ interface VariantFormData {
 
 const parseSpecifications = (specs: any): Specification[] => {
   if (!specs || !Array.isArray(specs)) return [{ key: "", value: "" }]
-  
+
   return specs.map(spec => {
     if (typeof spec === 'string') {
       const separator = spec.includes(':') ? ':' : '='
@@ -76,18 +78,21 @@ export default function EditVariantForm() {
   const { id } = useParams()
   const [submitting, setSubmitting] = useState(false)
   const [data, setData] = useState<Product[]>([])
+  const [dataSaved, setDataSaved] = useState<VariantFormData | null>(null)
   const [error, setError] = useState("")
   const [submitted, setSubmitted] = useState(false)
   const [previews, setPreviews] = useState<string[]>([])
   const [existingImages, setExistingImages] = useState<string[]>([])
+  const [showConfirmSave, setShowConfirmSave] = useState(false);
+  const { t } = useTranslation();
 
-  const { 
-    register, 
-    control, 
-    handleSubmit, 
+  const {
+    register,
+    control,
+    handleSubmit,
     reset,
     setValue,
-    formState: { errors } 
+    formState: { errors }
   } = useForm<VariantFormData>({
     defaultValues: {
       specifications: [{ key: "", value: "" }],
@@ -146,21 +151,21 @@ export default function EditVariantForm() {
     setValue('existingImages', updatedImages)
   }
 
-  const onSubmit = async (data: VariantFormData) => {
+  const onSubmit = async () => {
     setSubmitting(true)
     try {
       const formData = new FormData()
       const payload = {
-        ...data,
-        purchasePrice: data.purchasePrice ? Number(data.purchasePrice) : undefined,
-        productId: Number(data.productId),
-        variantType: data.variantType || undefined,
-        existingImages: data.existingImages || []
+        ...dataSaved,
+        purchasePrice: dataSaved?.purchasePrice ? Number(dataSaved.purchasePrice) : undefined,
+        productId: Number(dataSaved?.productId),
+        variantType: dataSaved?.variantType || undefined,
+        existingImages: dataSaved?.existingImages || []
       }
 
       Object.entries(payload).forEach(([key, value]) => {
         if (key === "image" && value) {
-          Array.from(value as FileList).forEach(file => 
+          Array.from(value as FileList).forEach(file =>
             formData.append("images", file)
           )
         } else if (key === "specifications" || key === "existingImages") {
@@ -170,7 +175,7 @@ export default function EditVariantForm() {
         }
       })
 
-      await updateVariant(Number(id), formData)
+      // await updateVariant(Number(id), formData)
       setSubmitted(true)
       setTimeout(() => router.push("/dashboard/products"), 1500)
     } catch (err) {
@@ -196,32 +201,35 @@ export default function EditVariantForm() {
 
       <h1 className="text-2xl font-bold mb-6 text-center">✏️ Modifier une Variante de Produit</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={handleSubmit((data) => {
+        setShowConfirmSave(true)
+        setDataSaved(data)
+      })} className="space-y-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <Input 
-            label="Nom de la variante *" 
+          <Input
+            label="Nom de la variante *"
             placeholder="Ex: iPhone 13 Pro Max 128GB"
-            {...register("variantProductName", { required: true })} 
+            {...register("variantProductName", { required: true })}
           />
           {errors.variantProductName && (
             <span className="text-red-500 text-sm">Ce champ est requis</span>
           )}
 
-          <Select 
+          <Select
             label="Type de variante"
             options={[
-              {value: '', label: '-- Choisir --'},
-              {value: 'product', label: 'Product'},
-              {value: 'accessory', label: 'Accessory'}
+              { value: '', label: '-- Choisir --' },
+              { value: 'product', label: 'Product' },
+              { value: 'accessory', label: 'Accessory' }
             ]}
             {...register("variantType")}
           />
 
           <div className="sm:col-span-2">
             <label className="block mb-1 font-medium">Description</label>
-            <textarea 
-              {...register("description")} 
-              className={inputClass} 
+            <textarea
+              {...register("description")}
+              className={inputClass}
               rows={3}
             />
           </div>
@@ -229,7 +237,7 @@ export default function EditVariantForm() {
           <Select
             label="Catégorie du produit *"
             options={[
-              {value: '', label: 'Sélectionnez --'},
+              { value: '', label: 'Sélectionnez --' },
               ...data.map(product => ({
                 value: String(product.id),
                 label: product.productName
@@ -241,11 +249,11 @@ export default function EditVariantForm() {
             <span className="text-red-500 text-sm">Ce champ est requis</span>
           )}
 
-          <Input 
-            label="Prix d'achat" 
-            type="number" 
+          <Input
+            label="Prix d'achat"
+            type="number"
             step="0.01"
-            {...register("purchasePrice")} 
+            {...register("purchasePrice")}
           />
         </div>
 
@@ -253,19 +261,19 @@ export default function EditVariantForm() {
           <label className="block mb-1 font-medium">Spécifications</label>
           {fields.map((field, index) => (
             <div key={field.id} className="flex flex-col sm:flex-row gap-2 mb-2">
-              <input 
-                {...register(`specifications.${index}.key`)} 
-                placeholder="Clé (ex: Couleur)" 
-                className={inputClass} 
+              <input
+                {...register(`specifications.${index}.key`)}
+                placeholder="Clé (ex: Couleur)"
+                className={inputClass}
               />
-              <input 
-                {...register(`specifications.${index}.value`)} 
-                placeholder="Valeur (ex: Noir)" 
-                className={inputClass} 
+              <input
+                {...register(`specifications.${index}.value`)}
+                placeholder="Valeur (ex: Noir)"
+                className={inputClass}
               />
-              <button 
-                type="button" 
-                onClick={() => remove(index)} 
+              <button
+                type="button"
+                onClick={() => remove(index)}
                 className="text-red-500 text-sm self-center"
                 aria-label="Supprimer la spécification"
               >
@@ -273,9 +281,9 @@ export default function EditVariantForm() {
               </button>
             </div>
           ))}
-          <button 
-            type="button" 
-            onClick={() => append({ key: "", value: "" })} 
+          <button
+            type="button"
+            onClick={() => append({ key: "", value: "" })}
             className="text-blue-500 mt-2 text-sm"
             aria-label="Ajouter une spécification"
           >
@@ -341,9 +349,8 @@ export default function EditVariantForm() {
           <button
             type="submit"
             disabled={submitting}
-            className={`bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition dark:bg-indigo-700 dark:hover:bg-indigo-600 ${
-              submitting ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
+            className={`bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition dark:bg-indigo-700 dark:hover:bg-indigo-600 ${submitting ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
             aria-label="Enregistrer les modifications"
           >
             {submitting ? (
@@ -368,6 +375,16 @@ export default function EditVariantForm() {
           </button>
         </div>
       </form>
+
+      <ConfirmDialog
+        isOpen={showConfirmSave}
+        title="Confirmer la modification"
+        message="Êtes-vous sûr de vouloir modifier cette variante de produit ?"
+        confirmLabel={t("common.confirm")}
+        cancelLabel={t("common.cancel")}
+        onConfirm={onSubmit}
+        onCancel={() => setShowConfirmSave(false)}
+      />
     </div>
   )
 }
