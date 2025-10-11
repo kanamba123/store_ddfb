@@ -172,7 +172,7 @@ export default function EditVariantForm() {
 
       await updateVariant(Number(id), formData)
       setSubmitted(true)
-      setTimeout(() => router.push("/products"), 1500)
+      setTimeout(() => router.push("/dashboard/products"), 1500)
     } catch (err) {
       console.error(err)
       setError("❌ Échec de la modification. Vérifiez les champs.")
@@ -360,7 +360,7 @@ export default function EditVariantForm() {
           </button>
           <button
             type="button"
-            onClick={() => router.push("/products")}
+            onClick={() => router.push("/dashboard/products")}
             className="bg-gray-200 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-300 transition dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
             aria-label="Annuler et retourner à la liste"
           >

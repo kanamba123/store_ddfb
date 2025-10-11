@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowLeft, Edit, Trash2, Share2, QrCode, Eye, EyeOff, Tag, Package,BarChart3, Download, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Edit, Trash2, Share2, QrCode, Eye, EyeOff, Tag, Package, BarChart3, Download, AlertCircle } from 'lucide-react';
 import { useParams, useRouter } from "next/navigation";
 import { getVariantById, deleteVariant, fetchProductCategories } from "@/libs/api/products";
 import TdCustomViewEdit from '@/components/ui/TdCustomViewEdit';
@@ -14,6 +14,8 @@ import TdDynJSOBCustomGrid from '@/components/ui/TdDynJSOBCustomGrid';
 import TdDynJSOBCustom from '@/components/ui/TdDynJSOBCustom';
 import FullScreenLoaderMain from '@/components/ui/FullScreenLoaderMain';
 import { useTranslation } from "react-i18next";
+import TdDynJSOBWithoutKeyCustom from '@/components/ui/TdDynJSOBWithoutKeyCustom';
+import TdCustomViewEditPromotion from '@/components/ui/TdCustomViewEditPromotion';
 
 interface Specification {
   [key: string]: string;
@@ -39,6 +41,9 @@ interface VariantData {
   Product: Product;
   promotion: any;
   productId: number;
+  promotionId: number | null;
+  sellingPrice: number;
+  status: string;
 }
 
 const ProductDetailBackoffice = () => {
@@ -466,7 +471,7 @@ const ProductDetailBackoffice = () => {
                 </div>
 
 
-                 <div>
+                <div>
                   <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Prix recommandé</label>
                   <div className="text-lg sm:text-2xl font-bold text-green-600 dark:text-green-400">
                     <TdCustomViewEdit
@@ -481,7 +486,7 @@ const ProductDetailBackoffice = () => {
                   </div>
                 </div>
 
-                
+
 
                 <div>
                   <label className="text-xs sm:text-sm font-medium ">Slug URL</label>
@@ -499,7 +504,7 @@ const ProductDetailBackoffice = () => {
               <TdDynJSOBCustom
                 id={variant.id}
                 field="description"
-                value={variant?.description ?? variant.description } 
+                value={variant?.description ?? variant.description}
                 endpoint={dataendPoint}
                 editable
                 onSave={handleSave}
@@ -519,6 +524,42 @@ const ProductDetailBackoffice = () => {
           endpoint={dataendPoint}
           editable
           onSave={handleSave}
+        />
+
+        <TdDynJSOBWithoutKeyCustom
+          sectionTitle="Fonctions"
+          title="Fonctions détaillées"
+          field="functions"
+          id={variant.id}
+          value={variant.functions}
+          endpoint={dataendPoint}
+          editable
+          onSave={handleSave}
+        />
+
+        <TdDynJSOBWithoutKeyCustom
+          sectionTitle="Features"
+          title="Features"
+          field="features"
+          id={variant.id}
+          value={variant.features}
+          endpoint={dataendPoint}
+          editable
+          onSave={handleSave}
+        />
+
+        <TdCustomViewEditPromotion
+          id={variant.id}
+          field="status" // <-- obligatoire si tu ne changes pas l'interface
+          oldPrice={variant?.sellingPrice}
+          promotionId={variant.promotionId}
+          itemValue={variant?.status}
+          endpoint={dataendPoint}
+          isPromotion={variant.isPromotion}
+          editable
+          useDialog
+          onSave={handleSave}
+          promotionGeted={variant?.promotion}
         />
       </div>
     </div>
