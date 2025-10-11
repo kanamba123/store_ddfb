@@ -161,7 +161,7 @@ const TdCustomViewEditPromotion: React.FC<PromotionProps> = ({
             {(showPromotion || showAddForm) && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div
-                        className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-lg relative overflow-y-auto max-h-[90vh] animate-fadeIn"
+                        className="bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] rounded-2xl shadow-lg p-6 w-full max-w-lg relative overflow-y-auto max-h-[90vh] animate-fadeIn"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className="flex justify-between items-center mb-4">
