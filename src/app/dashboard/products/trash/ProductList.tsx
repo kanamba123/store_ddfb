@@ -14,6 +14,9 @@ import { useCategories } from "@/hooks/apis/useCategoris";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import API from "@/config/Axios";
 import { API_URL } from "@/config/API";
+import { useDeleteProducts } from "@/hooks/apis/useProducts";
+import { deleteImageFromFirebase } from "@/services/deleteImageFromFirebase";
+import { notifyInfo } from "@/components/ui/ToastNotification";
 
 interface ProductListProps {
   products: VariantsProduct[];
@@ -29,11 +32,13 @@ export default function ProductList({
   isFetchingNextPage,
 }: ProductListProps) {
   const [filterText, setFilterText] = useState("");
+  const deleteProduct = useDeleteProducts();
   const [isMobile, setIsMobile] = useState(false);
   const lastMobileRef = useRef<HTMLDivElement | null>(null);
   const lastDesktopRef = useRef<HTMLTableRowElement | null>(null);
   const desktopScrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+  const [selectedProductImages, setSelectedProductImages] = useState<string[]>([]);
   const { data: categories } = useCategories();
   const [loading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -60,11 +65,12 @@ export default function ProductList({
       .includes(filterText.toLowerCase());
 
     const matchesCategory = selectedCategory
-      ? product?.Product?.id === Number(selectedCategory)
+      ? Number(product?.Product?.category?.id) === Number(selectedCategory)
       : true;
 
     return matchesText && matchesCategory;
   });
+
 
 
   // 📱 Scroll infini mobile
@@ -149,15 +155,24 @@ export default function ProductList({
     }
   };
 
+  // Supprimer un produit
+  const handleConfirmDelete = async () => {
+    if (!selectedProductId) return;
 
-  const handleDelete = async () => {
-    try {
-      await API.delete(`${API_URL}/variantesProduits/permanent-delete/${selectedProductId}`);
-       window.location.reload();
-    } catch (err) {
-      alert("Erreur lors de la suppression");
-    }
+    deleteProduct.mutate(selectedProductId, {
+      onSuccess: async () => {
+        await deleteImageFromFirebase(selectedProductImages, () => {
+          notifyInfo("Produit et images supprimés avec succès !");
+        });
+        setShowConfirmDelete(false);
+      },
+      onError: (error) => {
+        console.error("Erreur de suppression :", error);
+        notifyInfo("Erreur lors de la suppression du produit");
+      },
+    });
   };
+
 
   const handleRowClick = (product: VariantsProduct) => {
     setSelectedProductId(product.id);
@@ -309,7 +324,7 @@ export default function ProductList({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        if (!product.deletedAt) return; 
+                        if (!product.deletedAt) return;
                         handleRestore(product.id);
                       }}
                       disabled={!product.deletedAt}
@@ -342,8 +357,9 @@ export default function ProductList({
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        setShowConfirmDelete(true);
                         setSelectedProductId(product.id);
+                        setSelectedProductImages(product.image || []);
+                        setShowConfirmDelete(true);
                       }}
                       className="text-red-600 p-2 rounded-md hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-900/70"
                       title={t("products.deletePermanent")}
@@ -386,7 +402,7 @@ export default function ProductList({
             message={t("common.confirmDelete")}
             confirmLabel={t("common.delete")}
             cancelLabel={t("common.cancel")}
-            onConfirm={handleDelete}
+            onConfirm={handleConfirmDelete}
             onCancel={() => setShowConfirmDelete(false)}
           />
         </div>

@@ -1,6 +1,15 @@
 import API from "@/config/Axios";
-import { useInfiniteQuery, useQuery, useIsMutating } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery, useIsMutating, useQueryClient, useMutation } from "@tanstack/react-query";
+import { notifySuccess, notifyError } from "../../components/ui/ToastNotification";
+import axios from "axios";
 
+const throwError = (error: any) => {
+  if (axios.isAxiosError(error) && error.response) {
+    throw new Error(error.response.data?.message || "Erreur serveur inconnue.");
+  } else {
+    throw new Error("Erreur inconnue.");
+  }
+};
 
 const fetchProductCategories = async () => {
   const response = await API.get(`/products/byAdminSelect`);
@@ -121,6 +130,31 @@ export const useVariantsProductByStoreDeleted = (ownerProducstoreId?: number) =>
     refetchOnWindowFocus: false,
   });
 };
+
+// ✅ version simplifiée
+export const useDeleteProducts = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (productId: string | number) => {
+      try {
+        await API.delete(`/variantesProduits/permanent-delete/${productId}`);
+      } catch (error) {
+        console.log("Hello delete", error);
+        throw error; // ✅ plus clair que "throwError" si non défini
+      }
+    },
+    onSuccess: () => {
+      notifySuccess("Produit supprimé avec succès !");
+      queryClient.invalidateQueries({ queryKey: ["productsDeleted"] });
+    },
+    onError: (error: any) => {
+      notifyError(error.message || "Erreur lors de la suppression du produit.");
+    },
+  });
+};
+
+
 
 
 

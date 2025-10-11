@@ -16,4 +16,8 @@ export interface Product {
     createdAt: string;
     updatedAt: string;
     variantes?: VariantsProduct[];
+    category?: {
+      id: number;
+      categoryName: string;
+    };
   }

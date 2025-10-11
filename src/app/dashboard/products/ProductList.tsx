@@ -59,7 +59,7 @@ export default function ProductList({
       .includes(filterText.toLowerCase());
 
     const matchesCategory = selectedCategory
-      ? product?.Product?.id === Number(selectedCategory)
+      ? Number(product?.Product?.category?.id) === Number(selectedCategory)
       : true;
 
     return matchesText && matchesCategory;

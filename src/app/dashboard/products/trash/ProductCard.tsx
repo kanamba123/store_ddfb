@@ -7,9 +7,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import { useTranslation } from "react-i18next";
-import { deleteVariant } from "@/libs/api/products";
 import { API_URL } from "@/config/API";
 import API from "@/config/Axios";
+import { useDeleteProducts } from "@/hooks/apis/useProducts";
+import { deleteImageFromFirebase } from "@/services/deleteImageFromFirebase";
+import { notifyInfo } from "@/components/ui/ToastNotification";
 
 interface ProductCardProps {
     product: VariantsProduct;
@@ -17,9 +19,13 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
 
+    const deleteProduct = useDeleteProducts();
+    const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
+    const [selectedProductImages, setSelectedProductImages] = useState<string[]>([]);
+
     const { t } = useTranslation();
 
     const handleShare = (product: VariantsProduct) => {
@@ -69,14 +75,22 @@ export default function ProductCard({ product }: ProductCardProps) {
     };
 
 
+    // Supprimer un produit
+    const handleConfirmDelete = async () => {
+        if (!selectedProductId) return;
 
-    const handleDelete = async () => {
-        try {
-            await API.delete(`${API_URL}/variantesProduits/permanent-delete/${product.id}`);
-            window.location.reload();
-        } catch (err) {
-            alert("Erreur lors de la suppression");
-        }
+        deleteProduct.mutate(selectedProductId, {
+            onSuccess: async () => {
+                await deleteImageFromFirebase(selectedProductImages, () => {
+                    notifyInfo("Produit et images supprimés avec succès !");
+                });
+                setShowConfirmDelete(false);
+            },
+            onError: (error) => {
+                console.error("Erreur de suppression :", error);
+                notifyInfo("Erreur lors de la suppression du produit");
+            },
+        });
     };
 
 
@@ -161,7 +175,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             {/* Actions */}
             <div className="flex justify-center items-center space-x-3 mt-3">
 
-                 <Link
+                <Link
                     href={`/dashboard/products/${product.id}`}
                     onClick={(e) => e.stopPropagation()}
                     className="flex-1  text-indigo-600 py-2 px-3 rounded-md text-sm font-medium hover:bg-indigo-100  dark:text-indigo-400 dark:hover:bg-indigo-900/70 transition-colors flex "
@@ -202,7 +216,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                         />
                     </svg>
                 </button>
-                
+
                 {/* 🔄 Restaurer */}
                 <button
                     onClick={(e) => {
@@ -239,7 +253,9 @@ export default function ProductCard({ product }: ProductCardProps) {
                 {/* 🗑 Supprimer définitivement */}
                 <button
                     onClick={(e) => {
-                        e.stopPropagation();
+                       e.stopPropagation();
+                        setSelectedProductId(product.id);
+                        setSelectedProductImages(product.image || []);
                         setShowConfirmDelete(true);
                     }}
                     className="text-red-600 p-2 rounded-md hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-900/70"
@@ -268,7 +284,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                 message={t("common.confirmDelete")}
                 confirmLabel={t("common.delete")}
                 cancelLabel={t("common.cancel")}
-                onConfirm={handleDelete}
+                onConfirm={handleConfirmDelete}
                 onCancel={() => setShowConfirmDelete(false)}
             />
         </div>

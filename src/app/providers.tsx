@@ -8,6 +8,8 @@ import { ThemeProvider } from "@/contexts/ThemeContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import AuthExpiredPanel from "@/components/AuthExpiredPanel";
 import { useRouter } from "next/navigation";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -46,6 +48,16 @@ export function Providers({ children }: { children: React.ReactNode }) {
           isOpen={isAuthExpired}
           onClose={handleClosePanel}
           onLoginRedirect={handleLoginRedirect}
+        />
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          draggable
+          pauseOnHover
+          theme="colored"
         />
       </LanguageProvider>
     </QueryClientProvider>
