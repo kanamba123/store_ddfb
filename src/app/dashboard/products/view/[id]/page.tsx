@@ -161,7 +161,7 @@ const ProductDetailBackoffice = () => {
       const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}`;
       const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareData.url)}&text=${encodeURIComponent(shareText)}`;
 
-      // Exemple : ouvrir WhatsApp dans un nouvel onglet
+      // Ouvrir WhatsApp dans un nouvel onglet
       const userChoice = window.prompt("Partager sur :\n1 = WhatsApp\n2 = Facebook\n3 = Telegram\nEntrez le numéro :");
       if (userChoice === "1") window.open(whatsappUrl, "_blank");
       if (userChoice === "2") window.open(facebookUrl, "_blank");
