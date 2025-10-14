@@ -59,7 +59,7 @@ interface MenuItem {
     route: string;
     icon: string | null;
     order: number;
-    parentId: string | null;
+    parent_id: string | null;
     is_active: boolean;
     children: MenuItem[];
 }
@@ -623,7 +623,7 @@ function AccessAssignmentForm({
                     </div>
                 )}
 
-                {/* Step 3: Main Menus Selection */}
+                {/* Step 2: Main Menus Selection */}
                 {currentStep === 2 && (
                     <div>
                         <h3 className="text-lg font-semibold text-gray-900 mb-4">
@@ -637,7 +637,7 @@ function AccessAssignmentForm({
                         ) : (
                             <div className="space-y-3 grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {menus
-                                    .filter((menu) => !menu.parentId)
+                                    .filter((menu) => !menu.parent_id)
                                     .map((menu) => {
 
                                         return (
@@ -793,7 +793,7 @@ function AccessAssignmentForm({
                     ) : (
                         <button
                             onClick={handleSubmit}
-                            disabled={selectedSubMenus.length === 0 || isSubmitting}
+                            disabled={selectedMenus.length === 0 || isSubmitting}
                             className="flex items-center px-4 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700"
                         >
                             {
