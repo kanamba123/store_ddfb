@@ -153,7 +153,12 @@
     "hrTraining": "Training",
     "hrEvaluations": "Evaluations & Performance",
     "hrContracts": "Contracts & Documents",
-    "trash": "Trash / restore"
+    "trash": "Trash / restore",
+    "salesOrders": "Sales / Orders",
+    "salesCustomers": "Customers",
+    "saleInvoices": "Invoices",
+    "saleQuotes": "Quotes",
+    "saleSubscriptions": "Subscriptions"
   },
   "navbar": {
     "searchPlaceholder": "Search...",
@@ -413,7 +418,11 @@
   "deleteError": "Error deleting employee",
   "viewEmployee": "Employee Details",
   "search": "Search for an employee...",
-  "notFound": "No employee found"
+  "notFound": "No employee found",
+  "restore": "Restore",
+  "restoreSuccess": "Employee restored successfully",
+  "restoreError": "Error restoring employee",
+  "confirmRestore":"Do you want to restore a employee?"
 },
  "welcomeDashboard": {
     "title": "Welcome to",

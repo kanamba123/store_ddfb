@@ -11,6 +11,12 @@ const fetchEmployees = async () => {
   return data;
 };
 
+// Get all employees
+const fetchEmployeesDeleted = async () => {
+  const { data } = await API.get(`/employees/trash`);
+  return data;
+};
+
 // Get one employee by ID
 const fetchEmployeeDetail = async (id: string) => {
   const { data } = await API.get(`/employees/${id}`);
@@ -42,7 +48,7 @@ const deleteEmployee = async (id: string) => {
 };
 
 
-// Delete employee
+// Delete user and employee
 const deleteUserForEmployee = async (id: string) => {
   const { data } = await API.delete(`/employees/userForEmploye/${id}`);
   return data;
@@ -57,6 +63,16 @@ export const useEmployees = () => {
   return useQuery({
     queryKey: ["employees"],
     queryFn: fetchEmployees,
+    staleTime: 5 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
+};
+
+// Fetch all employees
+export const useEmployeesDeleted = () => {
+  return useQuery({
+    queryKey: ["employeesDeleted"],
+    queryFn: fetchEmployeesDeleted,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
@@ -126,8 +142,35 @@ export const useDeleteUserForEmployee = () => {
   return useMutation({
     mutationFn: deleteUserForEmployee,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
   });
 };
+
+
+export const useRestoreEmployee = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: number) => {
+      const res = await API.put(`/employees/restore/${id}`);
+      return res.data;
+    },
+     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+    },
+  });
+};
+
+export const usePermanentDeleteEmployee = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: number) => {
+      const res = await API.delete(`/employees/permanent-delete/${id}`);
+      return res.data;
+    },
+     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+    },
+  });
+}; // Not used for now   
 

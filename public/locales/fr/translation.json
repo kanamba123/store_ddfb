@@ -112,7 +112,11 @@
     "hrTraining": "Formations",
     "hrEvaluations": "Évaluations & Performance",
     "hrContracts": "Contrats & Documents",
-    "trash": "Corbeille / restaurer"
+    "trash": "Corbeille / restaurer",
+    "salesOrders": "Ventes / Commandes",
+    "salesCustomers": "Clients",
+    "saleInvoices": "Factures",
+    "saleQuotes": "Devis"
   },
   "navbar": {
     "searchPlaceholder": "Rechercher...",
@@ -358,7 +362,11 @@
     "deleteError": "Erreur lors de la suppression de l’employé",
     "viewEmployee": "Détails de l’employé",
     "search": "Rechercher un employé...",
-    "notFound": "Aucun employé trouvé"
+    "notFound": "Aucun employé trouvé",
+    "restore": "Restaurer",
+    "restoreSuccess": "Employé restauré avec succès",
+    "restoreError": "Erreur lors de la restauration de l’employé",
+    "confirmRestore":"Voulez-vous restaurer cet employé?"
   },
   "welcomeDashboard": {
     "title": "Bienvenue dans",

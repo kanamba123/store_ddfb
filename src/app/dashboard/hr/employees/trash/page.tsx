@@ -3,19 +3,21 @@
 import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
-import { useDeleteEmployee, useEmployees } from "@/hooks/apis/useEmployee";
 import FullScreenLoaderMain from "@/components/ui/FullScreenLoaderMain";
+import { useEmployeesDeleted, usePermanentDeleteEmployee, useRestoreEmployee } from "@/hooks/apis/useEmployee";
 import CreateUserModal from "@/components/modals/CreateUserModal";
-import { Trash, Edit, UserPlus, Eye } from "lucide-react";
+import { Trash, Edit, UserPlus, Eye, RotateCcw } from "lucide-react";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
 
 export default function EmployeesPage() {
   const { t } = useTranslation();
-  const { data: employees, isLoading, isError } = useEmployees();
+  const { data: employees, isLoading, isError, refetch } = useEmployeesDeleted();
+  const deleteEmployee = usePermanentDeleteEmployee();
   const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-  const deleteEmployee = useDeleteEmployee();
+  const restoreEmployeeMutation = useRestoreEmployee();
+
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -38,13 +40,19 @@ export default function EmployeesPage() {
     currentPage * itemsPerPage
   );
 
-  const openModal = (employee: any) => {
-    setSelectedEmployee(employee);
-    setIsModalOpen(true);
-  };
   const closeModal = () => {
     setSelectedEmployee(null);
     setIsModalOpen(false);
+  };
+
+  const handleRestore = async (id: number) => {
+    if (!confirm(t("employees.confirmRestore") || "Restaurer cet employé ?")) return;
+    try {
+      await restoreEmployeeMutation.mutateAsync(id);
+      refetch(); // recharger la liste
+    } catch (error) {
+      console.error("Erreur restauration :", error);
+    }
   };
 
   const handleDelete = () => {
@@ -142,6 +150,17 @@ export default function EmployeesPage() {
                         </span>
                       </Link>
 
+                      {/* Restore button */}
+                      <button
+                        onClick={() => handleRestore(emp.id)}
+                        className="relative group"
+                      >
+                        <RotateCcw className="w-5 h-5 text-green-600 hover:text-green-800" />
+                        <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-700 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition">
+                          {t("employees.restore")}
+                        </span>
+                      </button>
+
                       {/* Delete */}
                       <button className="relative group" onClick={() => { setSelectedEmployee(emp.id); setShowConfirmDelete(true); }}>
                         <Trash className="w-5 h-5 text-red-600 hover:text-red-800" />
@@ -150,15 +169,6 @@ export default function EmployeesPage() {
                         </span>
                       </button>
 
-                      {/* Create User (if no user linked) */}
-                      {!emp.User && (
-                        <button onClick={() => openModal(emp)} className="relative group">
-                          <UserPlus className="w-5 h-5 text-purple-600 hover:text-purple-800" />
-                          <span className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 bg-gray-700 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition">
-                            {t("employees.createUser")}
-                          </span>
-                        </button>
-                      )}
                     </td>
 
                   </tr>
@@ -200,7 +210,6 @@ export default function EmployeesPage() {
           )}
         </>
       )}
-
       <ConfirmDialog
         isOpen={showConfirmDelete}
         title={t("employees.deleteTitle")}

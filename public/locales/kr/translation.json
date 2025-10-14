@@ -149,7 +149,11 @@
     "hrTraining": "Amahugurwa",
     "hrEvaluations": "Ugenzura n’Ukugaragaza ivyo wakoze",
     "hrContracts": "Amasezerano n’Ibipapuro",
-    "trash": "Ibitarikoreshwa / gusubiza"
+    "trash": "Ibitarikoreshwa / gusubiza",
+    "salesOrders": "Ibicuruzwa / Amabwirizwa",
+    "salesCustomers": "Abakiriya",
+    "saleInvoices": "Inyemezabuguzi",
+    "saleQuotes": "Ibitumizwa"
   },
   "navbar": {
     "searchPlaceholder": "Rondera...",
@@ -392,6 +396,10 @@
     "viewEmployee": "Amakuru y’Umukozi",
     "search": "Rondera umukozi...",
     "notFound": "Nta mukozi yabonetse",
+    "restore": "Subiza",
+    "restoreSuccess": "Umukozi yasubijwe neza",
+    "restoreError": "Ikosa mu gusubiza umukozi",
+    "confirmRestore":"Urashaka gusubiza umukozi?",
     "welcomeDashboard": {
       "title": "Ikaze kuri",
       "startButton": "Tangira ubu",

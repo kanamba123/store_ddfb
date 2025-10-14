@@ -74,7 +74,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           headers: {
             Authorization: `Bearer ${userToken}`,
           },
-          cache: 'force-cache'
+          // cache: 'force-cache'
         }
       );
 

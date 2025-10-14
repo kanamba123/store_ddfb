@@ -113,7 +113,11 @@
     "hrTraining": "Mafunzo",
     "hrEvaluations": "Tathmini na Utendaji",
     "hrContracts": "Mikataba na Nyaraka",
-    "trash": "Takataka / rejesha"
+    "trash": "Takataka / rejesha",
+    "salesOrders": "Mauzo / Oda",
+    "salesCustomers": "Wateja",
+    "saleInvoices": "Ankara",
+    "saleQuotes": "Nukuu"
   },
   "navbar": {
     "searchPlaceholder": "Tafuta...",
@@ -361,7 +365,11 @@
     "deleteError": "Hitilafu wakati wa kufuta mfanyakazi",
     "viewEmployee": "Maelezo ya Mfanyakazi",
     "search": "Tafuta mfanyakazi...",
-    "notFound": "Hakuna mfanyakazi aliyepatikana"
+    "notFound": "Hakuna mfanyakazi aliyepatikana",
+    "restore": "Rejesha",
+    "restoreSuccess": "Mfanyakazi amerudishwa kwa mafanikio",
+    "restoreError": "Hitilafu wakati wa kurejesha mfanyakazi",
+    "confirmRestore":"Je, unataka kurejesha mfanyakazi?"
   },
   "welcomeDashboard": {
     "title": "Karibu kwenye",
