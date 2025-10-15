@@ -192,7 +192,7 @@ export default function NewEmployeePage() {
 
             <div>
               <label>{t("employees.gender")}</label>
-              <select {...register("gender")} className="w-full p-2 border border-[var(--color-border)] rounded">
+              <select {...register("gender")} className="w-full p-2 bg-[var(--color-bg-primary)] border border-[var(--color-border)] rounded">
                 <option value="">{t("employees.selectGender")}</option>
                 <option value="male">{t("employees.male")}</option>
                 <option value="female">{t("employees.female")}</option>
@@ -208,7 +208,7 @@ export default function NewEmployeePage() {
             </div>
             <div>
               <label>{t("employees.nationality")}</label>
-              <select {...register("nationality")} className="w-full p-2 border border-[var(--color-border)] rounded">
+              <select {...register("nationality")} className="w-full p-2 bg-[var(--color-bg-primary)] border border-[var(--color-border)] rounded">
                 <option value="">{t("employees.selectNationality")}</option>
                 <option value="Burundian">Burundian</option>
                 <option value="Congolese">Congolese</option>
@@ -227,7 +227,7 @@ export default function NewEmployeePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label>{t("employees.maritalStatus")}</label>
-              <select {...register("maritalStatus")} className="w-full p-2 border border-[var(--color-border)] rounded">
+              <select {...register("maritalStatus")} className="w-full p-2 bg-[var(--color-bg-primary)] border border-[var(--color-border)] rounded">
                 <option value="">{t("employees.selectMaritalStatus")}</option>
                 <option value="single">{t("employees.single")}</option>
                 <option value="married">{t("employees.married")}</option>
@@ -255,7 +255,7 @@ export default function NewEmployeePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label>{t("employees.bankName")}</label>
-              <select {...register("bankName")} className="w-full p-2 border border-[var(--color-border)] rounded">
+              <select {...register("bankName")} className="w-full p-2 bg-[var(--color-bg-primary)] border border-[var(--color-border)] rounded">
                 <option value="">{t("employees.selectBank")}</option>
                 <option value="BANCOBU">BANCOBU</option>
                 <option value="BCB">Banque de Crédit de Bujumbura (BCB)</option>
