@@ -108,14 +108,35 @@ export default function UploadVariantForm() {
     }
   }
 
-  if (loading) return <p className="text-center mt-10 text-gray-600 dark:text-gray-300">⏳ Vérification du lien...</p>
+  if (loading)
+    return (
+      <p className="text-center mt-10 text-gray-600 dark:text-gray-300">
+        ⏳ Vérification du lien...
+      </p>
+    )
 
+  if (error)
+    return (
+      <div className="max-w-lg mx-auto mt-20 p-6 bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 rounded-lg text-center shadow">
+        <p className="text-xl font-semibold">{error}</p>
+        <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+          Le lien que vous avez utilisé est invalide ou a expiré.
+        </p>
+      </div>
+    )
+
+  if (submitted)
+    return (
+      <div className="max-w-lg mx-auto mt-20 p-6 bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg text-center shadow">
+        <p className="text-xl font-semibold">
+          ✅ Variante soumise avec succès !
+        </p>
+      </div>
+    )
 
   return (
     <div className="max-w-7xl mx-auto p-4 sm:p-6 mt-10 bg-white dark:bg-gray-900 shadow-md dark:shadow-lg rounded-lg text-gray-800 dark:text-gray-100">
 
-      {error ?? <p className="text-red-600 dark:text-red-400 text-center mt-10">{error}</p>}
-      {submitted ?? <p className="text-green-600 dark:text-green-400 text-center mt-10">✅ Variante soumise avec succès !</p>}
       <h1 className="text-2xl font-bold mb-6 text-center">🛍️ Ajouter une Variante de Produit</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -147,7 +168,7 @@ export default function UploadVariantForm() {
               {data.map((product: Product) => (
                 <option key={product.id} value={product.id} >
                   {product.productName}
-                  
+
                 </option>
               ))}
             </select>
