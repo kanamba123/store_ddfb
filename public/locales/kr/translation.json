@@ -14,7 +14,7 @@
     "yes": "Oui",
     "no": "Non",
     "back": "Retour",
-    "confirmDelete":"Voulez-vous supprimer?"
+    "confirmDelete": "Voulez-vous supprimer?"
   },
   "header": {
     "business": "Ubucuruzi",
@@ -153,7 +153,8 @@
     "salesOrders": "Ibicuruzwa / Amabwirizwa",
     "salesCustomers": "Abakiriya",
     "saleInvoices": "Inyemezabuguzi",
-    "saleQuotes": "Ibitumizwa"
+    "saleQuotes": "Ibitumizwa",
+    "privatePage": "Urupapuro rw'ibanga"
   },
   "navbar": {
     "searchPlaceholder": "Rondera...",
@@ -344,6 +345,8 @@
     "identity": "Umwidondoro",
     "firstName": "Izina ryambere",
     "lastName": "Izina rya nyuma",
+    "fatherName": "Father name",
+    "motherName": "Mother name",
     "contract": "Amasezerano & Icicaro",
     "contractType": "Ubwoko bw’amasezerano",
     "selectContract": "Hitamwo ubwoko bw’amasezerano",
@@ -399,7 +402,7 @@
     "restore": "Subiza",
     "restoreSuccess": "Umukozi yasubijwe neza",
     "restoreError": "Ikosa mu gusubiza umukozi",
-    "confirmRestore":"Urashaka gusubiza umukozi?",
+    "confirmRestore": "Urashaka gusubiza umukozi?",
     "welcomeDashboard": {
       "title": "Ikaze kuri",
       "startButton": "Tangira ubu",

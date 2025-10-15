@@ -117,7 +117,8 @@
     "salesOrders": "Mauzo / Oda",
     "salesCustomers": "Wateja",
     "saleInvoices": "Ankara",
-    "saleQuotes": "Nukuu"
+    "saleQuotes": "Nukuu",
+    "privatePage": "Ukurasa Binafsi"
   },
   "navbar": {
     "searchPlaceholder": "Tafuta...",
@@ -308,6 +309,8 @@
     "identity": "Utambulisho",
     "firstName": "Jina la kwanza",
     "lastName": "Jina la mwisho",
+    "fatherName": "Father name",
+    "motherName": "Mother name",
     "contract": "Mkataba & Nafasi",
     "contractType": "Aina ya mkataba",
     "selectContract": "Chagua aina ya mkataba",
@@ -369,7 +372,7 @@
     "restore": "Rejesha",
     "restoreSuccess": "Mfanyakazi amerudishwa kwa mafanikio",
     "restoreError": "Hitilafu wakati wa kurejesha mfanyakazi",
-    "confirmRestore":"Je, unataka kurejesha mfanyakazi?"
+    "confirmRestore": "Je, unataka kurejesha mfanyakazi?"
   },
   "welcomeDashboard": {
     "title": "Karibu kwenye",

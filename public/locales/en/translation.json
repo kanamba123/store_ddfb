@@ -158,7 +158,8 @@
     "salesCustomers": "Customers",
     "saleInvoices": "Invoices",
     "saleQuotes": "Quotes",
-    "saleSubscriptions": "Subscriptions"
+    "saleSubscriptions": "Subscriptions",
+    "privatePage": "Private Page"
   },
   "navbar": {
     "searchPlaceholder": "Search...",
@@ -354,6 +355,8 @@
   "identity": "Identity",
   "firstName": "First Name",
   "lastName": "Last Name",
+  "fatherName":"Father name",
+  "motherName":"Mother name",
 
   "contract": "Contract & Position",
   "contractType": "Contract Type",

@@ -12,7 +12,7 @@
     "no": "Non",
     "search": "Rechercher...",
     "back": "Retour",
-    "confirmDelete":"Voulez-vous supprimer?"
+    "confirmDelete": "Voulez-vous supprimer?"
   },
   "header": {
     "business": "Business",
@@ -116,7 +116,8 @@
     "salesOrders": "Ventes / Commandes",
     "salesCustomers": "Clients",
     "saleInvoices": "Factures",
-    "saleQuotes": "Devis"
+    "saleQuotes": "Devis",
+    "privatePage": "Page Privée"
   },
   "navbar": {
     "searchPlaceholder": "Rechercher...",
@@ -307,6 +308,8 @@
     "identity": "Identité",
     "firstName": "Prénom",
     "lastName": "Nom",
+    "fatherName": "Nom du père",
+    "motherName": "Nom du mère",
     "contract": "Contrat & Poste",
     "contractType": "Type de contrat",
     "selectContract": "Sélectionner le type de contrat",
@@ -366,7 +369,7 @@
     "restore": "Restaurer",
     "restoreSuccess": "Employé restauré avec succès",
     "restoreError": "Erreur lors de la restauration de l’employé",
-    "confirmRestore":"Voulez-vous restaurer cet employé?"
+    "confirmRestore": "Voulez-vous restaurer cet employé?"
   },
   "welcomeDashboard": {
     "title": "Bienvenue dans",
