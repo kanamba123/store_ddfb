@@ -128,8 +128,9 @@ export default function NewEmployeePage() {
    * Rendu du formulaire (seulement si lien valide)
    */
   return (
-    <div className="p-2 max-w-6xl mx-auto space-y-8">
-      <h1 className="text-2xl font-bold">{t("employees.addNew")}</h1>
+    <div className="bg-[var(--color-bg-primary)]">
+    <div className="p-2 max-w-6xl mx-auto space-y-8 ">
+      <h1 className="text-2xl font-bold text-[var(--color-text-secondary)]">{t("employees.addNew")}</h1>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -295,6 +296,7 @@ export default function NewEmployeePage() {
           {createEmployee.isPending ? t("employees.saving") : t("employees.save")}
         </button>
       </form>
+    </div>
     </div>
   );
 }
