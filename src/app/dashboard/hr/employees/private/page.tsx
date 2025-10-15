@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Copy, Trash, Check } from "lucide-react";
+import { Copy, Trash, Check, Share2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { API_URL } from "@/config/API";
 import API from "@/config/Axios";
+import { API_URL } from "@/config/API";
 
 type LinkRecord = {
   id: number;
@@ -15,13 +15,14 @@ type LinkRecord = {
   userId: number;
   expiresAt: string;
   used: boolean;
+  url?: string; // 👈 ajouté pour afficher le lien
 };
 
 export default function PrivateLinksPage() {
   const { t } = useTranslation();
 
   // --- États du formulaire ---
-  const [userId, setUserId] = useState<number>(9); // Par défaut (admin ou HR)
+  const [userId, setUserId] = useState<number>(9);
   const [targetId, setTargetId] = useState<number>(0);
   const [targetType, setTargetType] = useState<string>("seller");
   const [targetUserName, setTargetUserName] = useState<string>("");
@@ -32,7 +33,7 @@ export default function PrivateLinksPage() {
   const [loading, setLoading] = useState(false);
   const [copySuccess, setCopySuccess] = useState<string | null>(null);
 
-  // --- Récupération des liens existants ---
+  // --- Charger les liens existants ---
   useEffect(() => {
     const fetchLinks = async () => {
       try {
@@ -45,23 +46,15 @@ export default function PrivateLinksPage() {
     fetchLinks();
   }, []);
 
-  // --- Génération d’un lien privé ---
+  // --- Génération d’un nouveau lien ---
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const payload = {
-        userId,
-        targetId,
-        targetType,
-        validHours,
-        targetUserName,
-      };
-
+      const payload = { userId, targetId, targetType, validHours, targetUserName };
       const res = await API.post(`/public-upload/generateLinkToSiginUp`, payload);
 
-      // Ajoute le nouveau lien à la liste
       setLinks((prev) => [res.data, ...prev]);
       setTargetUserName("");
       setTargetId(0);
@@ -74,11 +67,28 @@ export default function PrivateLinksPage() {
   };
 
   // --- Copier un lien ---
-  const handleCopy = async (token: string, username: string) => {
-    const url = `${window.location.origin}/rf/employees/generate/${username}/${token}`;
+  const handleCopy = async (url: string) => {
     await navigator.clipboard.writeText(url);
-    setCopySuccess(token);
+    setCopySuccess(url);
     setTimeout(() => setCopySuccess(null), 2000);
+  };
+
+  // --- Partager un lien ---
+  const handleShare = async (url: string) => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Lien d’inscription employé",
+          text: "Voici ton lien sécurisé pour finaliser ton inscription :",
+          url,
+        });
+      } catch (err) {
+        console.warn("Le partage a été annulé ou a échoué :", err);
+      }
+    } else {
+      await handleCopy(url);
+      alert("Lien copié dans le presse-papier (partage non pris en charge sur cet appareil).");
+    }
   };
 
   // --- Supprimer un lien ---
@@ -94,7 +104,7 @@ export default function PrivateLinksPage() {
   };
 
   return (
-    <div className="p-4 max-w-3xl mx-auto space-y-8">
+    <div className="p-4 max-w-5xl mx-auto space-y-8">
       <h1 className="text-2xl font-bold">
         {t("privateLinks.title") || "🔐 Génération de liens privés"}
       </h1>
@@ -105,10 +115,9 @@ export default function PrivateLinksPage() {
         className="space-y-4 p-4 rounded-lg border shadow bg-white dark:bg-gray-800"
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* Type de cible */}
           <div>
             <label className="block mb-1 text-sm font-medium">
-              {t("privateLinks.targetType") || "Type de cible"}
+              Type de cible
             </label>
             <select
               value={targetType}
@@ -121,10 +130,9 @@ export default function PrivateLinksPage() {
             </select>
           </div>
 
-          {/* Nom d'utilisateur */}
           <div>
             <label className="block mb-1 text-sm font-medium">
-              {t("privateLinks.username") || "Nom d'utilisateur cible"}
+              Nom d'utilisateur cible
             </label>
             <input
               type="text"
@@ -136,7 +144,6 @@ export default function PrivateLinksPage() {
             />
           </div>
 
-          {/* Target ID */}
           <div>
             <label className="block mb-1 text-sm font-medium">Target ID</label>
             <input
@@ -149,10 +156,9 @@ export default function PrivateLinksPage() {
             />
           </div>
 
-          {/* Durée (heures) */}
           <div>
             <label className="block mb-1 text-sm font-medium">
-              {t("privateLinks.validHours") || "Durée de validité (heures)"}
+              Durée de validité (heures)
             </label>
             <input
               type="number"
@@ -171,9 +177,7 @@ export default function PrivateLinksPage() {
           disabled={loading}
           className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition disabled:opacity-50"
         >
-          {loading
-            ? t("privateLinks.generating") || "Génération..."
-            : t("privateLinks.generate") || "Générer le lien"}
+          {loading ? "Génération..." : "Générer le lien"}
         </button>
       </form>
 
@@ -182,8 +186,8 @@ export default function PrivateLinksPage() {
         <table className="min-w-full divide-y">
           <thead>
             <tr className="bg-gray-100 dark:bg-gray-700">
-              <th className="px-4 py-2 text-left">Token</th>
-              <th className="px-4 py-2 text-left">{t("privateLinks.username") || "Utilisateur"}</th>
+              <th className="px-4 py-2 text-left">Lien</th>
+              <th className="px-4 py-2 text-left">Utilisateur</th>
               <th className="px-4 py-2 text-left">Type</th>
               <th className="px-4 py-2 text-left">Expiration</th>
               <th className="px-4 py-2 text-left">Statut</th>
@@ -198,46 +202,64 @@ export default function PrivateLinksPage() {
                 </td>
               </tr>
             ) : (
-              links.map((link) => (
-                <tr key={link.id} className="border-t">
-                  <td className="px-4 py-2 font-mono text-xs">
-                    {link.token.slice(0, 15)}...
-                  </td>
-                  <td className="px-4 py-2">{link.targetUserName}</td>
-                  <td className="px-4 py-2">{link.targetType}</td>
-                  <td className="px-4 py-2">
-                    {new Date(link.expiresAt).toLocaleString()}
-                  </td>
-                  <td className="px-4 py-2">
-                    {link.used ? (
-                      <span className="text-red-600 font-semibold">Utilisé</span>
-                    ) : (
-                      <span className="text-green-600 font-semibold">Actif</span>
-                    )}
-                  </td>
-                  <td className="px-4 py-2 text-right flex justify-end space-x-2">
-                    <button
-                      onClick={() => handleCopy(link.token, link.targetUserName)}
-                      className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
-                      title="Copier le lien"
-                    >
-                      {copySuccess === link.token ? (
-                        <Check className="w-5 h-5 text-green-600" />
-                      ) : (
-                        <Copy className="w-5 h-5 text-gray-600" />
-                      )}
-                    </button>
+              links.map((link) => {
+                const url =
+                  link.url ||
+                  `${window.location.origin}/rf/employees/generate/${link.targetUserName}/${link.token}`;
 
-                    <button
-                      onClick={() => handleDelete(link.id)}
-                      className="p-1 rounded hover:bg-red-100 dark:hover:bg-red-900"
-                      title="Supprimer"
-                    >
-                      <Trash className="w-5 h-5 text-red-600" />
-                    </button>
-                  </td>
-                </tr>
-              ))
+                const shortUrl = url.length > 45 ? url.slice(0, 45) + "..." : url;
+
+                return (
+                  <tr key={link.id} className="border-t hover:bg-gray-50 dark:hover:bg-gray-700/30">
+                    <td className="px-4 py-2 text-sm text-blue-600 underline truncate max-w-[300px]">
+                      <a href={url} target="_blank" rel="noopener noreferrer">
+                        {shortUrl}
+                      </a>
+                    </td>
+                    <td className="px-4 py-2">{link.targetUserName}</td>
+                    <td className="px-4 py-2 capitalize">{link.targetType}</td>
+                    <td className="px-4 py-2">
+                      {new Date(link.expiresAt).toLocaleString()}
+                    </td>
+                    <td className="px-4 py-2">
+                      {link.used ? (
+                        <span className="text-red-600 font-semibold">Utilisé</span>
+                      ) : (
+                        <span className="text-green-600 font-semibold">Actif</span>
+                      )}
+                    </td>
+                    <td className="px-4 py-2 text-right flex justify-end space-x-2">
+                      <button
+                        onClick={() => handleCopy(url)}
+                        className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                        title="Copier le lien"
+                      >
+                        {copySuccess === url ? (
+                          <Check className="w-5 h-5 text-green-600" />
+                        ) : (
+                          <Copy className="w-5 h-5 text-gray-600" />
+                        )}
+                      </button>
+
+                      <button
+                        onClick={() => handleShare(url)}
+                        className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                        title="Partager"
+                      >
+                        <Share2 className="w-5 h-5 text-blue-600" />
+                      </button>
+
+                      <button
+                        onClick={() => handleDelete(link.id)}
+                        className="p-1 rounded hover:bg-red-100 dark:hover:bg-red-900"
+                        title="Supprimer"
+                      >
+                        <Trash className="w-5 h-5 text-red-600" />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>
