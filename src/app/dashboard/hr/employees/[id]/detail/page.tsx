@@ -5,9 +5,10 @@ import { useTranslation } from "react-i18next";
 import { useParams, useRouter } from "next/navigation";
 import { useDeleteUserForEmployee, useEmployeeDetail } from "@/hooks/apis/useEmployee";
 import FullScreenLoaderMain from "@/components/ui/FullScreenLoaderMain";
-import { Edit, Trash, Mail, User, Calendar, MapPin, Phone, Briefcase, Slash } from "lucide-react";
-import { on } from "events";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
+import { Edit, Trash, Mail, User, Calendar, MapPin, Phone, Briefcase, Slash, Copy, Share2, Link } from "lucide-react";
+import axios from "axios";
+import { API_URL } from "@/config/API";
 
 export default function EmployeeDetailPage() {
     const { t } = useTranslation();
@@ -18,6 +19,11 @@ export default function EmployeeDetailPage() {
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
 
+    // 🔹 Gestion du lien d’invitation
+    const [inviteLink, setInviteLink] = useState<string | null>(null);
+    const [loadingLink, setLoadingLink] = useState(false);
+    const [copySuccess, setCopySuccess] = useState(false);
+
     const handleEdit = () => router.push(`/dashboard/hr/employees/${id}/edit`);
 
     const handleDelete = () => {
@@ -25,19 +31,15 @@ export default function EmployeeDetailPage() {
             onSuccess: () => {
                 alert(t("employees.deleteSuccess"));
                 router.push("/dashboard/hr/employees");
-            }
+            },
         });
-
     };
 
     const handleDisableUser = async () => {
         if (!employee?.User) return;
         setIsProcessing(true);
         try {
-            // Ici tu appelleras ton API pour désactiver le user ou retirer le service
-            // Exemple fictif : await disableUserAPI(employee.User.id);
             console.log("Disable user", employee.User.id);
-
         } catch (err) {
             console.error(err);
             alert("Erreur lors de la désactivation de l'utilisateur.");
@@ -46,7 +48,47 @@ export default function EmployeeDetailPage() {
         }
     };
 
-    // pas besoin de employee ici
+    /** ------------------------------
+     * 🎟️ Génération du lien privé
+     * ------------------------------ */
+    const handleGenerateInvite = async () => {
+        if (!employee) return;
+        setLoadingLink(true);
+        try {
+            const res = await axios.post(`${API_URL}/public-upload/generate`, {
+                userId: employee.store?.userId || null,
+                targetId: employee.id,
+                targetType: "employee",
+                validHours: 48,
+                targetUserName: employee.employeeCode || employee.id, 
+            });
+            const url =
+                res.data?.url ||
+                `${window.location.origin}/rf/employees/generate/${employee.employeeCode}/${res.data.token}`;
+            setInviteLink(url);
+        } catch (err: any) {
+            console.error("Erreur génération lien:", err);
+            alert(err.response?.data?.error || "Erreur lors de la génération du lien.");
+        } finally {
+            setLoadingLink(false);
+        }
+    };
+
+    const handleCopy = () => {
+        if (!inviteLink) return;
+        navigator.clipboard.writeText(inviteLink);
+        setCopySuccess(true);
+        setTimeout(() => setCopySuccess(false), 2000);
+    };
+
+    const handleShare = async () => {
+        if (navigator.share && inviteLink) {
+            await navigator.share({ title: "Lien d'inscription", url: inviteLink });
+        } else {
+            alert("Le partage n'est pas supporté sur ce navigateur.");
+        }
+    };
+
     if (isLoading) return <FullScreenLoaderMain message={t("employees.loading")} />;
     if (isError) return <p className="p-6 text-red-500">{t("employees.error")}</p>;
     if (!employee) return <p className="p-6">{t("employees.notFound")}</p>;
@@ -54,33 +96,24 @@ export default function EmployeeDetailPage() {
     return (
         <div className="p-4 space-y-6">
             {/* Header */}
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
                 <h1 className="text-2xl font-bold">{employee.firstName} {employee.lastName}</h1>
-                <div className="flex flex-col sm:flex-row sm:space-x-2 w-full sm:w-auto space-y-2 sm:space-y-0">
-                    <button
-                        onClick={handleEdit}
-                        className="flex items-center justify-center px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700 transition w-full sm:w-auto"
-                    >
+                <div className="flex flex-wrap gap-2 mt-3 sm:mt-0">
+                    <button onClick={handleEdit} className="flex items-center px-3 py-1 bg-green-600 text-white rounded hover:bg-green-700">
                         <Edit className="w-4 h-4 mr-1" /> {t("employees.edit")}
                     </button>
                     {employee.User && (
-                        <button
-                            onClick={handleDisableUser}
-                            disabled={isProcessing}
-                            className="flex items-center justify-center px-3 py-1 bg-orange-600 text-white rounded hover:bg-orange-700 transition w-full sm:w-auto"
-                        >
+                        <button onClick={handleDisableUser} disabled={isProcessing}
+                            className="flex items-center px-3 py-1 bg-orange-600 text-white rounded hover:bg-orange-700">
                             <Slash className="w-4 h-4 mr-1" /> {t("employees.disableUser")}
                         </button>
                     )}
-                    <button
-                        onClick={() => setShowConfirmDelete(true)}
-                        className="flex items-center justify-center px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 transition w-full sm:w-auto"
-                    >
+                    <button onClick={() => setShowConfirmDelete(true)}
+                        className="flex items-center px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700">
                         <Trash className="w-4 h-4 mr-1" /> {t("employees.deleteUser")}
                     </button>
                 </div>
             </div>
-
 
             {/* Personal Info Card */}
             <div className="bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] shadow rounded-lg p-4 space-y-4 border border-[var(--color-border)]">
@@ -141,6 +174,38 @@ export default function EmployeeDetailPage() {
                         <span className="font-semibold">Ville / Pays:</span> {employee.city || "-"} / {employee.country || "-"}
                     </div>
                 </div>
+            </div>
+
+            {/* 🔹 Section lien d’invitation */}
+            <div className="bg-[var(--color-bg-primary)] border shadow rounded-lg p-4 space-y-4">
+                <h2 className="font-bold text-lg mb-2 flex items-center">
+                    <Link className="w-5 h-5 mr-2 text-blue-600" /> Lien d’invitation pour créer un compte utilisateur
+                </h2>
+
+                {!inviteLink ? (
+                    <button
+                        onClick={handleGenerateInvite}
+                        disabled={loadingLink}
+                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+                    >
+                        {loadingLink ? "Génération..." : "Générer un lien"}
+                    </button>
+                ) : (
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border p-3 rounded">
+                        <a href={inviteLink} target="_blank" rel="noopener noreferrer"
+                            className="text-blue-600 underline break-all">{inviteLink}</a>
+                        <div className="flex space-x-2">
+                            <button onClick={handleCopy}
+                                className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">
+                                {copySuccess ? "✅ Copié" : <Copy className="w-4 h-4" />}
+                            </button>
+                            <button onClick={handleShare}
+                                className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">
+                                <Share2 className="w-4 h-4 text-blue-600" />
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
 
             <ConfirmDialog
