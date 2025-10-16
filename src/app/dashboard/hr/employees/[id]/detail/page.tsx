@@ -60,7 +60,7 @@ export default function EmployeeDetailPage() {
                 targetId: employee.id,
                 targetType: "employee",
                 validHours: 48,
-                targetUserName: employee.employeeCode || employee.id, 
+                targetUserName: employee.employeeCode || employee.id,
             });
             const url =
                 res.data?.url ||
@@ -177,36 +177,47 @@ export default function EmployeeDetailPage() {
             </div>
 
             {/* 🔹 Section lien d’invitation */}
-            <div className="bg-[var(--color-bg-primary)] border shadow rounded-lg p-4 space-y-4">
-                <h2 className="font-bold text-lg mb-2 flex items-center">
-                    <Link className="w-5 h-5 mr-2 text-blue-600" /> Lien d’invitation pour créer un compte utilisateur
-                </h2>
+            {!employee.User ? (
+                <div className="bg-[var(--color-bg-primary)] border shadow rounded-lg p-4 space-y-4">
+                    <h2 className="font-bold text-lg mb-2 flex items-center">
+                        <Link className="w-5 h-5 mr-2 text-blue-600" /> Lien d’invitation pour créer un compte utilisateur
+                    </h2>
 
-                {!inviteLink ? (
-                    <button
-                        onClick={handleGenerateInvite}
-                        disabled={loadingLink}
-                        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
-                    >
-                        {loadingLink ? "Génération..." : "Générer un lien"}
-                    </button>
-                ) : (
-                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border p-3 rounded">
-                        <a href={inviteLink} target="_blank" rel="noopener noreferrer"
-                            className="text-blue-600 underline break-all">{inviteLink}</a>
-                        <div className="flex space-x-2">
-                            <button onClick={handleCopy}
-                                className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">
-                                {copySuccess ? "✅ Copié" : <Copy className="w-4 h-4" />}
-                            </button>
-                            <button onClick={handleShare}
-                                className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">
-                                <Share2 className="w-4 h-4 text-blue-600" />
-                            </button>
+                    {!inviteLink ? (
+                        <button
+                            onClick={handleGenerateInvite}
+                            disabled={loadingLink}
+                            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+                        >
+                            {loadingLink ? "Génération..." : "Générer un lien d'inscription"}
+                        </button>
+                    ) : (
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border p-3 rounded">
+                            <a
+                                href={inviteLink}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-blue-600 underline break-all"
+                            >
+                                {inviteLink}
+                            </a>
+                            <div className="flex space-x-2">
+                                <button onClick={handleCopy} className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">
+                                    {copySuccess ? "✅ Copié" : <Copy className="w-4 h-4" />}
+                                </button>
+                                <button onClick={handleShare} className="p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">
+                                    <Share2 className="w-4 h-4 text-blue-600" />
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                )}
-            </div>
+                    )}
+                </div>
+            ) : (
+                <div className="bg-[var(--color-bg-primary)] border shadow rounded-lg p-4 text-gray-500 italic">
+                    🔒 Cet employé possède déjà un compte utilisateur ({employee.User.email}).
+                    <br /> Aucun lien d’invitation n’est nécessaire.
+                </div>
+            )}
 
             <ConfirmDialog
                 isOpen={showConfirmDelete}
