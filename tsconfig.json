@@ -22,6 +22,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(pages)/f/upload/[token]", "src/components/ui/TdDynJSOBCustomGrid.jsx", "src/components/ui/TdDynJSOBCustom.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/app/(pages)/p/generate/variant/upload/[token]", "src/components/ui/TdDynJSOBCustomGrid.jsx", "src/components/ui/TdDynJSOBCustom.jsx"],
   "exclude": ["node_modules"]
 }
