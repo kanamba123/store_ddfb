@@ -9,6 +9,7 @@ import ConfirmDialog from "@/components/ui/ConfirmDialog";
 import { Edit, Trash, Mail, User, Calendar, MapPin, Phone, Briefcase, Slash, Copy, Share2, Link } from "lucide-react";
 import axios from "axios";
 import { API_URL } from "@/config/API";
+import API from "@/config/Axios";
 
 export default function EmployeeDetailPage() {
     const { t } = useTranslation();
@@ -49,22 +50,27 @@ export default function EmployeeDetailPage() {
     };
 
     /** ------------------------------
-     * 🎟️ Génération du lien privé
-     * ------------------------------ */
+  * 🎟️ Génération du lien privé
+  * ------------------------------ */
     const handleGenerateInvite = async () => {
         if (!employee) return;
         setLoadingLink(true);
+
         try {
-            const res = await axios.post(`${API_URL}/public-upload/generate`, {
-                userId: employee.store?.userId || null,
+            const res = await API.post(`/public-upload/generateLinkToCreateUserHimself`, {
                 targetId: employee.id,
                 targetType: "employee",
-                validHours: 48,
-                targetUserName: employee.employeeCode || employee.id,
+                validHours: 1,
+                targetUserName: employee.employeeContactPhone || employee.id,
             });
+
+            // 🔹 Les données du backend sont dans res.data
+            const data = res.data;
+
             const url =
-                res.data?.url ||
-                `${window.location.origin}/rf/employees/generate/${employee.employeeCode}/${res.data.token}`;
+                data?.url ||
+                `${window.location.origin}/rf/employees/generate/${employee.employeeCode}/${data.token}`;
+
             setInviteLink(url);
         } catch (err: any) {
             console.error("Erreur génération lien:", err);
@@ -73,6 +79,7 @@ export default function EmployeeDetailPage() {
             setLoadingLink(false);
         }
     };
+
 
     const handleCopy = () => {
         if (!inviteLink) return;
