@@ -29,6 +29,12 @@ const createEmployee = async (employeeData: any) => {
   return data;
 };
 
+// Create new employee
+const createEmployeeByGenerateToken = async (employeeData: any) => {
+  const { data } = await API.post(`/employees/withoutUserGenerateToken`, employeeData);
+  return data;
+};
+
 // Create User for Employee
 const joinUserForEmployee = async ({ id, data }: { id: string; data: any }) => {
   const response = await API.post(`/employees/${id}/createUser`, data);
@@ -93,6 +99,17 @@ export const useCreateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: createEmployee,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+    },
+  });
+};
+
+// Create employee when is generate token
+export const useCreateEmployeeByGenerateToken = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: createEmployeeByGenerateToken,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employees"] });
     },
