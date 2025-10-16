@@ -11,7 +11,7 @@ const fetchEmployees = async () => {
   return data;
 };
 
-// Get all employees
+// Get all soft-deleted employees
 const fetchEmployeesDeleted = async () => {
   const { data } = await API.get(`/employees/trash`);
   return data;
@@ -23,26 +23,47 @@ const fetchEmployeeDetail = async (id: string) => {
   return data;
 };
 
+// Get one deleted employee by ID
+const fetchDeletedUserDetail = async (id: string) => {
+  const { data } = await API.get(`/users/trash/${id}`);
+  return data;
+};
+
 // Create new employee
 const createEmployee = async (employeeData: any) => {
   const { data } = await API.post(`/employees/withoutUser`, employeeData);
   return data;
 };
 
-// Create new employee
+// Create employee with generated token
 const createEmployeeByGenerateToken = async (employeeData: any) => {
-  const { data } = await API.post(`/employees/withoutUserGenerateToken`, employeeData);
+  const { data } = await API.post(
+    `/employees/withoutUserGenerateToken`,
+    employeeData
+  );
   return data;
 };
 
 // Create User for Employee
-const joinUserForEmployee = async ({ id, data }: { id: string; data: any }) => {
+const joinUserForEmployee = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: any;
+}) => {
   const response = await API.post(`/employees/${id}/createUser`, data);
   return response.data;
 };
 
 // Update employee
-const updateEmployee = async ({ id, updates }: { id: string; updates: any }) => {
+const updateEmployee = async ({
+  id,
+  updates,
+}: {
+  id: string;
+  updates: any;
+}) => {
   const { data } = await API.put(`/employees/${id}`, updates);
   return data;
 };
@@ -53,10 +74,21 @@ const deleteEmployee = async (id: string) => {
   return data;
 };
 
-
-// Delete user and employee
+// Delete user for employee
 const deleteUserForEmployee = async (id: string) => {
   const { data } = await API.delete(`/employees/userForEmploye/${id}`);
+  return data;
+};
+
+// Restore soft-deleted employee
+const restoreEmployee = async (id: number) => {
+  const { data } = await API.put(`/employees/restore/${id}`);
+  return data;
+};
+
+// Permanently delete employee
+const permanentDeleteEmployee = async (id: number) => {
+  const { data } = await API.delete(`/employees/permanent-delete/${id}`);
   return data;
 };
 
@@ -64,73 +96,66 @@ const deleteUserForEmployee = async (id: string) => {
 // HOOKS
 // ========================
 
-// Fetch all employees
-export const useEmployees = () => {
-  return useQuery({
+export const useEmployees = () =>
+  useQuery({
     queryKey: ["employees"],
     queryFn: fetchEmployees,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
-};
 
-// Fetch all employees
-export const useEmployeesDeleted = () => {
-  return useQuery({
+export const useEmployeesDeleted = () =>
+  useQuery({
     queryKey: ["employeesDeleted"],
     queryFn: fetchEmployeesDeleted,
     staleTime: 5 * 60 * 1000,
     refetchOnWindowFocus: false,
   });
-};
 
-// Fetch single employee detail
-export const useEmployeeDetail = (id: string | undefined) => {
-  return useQuery({
+export const useEmployeeDetail = (id: string | undefined) =>
+  useQuery({
     queryKey: ["employeeDetail", id],
     queryFn: () => fetchEmployeeDetail(id!),
     enabled: !!id,
     staleTime: 5 * 60 * 1000,
   });
-};
 
-// Create employee
+// Hook pour récupérer un utilisateur supprimé par ID
+export const useDeletedUserDetail = (id: string | undefined) =>
+  useQuery({
+    queryKey: ["deletedEmployeeDetail", id],
+    queryFn: () => fetchDeletedUserDetail(id!),
+    enabled: !!id,
+    staleTime: 5 * 60 * 1000,
+  });
+
 export const useCreateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: createEmployee,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["employees"] });
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["employees"] }),
   });
 };
 
-// Create employee when is generate token
 export const useCreateEmployeeByGenerateToken = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: createEmployeeByGenerateToken,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["employees"] });
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["employees"] }),
   });
 };
 
-// Create employee
 export const useJoinUserForEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: joinUserForEmployee,
     onSuccess: (_, variables) => {
-      // Invalider la liste globale
       queryClient.invalidateQueries({ queryKey: ["employees"] });
-      // Invalider aussi le détail de l’employé modifié
       queryClient.invalidateQueries({ queryKey: ["employeeDetail", variables.id] });
     },
   });
 };
 
-// Update employee
 export const useUpdateEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -142,52 +167,34 @@ export const useUpdateEmployee = () => {
   });
 };
 
-// Delete employee
 export const useDeleteEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteEmployee,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["employees"] });
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["employees"] }),
   });
 };
 
-// Delete employee
 export const useDeleteUserForEmployee = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: deleteUserForEmployee,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["employees"] });
-    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["employees"] }),
   });
 };
 
-
-export const useRestoreEmployee = () => {
+export const useRestoreUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: number) => {
-      const res = await API.put(`/employees/restore/${id}`);
-      return res.data;
-    },
-     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["employees"] });
-    },
+    mutationFn: restoreEmployee,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["employees"] }),
   });
 };
 
-export const usePermanentDeleteEmployee = () => {
+export const usePermanentDeleteUser = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (id: number) => {
-      const res = await API.delete(`/employees/permanent-delete/${id}`);
-      return res.data;
-    },
-     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["employees"] });
-    },
+    mutationFn: permanentDeleteEmployee,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["employees"] }),
   });
-}; // Not used for now   
-
+};
