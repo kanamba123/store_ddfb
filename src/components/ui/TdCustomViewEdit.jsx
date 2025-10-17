@@ -12,6 +12,9 @@ const TdCustomViewEdit = ({
   editable = false,
   useDialog = false,
 
+  // 🆕 Nouveau prop
+  modifiable = true,
+
   className = "",
   inputClassName = "",
   overlayClassName = "fixed inset-0 flex justify-center items-center z-50 bg-gradient-to-br from-blue-500/40 to-red-500/40",
@@ -25,7 +28,8 @@ const TdCustomViewEdit = ({
   const [error, setError] = useState(null);
 
   const handleEditClick = () => {
-    if (editable) setEditMode(true);
+    // ✅ On vérifie le nouveau prop avant d'autoriser l'édition
+    if (editable && modifiable) setEditMode(true);
   };
 
   const updateValue = async () => {
@@ -82,7 +86,7 @@ const TdCustomViewEdit = ({
       {!useDialog ? (
         <span
           onClick={handleEditClick}
-          className={`${editable ? "cursor-pointer font-bold" : "cursor-default font-normal"} ${className}`}
+          className={`${editable && modifiable ? "cursor-pointer font-bold" : "cursor-not-allowed opacity-60"} ${className}`}
         >
           {editMode ? (
             <input
@@ -91,7 +95,7 @@ const TdCustomViewEdit = ({
               onChange={(e) => setNewValue(e.target.value)}
               onBlur={updateValue}
               autoFocus
-              disabled={loading}
+              disabled={loading || !modifiable}
               className={`w-full border border-gray-300 rounded px-2 py-1 focus:ring-2 focus:ring-blue-500 ${inputClassName}`}
             />
           ) : loading ? (
@@ -103,13 +107,13 @@ const TdCustomViewEdit = ({
       ) : (
         <>
           <span
-            className={`truncate cursor-pointer ${className}`}
+            className={`truncate ${modifiable ? "cursor-pointer" : "cursor-not-allowed opacity-60"} ${className}`}
             onClick={handleEditClick}
           >
             {value || <span className="text-red-500">{emptyText}</span>}
           </span>
 
-          {editMode && (
+          {editMode && modifiable && (
             <div className={overlayClassName}>
               <div className={dialogClassName}>
                 <h3 className="mb-3 text-lg font-semibold">

@@ -13,6 +13,7 @@ import { Product } from '@/types/Product';
 import TdDynJSOBCustomGrid from '@/components/ui/TdDynJSOBCustomGrid';
 import TdDynJSOBCustom from '@/components/ui/TdDynJSOBCustom';
 import FullScreenLoaderMain from '@/components/ui/FullScreenLoaderMain';
+import { increasePriceByPercentage } from "@/utils/priceUtils";
 import { useTranslation } from "react-i18next";
 import TdDynJSOBWithoutKeyCustom from '@/components/ui/TdDynJSOBWithoutKeyCustom';
 import TdCustomViewEditPromotion from '@/components/ui/TdCustomViewEditPromotion';
@@ -471,6 +472,23 @@ const ProductDetailBackoffice = () => {
 
 
                 <div>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Prix Recomandé</label>
+                  <div className="text-lg sm:text-2xl font-bold text-action-save dark:text-action-save-hover">
+                    <TdCustomViewEdit
+                      id={variant.id}
+                      field="purchasePrice"
+                      value={formatPrice(increasePriceByPercentage(variant?.purchasePrice, 5))}
+                      endpoint={dataendPoint}
+                      editable
+                      useDialog
+                      modifiable={false}
+                      onSave={handleSave}
+                    />
+                  </div>
+                </div>
+
+
+                <div>
                   <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Prix de vente</label>
                   <div className="text-lg sm:text-2xl font-bold text-green-600 dark:text-green-400">
                     <TdCustomViewEdit
@@ -480,6 +498,7 @@ const ProductDetailBackoffice = () => {
                       endpoint={dataendPoint}
                       editable
                       useDialog
+                      modifiable={false}
                       onSave={handleSave}
                     />
                   </div>
