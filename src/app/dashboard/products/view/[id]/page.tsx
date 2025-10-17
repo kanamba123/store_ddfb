@@ -456,12 +456,12 @@ const ProductDetailBackoffice = () => {
                 </div>
 
                 <div>
-                  <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Prix d'achat</label>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Prix d’achat HT</label>
                   <div className="text-lg sm:text-2xl font-bold text-blue-900 dark:text-blue-400">
                     <TdCustomViewEdit
                       id={variant.id}
                       field="purchasePrice"
-                      value={formatPrice(variant?.purchasePrice)}
+                      value={variant?.purchasePrice}
                       endpoint={dataendPoint}
                       editable
                       useDialog
@@ -472,7 +472,7 @@ const ProductDetailBackoffice = () => {
 
 
                 <div>
-                  <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Prix Recomandé</label>
+                  <label className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400">Prix ajusté</label>
                   <div className="text-lg sm:text-2xl font-bold text-action-save dark:text-action-save-hover">
                     <TdCustomViewEdit
                       id={variant.id}
