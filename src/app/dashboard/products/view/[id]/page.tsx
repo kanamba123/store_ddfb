@@ -174,7 +174,7 @@ const ProductDetailBackoffice = () => {
     navigator.clipboard.writeText(shareUrl);
     const shareData = {
       title: variant!.variantProductName,
-      text: `Découvrez ${variant!.variantProductName} à ${variant!.recommendedPrice} fbu`,
+      text: `Découvrez ${variant!.variantProductName}`,
       url: `https://s.win2cop.com/dashboard/products/view/${variant!.id}`,
     };
 
