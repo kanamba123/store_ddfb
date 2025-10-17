@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowLeft, Edit, Trash2, Share2, QrCode, Eye, EyeOff, Tag, Package, BarChart3, Download, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Edit, Trash2, Share2, QrCode, Eye, EyeOff, Tag, Package, BarChart3, Download, AlertCircle, Shield } from 'lucide-react';
 import { useParams, useRouter } from "next/navigation";
 import { getVariantById, deleteVariant, fetchProductCategories } from "@/libs/api/products";
 import TdCustomViewEdit from '@/components/ui/TdCustomViewEdit';
@@ -170,6 +170,48 @@ const ProductDetailBackoffice = () => {
     }
   };
 
+   const copyShareLinkAdmin = () => {
+    navigator.clipboard.writeText(shareUrl);
+    const shareData = {
+      title: variant!.variantProductName,
+      text: `Découvrez ${variant!.variantProductName} à ${variant!.recommendedPrice} fbu`,
+      url: `https://s.win2cop.com/dashboard/products/view/${variant!.id}`,
+    };
+
+    if (navigator.share) {
+      // Mobile / navigateur supporté
+      navigator.share(shareData).catch(console.error);
+    } else {
+      // Desktop fallback
+      const shareText = `${shareData.text}\n${shareData.url}`;
+
+      // Copier le lien dans le presse-papiers
+      navigator.clipboard.writeText(shareText)
+        .then(() => alert("Lien copié dans le presse-papiers !"))
+        .catch(() => {
+          // fallback plus ancien
+          const textArea = document.createElement('textarea');
+          textArea.value = shareText;
+          document.body.appendChild(textArea);
+          textArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textArea);
+          alert("Lien copié dans le presse-papiers !");
+        });
+
+      // Ouvrir un mini menu de partage dans de nouveaux onglets
+      const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}`;
+      const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareData.url)}&text=${encodeURIComponent(shareText)}`;
+
+      // Ouvrir WhatsApp dans un nouvel onglet
+      const userChoice = window.prompt("Partager sur :\n1 = WhatsApp\n2 = Facebook\n3 = Telegram\nEntrez le numéro :");
+      if (userChoice === "1") window.open(whatsappUrl, "_blank");
+      if (userChoice === "2") window.open(facebookUrl, "_blank");
+      if (userChoice === "3") window.open(telegramUrl, "_blank");
+    }
+  };
+
   const downloadQRCode = () => {
     if (!variant) return;
 
@@ -244,13 +286,19 @@ const ProductDetailBackoffice = () => {
                 <Share2 className="w-5 h-5" />
               </button>
 
+
               <button
-                onClick={() => router.push(`/dashboard/products//${variant.id}`)}
+               onClick={copyShareLinkAdmin}
                 className="flex items-center space-x-1 bg-blue-600 text-white px-2 sm:px-3 py-1 sm:py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
               >
-                <Edit className="w-4 h-4" />
-                <span className="hidden sm:inline">Modifier</span>
+                <div className="relative flex items-center">
+                  <Shield className="w-4 h-4" />
+                  <Share2 className="w-3 h-3 absolute -right-2 -top-1" />
+                </div>
+                <span className="hidden sm:inline">Partager (Admin)</span>
               </button>
+
+
 
               <button
                 onClick={() => setShowDeleteModal(true)}
