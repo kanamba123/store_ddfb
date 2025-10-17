@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import FullScreenLoaderMain from "@/components/ui/FullScreenLoaderMain";
-import { useEmployeesDeleted, usePermanentDeleteEmployee, useRestoreEmployee } from "@/hooks/apis/useEmployee";
+import { useEmployeesDeleted, usePermanentDeleteUser, useRestoreUser } from "@/hooks/apis/useEmployee";
 import CreateUserModal from "@/components/modals/CreateUserModal";
 import { Trash, Edit, UserPlus, Eye, RotateCcw } from "lucide-react";
 import ConfirmDialog from "@/components/ui/ConfirmDialog";
@@ -12,11 +12,11 @@ import ConfirmDialog from "@/components/ui/ConfirmDialog";
 export default function EmployeesPage() {
   const { t } = useTranslation();
   const { data: employees, isLoading, isError, refetch } = useEmployeesDeleted();
-  const deleteEmployee = usePermanentDeleteEmployee();
+  const deleteEmployee = usePermanentDeleteUser();
   const [selectedEmployee, setSelectedEmployee] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-  const restoreEmployeeMutation = useRestoreEmployee();
+  const restoreEmployeeMutation = useRestoreUser();
 
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
