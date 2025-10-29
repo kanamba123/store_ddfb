@@ -8,6 +8,7 @@ import { useCustomers } from "@/hooks/apis/useCustomers";
 import ComponentProductTemplate, { SelectedProduct, Product } from "@/components/templates/ComponentProductTemplate";
 import ComponentPaiementTemplate from "@/components/templates/ComponentPaiementTemplate";
 import UserSelectWithPreview from "@/components/ui/UserSelectWithPreview";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface MainProformaInfo {
   proformaName: string;
@@ -19,6 +20,7 @@ const CreateProformaPage: React.FC = () => {
 const { data: rawCustomers = [], isLoading: isCustomersLoading } = useCustomers();
   const { data: variants = [], isLoading, isError } = useVariants();
   const createProforma = useCreateProforma();
+  const {user}=useAuth();
 
   console.log("Customer 1",rawCustomers)
 
@@ -44,7 +46,6 @@ console.log("Customer ",customers)
   const [totalAmount, setTotalAmount] = useState<number>(0);
   const [paymentMethod, setPaymentMethod] = useState<string>("cash");
   const [paymentDetails, setPaymentDetails] = useState<any>({});
-  const [selectedStore, setSelectedStore] = useState<any>(null);
 
   const [visibility, setVisibility] = useState({
     storeInfo: true,
@@ -78,7 +79,7 @@ console.log("Customer ",customers)
     }
 
     const proformaData = {
-      store: selectedStore,
+      store: user?.store.id,
       client: selectedClient,
       mainProformaInfo,
       selectedProducts,
