@@ -159,7 +159,8 @@
     "saleInvoices": "Invoices",
     "saleQuotes": "Quotes",
     "saleSubscriptions": "Subscriptions",
-    "privatePage": "Private Page"
+    "privatePage": "Private Page",
+    "proforma":"Proforma"
   },
   "navbar": {
     "searchPlaceholder": "Search...",

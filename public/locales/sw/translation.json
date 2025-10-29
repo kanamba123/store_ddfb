@@ -118,7 +118,8 @@
     "salesCustomers": "Wateja",
     "saleInvoices": "Ankara",
     "saleQuotes": "Nukuu",
-    "privatePage": "Ukurasa Binafsi"
+    "privatePage": "Ukurasa Binafsi",
+    "proforma":"Fomula ya kitaalamu"
   },
   "navbar": {
     "searchPlaceholder": "Tafuta...",

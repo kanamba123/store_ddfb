@@ -117,7 +117,8 @@
     "salesCustomers": "Clients",
     "saleInvoices": "Factures",
     "saleQuotes": "Devis",
-    "privatePage": "Page Privée"
+    "privatePage": "Page Privée",
+    "proforma":"Proformat"
   },
   "navbar": {
     "searchPlaceholder": "Rechercher...",

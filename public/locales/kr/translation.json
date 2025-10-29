@@ -154,7 +154,8 @@
     "salesCustomers": "Abakiriya",
     "saleInvoices": "Inyemezabuguzi",
     "saleQuotes": "Ibitumizwa",
-    "privatePage": "Urupapuro rw'ibanga"
+    "privatePage": "Urupapuro rw'ibanga",
+    "proforma":"Proformat"
   },
   "navbar": {
     "searchPlaceholder": "Rondera...",
