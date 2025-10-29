@@ -51,7 +51,7 @@ console.log("Customer ",customers)
     storeInfo: true,
     clientInfo: true,
     productInfo: true,
-    paymentInfo: true,
+    paymentInfo: false,
     proformaInfo: true,
   });
 
@@ -101,23 +101,46 @@ console.log("Customer ",customers)
       <h1 className="text-2xl md:text-3xl font-bold text-gray-700">Créer un Proforma</h1>
 
       {/* Client Section */}
-      <div className="bg-white p-4 rounded-lg shadow-md">
-        <h2 className="text-lg font-semibold mb-3 flex justify-between items-center">
-          Informations Client
-          <button
-            onClick={() => toggleVisibility("clientInfo")}
-            className="text-gray-500 hover:text-gray-700"
-          >
-            {visibility.clientInfo ? "▲" : "▼"}
-          </button>
-        </h2>
-        {visibility.clientInfo && (
-          <UserSelectWithPreview
-            customers={customers}
-            onClientSelect={handleClientSelect}
-          />
-        )}
+     <div className="bg-white border border-gray-200 rounded-lg shadow-sm mb-4">
+  {/* Header cohérent avec les autres composants */}
+  <div 
+    className="flex justify-between items-center p-3 bg-gray-50 border-b border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors"
+    onClick={() => toggleVisibility("clientInfo")}
+  >
+    <div className="flex items-center gap-2">
+      <div className="p-1.5 bg-blue-100 rounded-md">
+        <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
       </div>
+      <div>
+        <h5 className="text-sm font-semibold text-gray-800">Client</h5>
+        <p className="text-xs text-gray-600">Informations du client</p>
+      </div>
+    </div>
+    <button className="p-1 text-gray-500 hover:text-gray-700 rounded transition-colors">
+      {visibility.clientInfo ? (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+        </svg>
+      ) : (
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      )}
+    </button>
+  </div>
+
+  {/* Contenu */}
+  {visibility.clientInfo && (
+    <div className="p-3">
+      <UserSelectWithPreview
+        customers={customers}
+        onClientSelect={handleClientSelect}
+      />
+    </div>
+  )}
+</div>
 
       {/* Products Section */}
       <ComponentProductTemplate

@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState } from "react";
 import DropdownSelect from "../ui/DropdownSelect";
 import { customerTypes } from "../../constants/customerTypes";
 import SelectionCustomerWithCreateNew from "./SelectionCustomerWthiCreateNew";
@@ -53,7 +53,7 @@ const UserSelectWithPreview: React.FC<UserSelectWithPreviewProps> = ({
     }
   };
 
-  const handleNewClientChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleNewClientChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target;
     if (!name) return;
     setNewClient((prev) => ({ ...prev, [name]: value }));
@@ -67,8 +67,10 @@ const UserSelectWithPreview: React.FC<UserSelectWithPreviewProps> = ({
     }
   };
 
+  const isFormValid = newClient.firstName.trim() && newClient.phoneNumber?.trim();
+
   return (
-    <div className="mt-4">
+    <div className="space-y-3">
       <SelectionCustomerWithCreateNew
         placeholderText="Sélectionner un client"
         optionsData={customers}
@@ -76,92 +78,121 @@ const UserSelectWithPreview: React.FC<UserSelectWithPreviewProps> = ({
         labelKey1="firstName"
         labelKey2="lastName"
         valueKey="id"
-        createNewLabel="➕ Créer un nouveau client"
+        createNewLabel="➕ Nouveau client"
         selectedValue={clientInfo?.id || ""}
       />
 
       {isAddingClient ? (
-        <div className="mt-4 space-y-3">
-          <DropdownSelect
-            label="Client Type"
-            id="clientType"
-            name="clientType"
-            options={customerTypes}
-            value={newClient.clientType || customerTypes[0]?.value}
-            onChange={handleNewClientChange}
-          />
+        <div className="space-y-3 p-3 border border-gray-200 rounded-md bg-gray-50">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Type client
+              </label>
+              <DropdownSelect
+                id="clientType"
+                name="clientType"
+                label=""
+                options={customerTypes}
+                value={newClient.clientType || customerTypes[0]?.value}
+                onChange={handleNewClientChange}
+              />
+            </div>
+          </div>
 
-          <div className="form-custom-row">
-            <div className="form-custom-group">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Nom *
+              </label>
               <input
                 type="text"
                 name="firstName"
                 placeholder="Nom"
                 value={newClient.firstName}
                 onChange={handleNewClientChange}
-                className="w-full px-4 py-2 border rounded-md"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
-            <div className="form-custom-group">
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Prénom
+              </label>
               <input
                 type="text"
                 name="lastName"
                 placeholder="Prénom"
                 value={newClient.lastName}
                 onChange={handleNewClientChange}
-                className="w-full px-4 py-2 border rounded-md"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
           </div>
 
-          <div className="form-custom-row">
-            <div className="form-custom-group">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Adresse
+              </label>
               <input
                 type="text"
                 name="address"
                 placeholder="Adresse"
                 value={newClient.address}
                 onChange={handleNewClientChange}
-                className="w-full px-4 py-2 border rounded-md"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
-            <div className="form-custom-group">
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Téléphone *
+              </label>
               <input
                 type="text"
                 name="phoneNumber"
                 placeholder="Téléphone"
                 value={newClient.phoneNumber}
                 onChange={handleNewClientChange}
-                className="w-full px-4 py-2 border rounded-md"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
           </div>
 
-          <div>
+          <div className="flex justify-end">
             <button
               onClick={handleAddClient}
-              disabled={!newClient.firstName.trim() || !newClient.phoneNumber?.trim()}
-              className="btn btn-submit"
+              disabled={!isFormValid}
+              className={`px-3 py-2 text-sm rounded font-medium transition-colors ${
+                isFormValid
+                  ? "bg-blue-600 text-white hover:bg-blue-700"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
             >
-              Ajouter le client
+              Ajouter client
             </button>
           </div>
         </div>
       ) : (
         clientInfo && (
-          <div className="bg-gray-100 p-3 rounded-md">
-            <p>
-              <strong>Nom Complet:</strong> {clientInfo.firstName}{" "}
-              {clientInfo.lastName || "N/A"}
-            </p>
-            <p>
-              <strong>Adresse:</strong> {clientInfo.address || "N/A"}
-            </p>
-            <p>
-              <strong>Téléphone:</strong> {clientInfo.phoneNumber || "N/A"}
-            </p>
+          <div className="p-3 border border-gray-200 rounded-md bg-gray-50">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-sm">
+              <div>
+                <span className="font-medium text-gray-700">Nom:</span>
+                <p className="text-gray-900">
+                  {clientInfo.firstName} {clientInfo.lastName || ""}
+                </p>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Adresse:</span>
+                <p className="text-gray-900">{clientInfo.address || "N/A"}</p>
+              </div>
+              <div>
+                <span className="font-medium text-gray-700">Téléphone:</span>
+                <p className="text-gray-900">{clientInfo.phoneNumber || "N/A"}</p>
+              </div>
+            </div>
           </div>
         )
       )}

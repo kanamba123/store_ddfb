@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState } from "react";
 
 interface PaymentDetails {
   amountPaid?: number | string;
@@ -63,192 +63,246 @@ const ComponentPaiementTemplate: React.FC<ComponentPaiementTemplateProps> = ({
       newValue = numericValue;
     }
 
-    // setPaymentDetails((prev) => ({
-    //   ...prev,
-    //   [field]: newValue,
-    // }));
+    // Correction : passer directement l'objet mis à jour
+    setPaymentDetails({
+      ...paymentDetails,
+      [field]: newValue,
+    });
   };
 
+  const paymentMethods = [
+    { value: "cash", label: "Cash" },
+    { value: "bizcoPay", label: "BizCoPay" },
+    { value: "bankTransfer", label: "Versement Bancaire" },
+    { value: "electronicDeposit", label: "Dépôt Électronique" },
+    { value: "debt", label: "Dette (Paiement Ultérieur)" },
+    { value: "promotion", label: "Promotion" },
+  ];
+
   return (
-    <div className="bg-gray-50 text-gray-800 border border-gray-200 rounded-lg shadow-sm p-4 mb-6 transition-all">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-4">
-        <h5 className="text-lg font-semibold text-gray-800 m-0">Type de Paiement</h5>
-        <button
-          className="text-blue-600 text-lg font-bold bg-none border-none cursor-pointer"
-          onClick={() => toggleVisibility("paymentInfo")}
-        >
-          {visibility.paymentInfo ? "▲" : "▼"}
+    <div className="bg-white border border-gray-200 rounded-lg shadow-sm mb-4">
+      {/* Header compact */}
+      <div 
+        className="flex justify-between items-center p-3 bg-gray-50 border-b border-gray-200 cursor-pointer hover:bg-gray-100 transition-colors"
+        onClick={() => toggleVisibility("paymentInfo")}
+      >
+        <div className="flex items-center gap-2">
+          <div className="p-1.5 bg-blue-100 rounded-md">
+            <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+            </svg>
+          </div>
+          <div>
+            <h5 className="text-sm font-semibold text-gray-800">Paiement</h5>
+            <p className="text-xs text-gray-600 capitalize">{paymentMethod || "Non sélectionné"}</p>
+          </div>
+        </div>
+        <button className="p-1 text-gray-500 hover:text-gray-700 rounded transition-colors">
+          {visibility.paymentInfo ? (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+            </svg>
+          ) : (
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          )}
         </button>
       </div>
 
       {/* Content */}
       {visibility.paymentInfo && (
-        <div className="mt-3 space-y-4">
-          <div className="flex flex-col gap-4">
-            {/* Cash */}
-            <label className="flex items-center gap-2 text-gray-700 font-medium cursor-pointer">
-              <input
-                type="radio"
-                className="w-4 h-4 accent-blue-600 cursor-pointer"
-                value="cash"
-                checked={paymentMethod === "cash"}
-                onChange={(e) => handlePaymentChange(e.target.value)}
-              />
-              Cash
-            </label>
-            {paymentMethod === "cash" && (
-              <input
-                type="number"
-                placeholder="Montant Payé"
-                value={paymentDetails.amountPaid ?? totalPayment}
-                onChange={(e) => handleDetailChange("amountPaid", e.target.value)}
-                className={`mt-1 w-full p-2 text-sm border rounded-lg focus:outline-none focus:border-blue-600 ${
-                  amountError ? "border-red-500" : "border-gray-300"
-                }`}
-              />
-            )}
+        <div className="p-3">
+          <div className="space-y-3">
+            {/* Méthodes de paiement */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              {paymentMethods.map((method) => (
+                <label key={method.value} className="flex items-center gap-2 text-sm text-gray-700 cursor-pointer p-2 rounded border border-gray-200 hover:bg-gray-50 transition-colors">
+                  <input
+                    type="radio"
+                    className="w-3.5 h-3.5 accent-blue-600 cursor-pointer"
+                    value={method.value}
+                    checked={paymentMethod === method.value}
+                    onChange={(e) => handlePaymentChange(e.target.value)}
+                  />
+                  <span className="text-xs font-medium">{method.label}</span>
+                </label>
+              ))}
+            </div>
 
-            {/* BizCoPay */}
-            <label className="flex items-center gap-2 text-gray-700 font-medium cursor-pointer">
-              <input
-                type="radio"
-                className="w-4 h-4 accent-blue-600 cursor-pointer"
-                value="bizcoPay"
-                checked={paymentMethod === "bizcoPay"}
-                onChange={(e) => handlePaymentChange(e.target.value)}
-              />
-              BizCoPay
-            </label>
+            {/* Détails selon la méthode */}
+            <div className="mt-2 space-y-2">
+              {/* Cash */}
+              {paymentMethod === "cash" && (
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Montant payé
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Montant payé"
+                    value={paymentDetails.amountPaid ?? totalPayment}
+                    onChange={(e) => handleDetailChange("amountPaid", e.target.value)}
+                    className={`w-full p-2 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 ${
+                      amountError ? "border-red-500" : "border-gray-300"
+                    }`}
+                  />
+                  {amountError && (
+                    <span className="text-red-500 text-xs mt-1">
+                      Montant ne peut pas dépasser {totalPayment.toLocaleString()} FBU
+                    </span>
+                  )}
+                </div>
+              )}
 
-            {/* Bank Transfer */}
-            <label className="flex items-center gap-2 text-gray-700 font-medium cursor-pointer">
-              <input
-                type="radio"
-                className="w-4 h-4 accent-blue-600 cursor-pointer"
-                value="bankTransfer"
-                checked={paymentMethod === "bankTransfer"}
-                onChange={(e) => handlePaymentChange(e.target.value)}
-              />
-              Versement Bancaire
-            </label>
-            {paymentMethod === "bankTransfer" && (
-              <div className="flex flex-col gap-2">
-                <input
-                  type="text"
-                  placeholder="Numéro de Bordereau"
-                  value={paymentDetails.borderoNumber || ""}
-                  onChange={(e) => handleDetailChange("borderoNumber", e.target.value)}
-                  className="mt-1 w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
-                />
-                <input
-                  type="text"
-                  placeholder="Nom de la Banque"
-                  value={paymentDetails.bankName || ""}
-                  onChange={(e) => handleDetailChange("bankName", e.target.value)}
-                  className="mt-1 w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
-                />
-                <input
-                  type="number"
-                  placeholder="Montant Payé"
-                  value={paymentDetails.amountPaid || ""}
-                  onChange={(e) => handleDetailChange("amountPaid", e.target.value)}
-                  className={`mt-1 w-full p-2 text-sm border rounded-lg focus:outline-none focus:border-blue-600 ${
-                    amountError ? "border-red-500" : "border-gray-300"
-                  }`}
-                />
-                {amountError && (
-                  <span className="text-red-500 text-xs mt-1 ml-0.5">
-                    Montant ne peut pas dépasser le total dû.
+              {/* Versement Bancaire */}
+              {paymentMethod === "bankTransfer" && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Numéro bordereau
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="N° bordereau"
+                      value={paymentDetails.borderoNumber || ""}
+                      onChange={(e) => handleDetailChange("borderoNumber", e.target.value)}
+                      className="w-full p-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Banque
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Nom banque"
+                      value={paymentDetails.bankName || ""}
+                      onChange={(e) => handleDetailChange("bankName", e.target.value)}
+                      className="w-full p-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Montant
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="Montant payé"
+                      value={paymentDetails.amountPaid || ""}
+                      onChange={(e) => handleDetailChange("amountPaid", e.target.value)}
+                      className={`w-full p-2 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 ${
+                        amountError ? "border-red-500" : "border-gray-300"
+                      }`}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Date
+                    </label>
+                    <input
+                      type="date"
+                      value={paymentDetails.borderoDate || ""}
+                      onChange={(e) => handleDetailChange("borderoDate", e.target.value)}
+                      className="w-full p-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                  {amountError && (
+                    <div className="sm:col-span-2">
+                      <span className="text-red-500 text-xs">
+                        Montant ne peut pas dépasser {totalPayment.toLocaleString()} FBU
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Dépôt Électronique */}
+              {paymentMethod === "electronicDeposit" && (
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Informations transaction
+                  </label>
+                    <input
+                      type="text"
+                      placeholder="Détails de la transaction"
+                      value={paymentDetails.transactionInfo || ""}
+                      onChange={(e) => handleDetailChange("transactionInfo", e.target.value)}
+                      className="w-full p-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                </div>
+              )}
+
+              {/* Dette */}
+              {paymentMethod === "debt" && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Montant dette
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="Montant dû"
+                      value={paymentDetails.debtAmount || ""}
+                      onChange={(e) => handleDetailChange("debtAmount", e.target.value)}
+                      className="w-full p-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Matériel non remis
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Description du matériel"
+                      value={paymentDetails.unreturnedMaterial || ""}
+                      onChange={(e) => handleDetailChange("unreturnedMaterial", e.target.value)}
+                      className="w-full p-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Promotion */}
+              {paymentMethod === "promotion" && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Code promo
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Code promotionnel"
+                      value={paymentDetails.promoCode || ""}
+                      onChange={(e) => handleDetailChange("promoCode", e.target.value)}
+                      className="w-full p-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Montant promo
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="Montant réduction"
+                      value={paymentDetails.promoAmount || ""}
+                      onChange={(e) => handleDetailChange("promoAmount", e.target.value)}
+                      className="w-full p-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Total à payer */}
+            {totalPayment > 0 && (
+              <div className="pt-2 border-t border-gray-200">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="font-medium text-gray-700">Total à payer :</span>
+                  <span className="font-bold text-green-600">
+                    {totalPayment.toLocaleString()} FBU
                   </span>
-                )}
-                <input
-                  type="date"
-                  value={paymentDetails.borderoDate || ""}
-                  onChange={(e) => handleDetailChange("borderoDate", e.target.value)}
-                  className="mt-1 w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
-                />
-              </div>
-            )}
-
-            {/* Electronic Deposit */}
-            <label className="flex items-center gap-2 text-gray-700 font-medium cursor-pointer">
-              <input
-                type="radio"
-                className="w-4 h-4 accent-blue-600 cursor-pointer"
-                value="electronicDeposit"
-                checked={paymentMethod === "electronicDeposit"}
-                onChange={(e) => handlePaymentChange(e.target.value)}
-              />
-              Dépôt Électronique
-            </label>
-            {paymentMethod === "electronicDeposit" && (
-              <input
-                type="text"
-                placeholder="Informations de Transaction"
-                value={paymentDetails.transactionInfo || ""}
-                onChange={(e) => handleDetailChange("transactionInfo", e.target.value)}
-                className="mt-1 w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
-              />
-            )}
-
-            {/* Debt */}
-            <label className="flex items-center gap-2 text-gray-700 font-medium cursor-pointer">
-              <input
-                type="radio"
-                className="w-4 h-4 accent-blue-600 cursor-pointer"
-                value="debt"
-                checked={paymentMethod === "debt"}
-                onChange={(e) => handlePaymentChange(e.target.value)}
-              />
-              Dette (Paiement Ultérieur)
-            </label>
-            {paymentMethod === "debt" && (
-              <div className="flex flex-col gap-2">
-                <input
-                  type="number"
-                  placeholder="Montant de la Dette"
-                  value={paymentDetails.debtAmount || ""}
-                  onChange={(e) => handleDetailChange("debtAmount", e.target.value)}
-                  className="mt-1 w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
-                />
-                <input
-                  type="text"
-                  placeholder="Matériel Non Remis"
-                  value={paymentDetails.unreturnedMaterial || ""}
-                  onChange={(e) => handleDetailChange("unreturnedMaterial", e.target.value)}
-                  className="mt-1 w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
-                />
-              </div>
-            )}
-
-            {/* Promotion */}
-            <label className="flex items-center gap-2 text-gray-700 font-medium cursor-pointer">
-              <input
-                type="radio"
-                className="w-4 h-4 accent-blue-600 cursor-pointer"
-                value="promotion"
-                checked={paymentMethod === "promotion"}
-                onChange={(e) => handlePaymentChange(e.target.value)}
-              />
-              Promotion
-            </label>
-            {paymentMethod === "promotion" && (
-              <div className="flex flex-col gap-2">
-                <input
-                  type="text"
-                  placeholder="Code Promotionnel"
-                  value={paymentDetails.promoCode || ""}
-                  onChange={(e) => handleDetailChange("promoCode", e.target.value)}
-                  className="mt-1 w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
-                />
-                <input
-                  type="number"
-                  placeholder="Montant Promotion"
-                  value={paymentDetails.promoAmount || ""}
-                  onChange={(e) => handleDetailChange("promoAmount", e.target.value)}
-                  className="mt-1 w-full p-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
-                />
+                </div>
               </div>
             )}
           </div>

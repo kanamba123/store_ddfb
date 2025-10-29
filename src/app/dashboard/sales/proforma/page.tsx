@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { FaEye, FaEdit, FaTrash, FaPrint, FaSyncAlt } from "react-icons/fa";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useProformas } from "@/hooks/apis/useProformas";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
@@ -11,6 +12,7 @@ export default function ViewProforma() {
   const { data: proformas, isLoading, isError, refetch } = useProformas();
   const [selectedProformas, setSelectedProformas] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
 
   const filteredProformas = proformas?.filter((p: any) =>
     `${p.customer?.firstName ?? ""} ${p.customer?.lastName ?? ""}`
@@ -154,9 +156,7 @@ export default function ViewProforma() {
                     <div className="flex justify-center gap-3">
                       <FaEye
                         className="text-blue-500 cursor-pointer hover:scale-125 transition-transform"
-                        onClick={() =>
-                          notifyInfo(`Voir proforma #${proforma.id}`)
-                        }
+                        onClick={() => router.push(`/dashboard/sales/proforma/${proforma.id}`)}
                       />
                       <FaEdit
                         className="text-yellow-500 cursor-pointer hover:scale-125 transition-transform"

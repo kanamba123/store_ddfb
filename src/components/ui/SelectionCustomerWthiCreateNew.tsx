@@ -1,5 +1,5 @@
 import React from "react";
-import Select, { SingleValue, MultiValue } from "react-select";
+import Select from "react-select";
 
 interface SelectionCustomerWithCreateNewProps<T> {
   optionsData: T[];
@@ -19,12 +19,12 @@ const SelectionCustomerWithCreateNew = <T,>({
   labelKey2,
   valueKey,
   placeholderText = "Sélectionner un client",
-  createNewLabel = "Créer un nouveau client",
+  createNewLabel = "➕ Nouveau client",
   selectedValue,
 }: SelectionCustomerWithCreateNewProps<T>) => {
   // Transformer les données en format Select
   const formattedOptions = optionsData.map((item) => ({
-    label: `${item[labelKey2]} ${item[labelKey1]}`,
+    label: `${item[labelKey1]} ${item[labelKey2] || ""}`.trim(),
     value: item[valueKey],
   }));
 
@@ -34,11 +34,12 @@ const SelectionCustomerWithCreateNew = <T,>({
   const customStyles = {
     control: (base: any, state: any) => ({
       ...base,
-      borderRadius: "0.5rem",
+      borderRadius: "0.375rem",
       borderColor: state.isFocused ? "#3b82f6" : "#d1d5db",
       boxShadow: state.isFocused ? "0 0 0 1px #3b82f6" : "none",
       padding: "0.1rem",
-      minHeight: "40px",
+      minHeight: "38px",
+      fontSize: "0.875rem",
     }),
     option: (base: any, state: any) => ({
       ...base,
@@ -49,31 +50,42 @@ const SelectionCustomerWithCreateNew = <T,>({
         : "white",
       color: state.isSelected ? "white" : "#111827",
       cursor: "pointer",
-      padding: "0.5rem 1rem",
+      padding: "0.375rem 0.75rem",
+      fontSize: "0.875rem",
     }),
-    menu: (base: any) => ({ ...base, borderRadius: "0.5rem", zIndex: 9999 }),
+    menu: (base: any) => ({ 
+      ...base, 
+      borderRadius: "0.375rem", 
+      zIndex: 9999,
+      fontSize: "0.875rem"
+    }),
     menuPortal: (base: any) => ({ ...base, zIndex: 9999 }),
-    singleValue: (base: any) => ({ ...base, color: "#111827" }),
-    multiValue: (base: any) => ({ ...base, backgroundColor: "#bfdbfe", borderRadius: "0.375rem" }),
-    multiValueLabel: (base: any) => ({ ...base, color: "#1e3a8a" }),
-    multiValueRemove: (base: any) => ({
+    singleValue: (base: any) => ({ 
+      ...base, 
+      color: "#111827",
+      fontSize: "0.875rem"
+    }),
+    placeholder: (base: any) => ({
       ...base,
-      color: "#1e3a8a",
-      cursor: "pointer",
-      ":hover": { backgroundColor: "#3b82f6", color: "white" },
+      fontSize: "0.875rem",
+      color: "#6b7280"
+    }),
+    input: (base: any) => ({
+      ...base,
+      fontSize: "0.875rem"
     }),
   };
 
   return (
-    <div className="mb-3">
+    <div>
       <Select
         options={options}
-        value={selectedValue}
+        value={options.find(option => option.value === selectedValue)}
         onChange={handleSelectionChange}
         placeholder={placeholderText}
         isSearchable
         isClearable
-        className="w-full text-sm"
+        className="text-sm"
         menuPortalTarget={document.body}
         styles={customStyles}
       />
