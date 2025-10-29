@@ -1,17 +1,16 @@
 "use client";
 
 import React, { useRef } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import { FaPrint, FaArrowLeft, FaBuilding, FaUser, FaBox, FaFileAlt } from "react-icons/fa";
+import { FaPrint, FaShare, FaDownload } from "react-icons/fa";
 import { useProformaDetail } from "@/hooks/apis/useProformas";
 
-export default function ViewProformaDetail() {
+export default function PublicProformaView() {
   const { id } = useParams();
-  const router = useRouter();
   const printRef = useRef<HTMLDivElement>(null);
 
-  const { data: proforma, isLoading, isError, refetch } = useProformaDetail(id as string);
+  const { data: proforma, isLoading, isError } = useProformaDetail(id as string);
 
   const handlePrint = () => {
     if (!printRef.current) return;
@@ -91,12 +90,6 @@ export default function ViewProformaDetail() {
                 align-items: center;
                 gap: 8px;
               }
-              .section-title svg { width: 14px; height: 14px; }
-              .info-grid { 
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 16px;
-              }
               .info-card {
                 background: #f8fafc;
                 padding: 12px;
@@ -108,7 +101,6 @@ export default function ViewProformaDetail() {
                 border-collapse: collapse; 
                 margin: 12px 0;
                 font-size: 12px;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
               }
               th { 
                 background: #1e40af;
@@ -122,7 +114,6 @@ export default function ViewProformaDetail() {
                 border-bottom: 1px solid #e5e7eb;
               }
               tr:nth-child(even) { background: #f8fafc; }
-              tr:hover { background: #f1f5f9; }
               .total-section { 
                 background: linear-gradient(135deg, #f8fafc, #e2e8f0);
                 padding: 20px;
@@ -161,11 +152,19 @@ export default function ViewProformaDetail() {
                 font-size: 10px;
                 font-weight: 600;
               }
+              .no-print { display: none !important; }
+              .public-banner {
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                padding: 10px;
+                text-align: center;
+                margin-bottom: 20px;
+                border-radius: 6px;
+              }
               @page { 
                 margin: 1.5cm;
                 size: A4;
               }
-              .no-print { display: none !important; }
             }
             @media screen {
               .print-only { display: none; }
@@ -184,18 +183,41 @@ export default function ViewProformaDetail() {
     window.print();
     document.body.innerHTML = originalContents;
     document.title = originalTitle;
-    window.location.reload();
+  };
+
+  const handleShare = async () => {
+    const url = window.location.href;
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `Proforma Win2Cop - ${proforma?.proformaNumber}`,
+          text: `Veuillez trouver votre proforma ${proforma?.proformaNumber}`,
+          url: url,
+        });
+      } else {
+        await navigator.clipboard.writeText(url);
+        alert('Lien copié dans le presse-papier !');
+      }
+    } catch (error) {
+      console.error('Erreur de partage:', error);
+    }
+  };
+
+  const handleDownloadPDF = () => {
+    // Implémentation pour générer un PDF
+    // Vous pouvez utiliser des librairies comme jsPDF ou html2pdf.js
+    alert('Fonctionnalité PDF à implémenter');
   };
 
   if (isLoading) return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <LoadingSpinner text="Chargement du proforma..." isLoading />
     </div>
   );
   
   if (isError || !proforma) return (
-    <div className="min-h-screen flex items-center justify-center">
-      <LoadingSpinner text="Erreur ou proforma introuvable" isError />
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <LoadingSpinner text="Proforma introuvable ou lien expiré" isError />
     </div>
   );
 
@@ -207,50 +229,50 @@ export default function ViewProformaDetail() {
     website: "www.win2cop.bi"
   };
 
-  const getStatusColor = (status: string) => {
-    const colors = {
-      draft: "bg-gray-500",
-      sent: "bg-blue-500",
-      accepted: "bg-green-500",
-      rejected: "bg-red-500",
-      expired: "bg-yellow-500"
-    };
-    return colors[status as keyof typeof colors] || "bg-gray-500";
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-6 px-4">
-      <div className="max-w-6xl mx-auto">
-        {/* En-tête avec boutons */}
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 no-print">
-          <button
-            className="flex items-center gap-3 bg-white px-4 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 hover:border-blue-300 text-gray-700 hover:text-blue-700"
-            onClick={() => router.back()}
-          >
-            <FaArrowLeft className="text-lg" />
-            <span className="font-medium">Retour</span>
-          </button>
-          
-          <div className="flex items-center gap-3">
-            <div className="bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-200">
-              <span className="text-sm text-gray-600">Statut:</span>
-              <span className={`ml-2 px-3 py-1 rounded-full text-xs font-medium text-white ${getStatusColor(proforma.status)}`}>
-                {proforma.status.toUpperCase()}
-              </span>
-            </div>
-            <button
-              className="flex items-center gap-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:from-green-700 hover:to-emerald-700 font-medium"
-              onClick={handlePrint}
-            >
-              <FaPrint className="text-lg" />
-              <span>Imprimer le Proforma</span>
-            </button>
-          </div>
+      <div className="max-w-7xl mx-auto">
+        {/* Bannière publique */}
+        <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-xl mb-6 text-center">
+          <h1 className="text-xl font-bold mb-2">Votre Proforma Win2Cop</h1>
+          <p className="text-blue-100">Ce lien vous permet de visualiser et partager votre proforma</p>
         </div>
 
-        {/* Contenu principal */}
+        {/* Actions publiques */}
+        <div className="flex flex-wrap gap-3 justify-center mb-6 no-print">
+          <button
+            className="flex items-center gap-2 bg-white px-4 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 border border-gray-200 hover:border-blue-300 text-gray-700"
+            onClick={handlePrint}
+          >
+            <FaPrint />
+            <span>Imprimer</span>
+          </button>
+          
+          <button
+            className="flex items-center gap-2 bg-blue-600 text-white px-4 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:bg-blue-700"
+            onClick={handleShare}
+          >
+            <FaShare />
+            <span>Partager</span>
+          </button>
+          
+          <button
+            className="flex items-center gap-2 bg-green-600 text-white px-4 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:bg-green-700"
+            onClick={handleDownloadPDF}
+          >
+            <FaDownload />
+            <span>Télécharger PDF</span>
+          </button>
+        </div>
+
+        {/* Contenu du proforma */}
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200">
-          <div ref={printRef} className="p-8">
+          <div ref={printRef} className="p-6">
+            {/* Bannière publique pour l'impression */}
+            <div className="public-banner print-only">
+              <strong>PROFORMA CLIENT - WIN2COP</strong>
+            </div>
+
             {/* En-tête d'impression */}
             <div className="print-header">
               <div className="company-info">
@@ -274,77 +296,34 @@ export default function ViewProformaDetail() {
                 <h2 className="text-2xl font-bold text-gray-800 mb-3">PROFORMA</h2>
                 <div className="space-y-2 text-sm">
                   <p><strong>N°:</strong> <span className="text-blue-600 font-semibold">{proforma.proformaNumber}</span></p>
-                  <p><strong>Date:</strong> {new Date(proforma.createdAt).toLocaleDateString('fr-FR', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
-                  })}</p>
+                  <p><strong>Date:</strong> {new Date(proforma.createdAt).toLocaleDateString('fr-FR')}</p>
                   <p><strong>Statut:</strong> <span className="badge capitalize">{proforma.status}</span></p>
                 </div>
               </div>
             </div>
 
-            {/* Grid d'informations */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-              {/* Informations Client */}
-              <div className="section">
-                <div className="section-title">
-                  <FaUser className="inline" />
-                  INFORMATIONS CLIENT
-                </div>
-                <div className="info-card">
-                  <div className="space-y-3">
-                    <div>
-                      <label className="text-xs font-semibold text-gray-500 uppercase">Nom complet</label>
-                      <p className="font-medium text-gray-800">
-                        {proforma.customer?.firstName} {proforma.customer?.lastName}
-                      </p>
-                    </div>
-                    <div>
-                      <label className="text-xs font-semibold text-gray-500 uppercase">Adresse</label>
-                      <p className="text-gray-700">{proforma.customer?.address || "Non renseignée"}</p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="text-xs font-semibold text-gray-500 uppercase">Téléphone</label>
-                        <p className="text-gray-700">{proforma.customer?.phone || "Non renseigné"}</p>
-                      </div>
-                      <div>
-                        <label className="text-xs font-semibold text-gray-500 uppercase">Email</label>
-                        <p className="text-gray-700">{proforma.customer?.email || "Non renseigné"}</p>
-                      </div>
-                    </div>
+            {/* Informations Client */}
+            <div className="section">
+              <div className="section-title">
+                INFORMATIONS CLIENT
+              </div>
+              <div className="info-card">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p><strong>Nom:</strong> {proforma.customer?.firstName} {proforma.customer?.lastName}</p>
+                    <p><strong>Adresse:</strong> {proforma.customer?.address || "Non renseignée"}</p>
+                  </div>
+                  <div>
+                    <p><strong>Téléphone:</strong> {proforma.customer?.phone || "Non renseigné"}</p>
+                    <p><strong>Email:</strong> {proforma.customer?.email || "Non renseigné"}</p>
                   </div>
                 </div>
               </div>
-
-              {/* Informations Magasin */}
-              {proforma.store && (
-                <div className="section">
-                  <div className="section-title">
-                    <FaBuilding className="inline" />
-                    MAGASIN
-                  </div>
-                  <div className="info-card">
-                    <div className="space-y-3">
-                      <div>
-                        <label className="text-xs font-semibold text-gray-500 uppercase">Nom du magasin</label>
-                        <p className="font-medium text-gray-800">{proforma.store.name}</p>
-                      </div>
-                      <div>
-                        <label className="text-xs font-semibold text-gray-500 uppercase">Adresse</label>
-                        <p className="text-gray-700">{proforma.store.address || "Non renseignée"}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
             </div>
 
             {/* Produits et Services */}
             <div className="section">
               <div className="section-title">
-                <FaBox className="inline" />
                 PRODUITS ET SERVICES
               </div>
               <div className="overflow-x-auto">
@@ -362,14 +341,10 @@ export default function ViewProformaDetail() {
                     {Object.values(proforma.items).map((item: any, idx: number) => (
                       <tr key={idx}>
                         <td className="font-medium text-gray-800">{item.name}</td>
-                        <td>
-                          <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium capitalize">
-                            {item.variantType}
-                          </span>
-                        </td>
-                        <td className="text-center font-semibold">{item.quantity}</td>
-                        <td className="text-right font-mono">{Number(item.price).toLocaleString()} FBu</td>
-                        <td className="text-right font-mono font-semibold text-green-600">
+                        <td className="capitalize">{item.variantType}</td>
+                        <td className="text-center">{item.quantity}</td>
+                        <td className="text-right">{Number(item.price).toLocaleString()} FBu</td>
+                        <td className="text-right font-semibold text-green-600">
                           {Number(item.total).toLocaleString()} FBu
                         </td>
                       </tr>
@@ -383,18 +358,18 @@ export default function ViewProformaDetail() {
             <div className="total-section">
               <div className="max-w-md ml-auto">
                 <div className="total-row">
-                  <span className="text-gray-600">Sous-total:</span>
-                  <span className="font-mono font-semibold">{Number(proforma.subtotal).toLocaleString()} FBu</span>
+                  <span>Sous-total:</span>
+                  <span className="font-semibold">{Number(proforma.subtotal).toLocaleString()} FBu</span>
                 </div>
                 {proforma.tax > 0 && (
                   <div className="total-row">
-                    <span className="text-gray-600">Taxe:</span>
-                    <span className="font-mono font-semibold">{Number(proforma.tax).toLocaleString()} FBu</span>
+                    <span>Taxe:</span>
+                    <span className="font-semibold">{Number(proforma.tax).toLocaleString()} FBu</span>
                   </div>
                 )}
                 <div className="total-row total-final">
-                  <span className="text-lg font-bold text-gray-800">Total général:</span>
-                  <span className="total-amount text-lg font-mono">
+                  <strong>Total général:</strong>
+                  <span className="total-amount">
                     {Number(proforma.total).toLocaleString()} FBu
                   </span>
                 </div>
@@ -405,11 +380,10 @@ export default function ViewProformaDetail() {
             {proforma.notes && (
               <div className="section">
                 <div className="section-title">
-                  <FaFileAlt className="inline" />
                   NOTES
                 </div>
                 <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                  <p className="text-amber-800 leading-relaxed">{proforma.notes}</p>
+                  <p className="text-amber-800">{proforma.notes}</p>
                 </div>
               </div>
             )}
@@ -422,17 +396,17 @@ export default function ViewProformaDetail() {
                   {companyInfo.name} • {companyInfo.address} • {companyInfo.phone}
                 </p>
                 <p className="text-xs text-gray-400">
-                  Proforma générée le {new Date().toLocaleDateString('fr-FR', { 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                  })}
+                  Document généré le {new Date().toLocaleDateString('fr-FR')}
                 </p>
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Informations de contact */}
+        <div className="mt-6 text-center text-sm text-gray-600 no-print">
+          <p>Pour toute question concernant cette proforma, contactez-nous :</p>
+          <p className="font-medium">{companyInfo.phone} | {companyInfo.email}</p>
         </div>
       </div>
     </div>
