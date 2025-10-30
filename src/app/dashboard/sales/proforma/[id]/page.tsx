@@ -1,14 +1,25 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import { FaPrint, FaShare, FaDownload, FaKey, FaTimes } from "react-icons/fa";
+import { FaPrint, FaShare, FaDownload, FaKey, FaTimes, FaCopy, FaTrash, FaEye, FaClock, FaLink } from "react-icons/fa";
 import { useProformaDetail } from "@/hooks/apis/useProformas";
 import { useAuth } from "@/contexts/AuthContext";
 import { useStoreDetail } from "@/hooks/apis/useStores";
 import API from "@/config/Axios";
 
+interface Token {
+  id: string;
+  token: string;
+  url: string;
+  validHours: number;
+  createdAt: string;
+  expiresAt: string;
+  isActive: boolean;
+  usageCount: number;
+  expired: string;
+}
 
 export default function PublicProformaView() {
   const { id } = useParams();
@@ -18,12 +29,37 @@ export default function PublicProformaView() {
   const [validHours, setValidHours] = useState(24);
   const [tokenData, setTokenData] = useState<any>(null);
   const [loadingToken, setLoadingToken] = useState(false);
+  const [tokens, setTokens] = useState<Token[]>([]);
+  const [loadingTokens, setLoadingTokens] = useState(false);
 
   const { user } = useAuth();
-
   const { data: detailStore } = useStoreDetail(user?.store?.id as string);
-
   const { data: proforma, isLoading, isError } = useProformaDetail(id as string);
+
+  // Charger la liste des tokens existants
+  useEffect(() => {
+    if (isTokenPanelOpen && proforma?.id) {
+      fetchTokens();
+    }
+  }, [isTokenPanelOpen, proforma?.id]);
+
+  const fetchTokens = async () => {
+    try {
+      setLoadingTokens(true);
+      const response = await API.get(`/public-upload`);
+
+      console.log(response)
+      setTokens(response.data || []);
+    } catch (error) {
+      console.error("Erreur lors du chargement des tokens:", error);
+      setTokens([]);
+    } finally {
+      setLoadingTokens(false);
+    }
+  };
+
+
+  console.log(tokenData)
 
   const handlePrint = () => {
     if (!printRef.current || !proforma) return;
@@ -234,11 +270,9 @@ export default function PublicProformaView() {
 
     document.body.innerHTML = printDocument;
 
-    // Attendre que le contenu soit chargé avant d'imprimer
     setTimeout(() => {
       window.print();
 
-      // Restaurer le contenu original
       setTimeout(() => {
         document.body.innerHTML = originalContents;
         document.title = originalTitle;
@@ -246,7 +280,6 @@ export default function PublicProformaView() {
       }, 500);
     }, 100);
   };
-
 
   const handleGenerateToken = async () => {
     try {
@@ -258,18 +291,35 @@ export default function PublicProformaView() {
         validHours,
       };
 
-      const res = await API.post(`/public-upload/generateLinkToShareProforma/client`, {
-        ...body
-      });
-
+      const res = await API.post(`/public-upload/generateLinkToShareProforma/client`, body);
       setTokenData(res.data);
-      console.log("Date ", tokenData)
+
+      // Recharger la liste des tokens
+      await fetchTokens();
 
     } catch (err: any) {
       alert(err.message);
     } finally {
       setLoadingToken(false);
     }
+  };
+
+  const handleDeleteToken = async (tokenId: string) => {
+    if (!confirm("Êtes-vous sûr de vouloir supprimer ce token ?")) return;
+
+    try {
+      await API.delete(`/public-upload/tokens/${tokenId}`);
+      // Recharger la liste des tokens
+      await fetchTokens();
+    } catch (error) {
+      console.error("Erreur lors de la suppression:", error);
+      alert("Erreur lors de la suppression du token");
+    }
+  };
+
+  const handleCopyToken = (url: string) => {
+    navigator.clipboard.writeText(url);
+    alert("Lien copié dans le presse-papier !");
   };
 
   const handleShare = async () => {
@@ -294,6 +344,20 @@ export default function PublicProformaView() {
     alert('Fonctionnalité PDF à implémenter');
   };
 
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
+
+  const isTokenExpired = (expiresAt: string) => {
+    return new Date(expiresAt) < new Date();
+  };
+
   if (isLoading) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <LoadingSpinner text="Chargement du proforma..." isLoading />
@@ -307,10 +371,10 @@ export default function PublicProformaView() {
   );
 
   const companyInfo = {
-    name: detailStore.storeName,
-    address: detailStore?.storeAddress,
-    phone: detailStore?.storeContactPhone?.call,
-    email: detailStore?.storeContactMail,
+    name: detailStore?.storeName || "Win2Cop",
+    address: detailStore?.storeAddress || "Adresse non renseignée",
+    phone: detailStore?.storeContactPhone?.call || "+257 61 123 456",
+    email: detailStore?.storeContactMail || "contact@win2cop.bi",
     website: "https://www.win2cop.com"
   };
 
@@ -353,7 +417,7 @@ export default function PublicProformaView() {
             className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-3 rounded-xl hover:bg-indigo-700 transition"
             onClick={() => setIsTokenPanelOpen(true)}
           >
-            <FaKey /> <span>Générer un lien public</span>
+            <FaKey /> <span>Gérer les liens publics</span>
           </button>
         </div>
 
@@ -501,67 +565,178 @@ export default function PublicProformaView() {
           <p className="font-medium">{companyInfo.phone} | {companyInfo.email}</p>
         </div>
 
-        {/* ✅ PANEL TOKEN */}
+        {/* ✅ PANEL TOKEN AMÉLIORÉ */}
         <div
-          className={`fixed top-0 right-0 w-full sm:w-96 h-full bg-white shadow-2xl transform transition-transform duration-300 ${isTokenPanelOpen ? "translate-x-0" : "translate-x-full"
+          className={`fixed top-0 right-0 w-full sm:w-96 h-full bg-white shadow-2xl transform transition-transform duration-300 z-50 ${isTokenPanelOpen ? "translate-x-0" : "translate-x-full"
             }`}
         >
-          <div className="flex justify-between items-center p-4 border-b">
-            <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
-              <FaKey className="text-indigo-600" /> Générer un lien public
-            </h2>
-            <button
-              onClick={() => setIsTokenPanelOpen(false)}
-              className="text-gray-500 hover:text-gray-800"
-            >
-              <FaTimes />
-            </button>
-          </div>
-
-          <div className="p-5 space-y-4">
-            <div>
-              <label className="text-sm font-semibold text-gray-700">
-                Durée de validité (en heures)
-              </label>
-              <input
-                type="number"
-                min="1"
-                value={validHours}
-                onChange={(e) => setValidHours(Number(e.target.value))}
-                className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
-              />
+          <div className="flex flex-col h-full">
+            {/* Header */}
+            <div className="flex justify-between items-center p-4 border-b bg-gray-50">
+              <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+                <FaKey className="text-indigo-600" /> Liens publics
+              </h2>
+              <button
+                onClick={() => setIsTokenPanelOpen(false)}
+                className="text-gray-500 hover:text-gray-800 p-1 rounded-lg hover:bg-gray-200 transition"
+              >
+                <FaTimes />
+              </button>
             </div>
 
-            <button
-              disabled={loadingToken}
-              onClick={handleGenerateToken}
-              className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition"
-            >
-              {loadingToken ? "Génération..." : "Générer le lien sécurisé"}
-            </button>
+            {/* Contenu */}
+            <div className="flex-1 overflow-y-auto">
+              <div className="p-4 space-y-4">
+                {/* Formulaire de génération */}
+                <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                  <h3 className="font-semibold text-blue-800 mb-3 flex items-center gap-2">
+                    <FaLink className="text-blue-600" />
+                    Nouveau lien public
+                  </h3>
 
-            {tokenData && (
-              <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-3">
-                <p className="text-green-700 text-sm font-medium mb-2">
-                  ✅ Lien généré avec succès !
-                </p>
-                <input
-                  readOnly
-                  value={`${tokenData.url}`}
-                  className="w-full text-xs border border-gray-200 rounded px-2 py-1 bg-gray-50"
-                />
-                <button
-                  onClick={() =>
-                    navigator.clipboard.writeText(tokenData.url)
-                  }
-                  className="mt-2 text-xs text-blue-600 underline"
-                >
-                  Copier le lien
-                </button>
+                  <div className="space-y-3">
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 block mb-1">
+                        Durée de validité (heures)
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        max="720"
+                        value={validHours}
+                        onChange={(e) => setValidHours(Number(e.target.value))}
+                        className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                        placeholder="Ex: 24"
+                      />
+                      <p className="text-xs text-gray-500 mt-1">
+                        Maximum 720 heures (30 jours)
+                      </p>
+                    </div>
+
+                    <button
+                      disabled={loadingToken}
+                      onClick={handleGenerateToken}
+                      className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    >
+                      {loadingToken ? (
+                        <>
+                          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          Génération...
+                        </>
+                      ) : (
+                        <>
+                          <FaKey className="w-4 h-4" />
+                          Générer un nouveau lien
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Liste des tokens existants */}
+                <div>
+                  <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                    <FaClock className="text-gray-600" />
+                    Liens existants ({tokens.length})
+                  </h3>
+
+                  {loadingTokens ? (
+                    <div className="text-center py-8">
+                      <div className="w-6 h-6 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+                      <p className="text-sm text-gray-600">Chargement des liens...</p>
+                    </div>
+                  ) : tokens.length === 0 ? (
+                    <div className="text-center py-8 bg-gray-50 rounded-lg border border-gray-200">
+                      <FaKey className="w-8 h-8 text-gray-400 mx-auto mb-2" />
+                      <p className="text-sm text-gray-600">Aucun lien public généré</p>
+                    </div>
+                  ) : (
+                    <div className="space-y-3 max-h-96 overflow-y-auto">
+                      {tokens.map((token) => (
+                        <div
+                          key={token.id}
+                          className={`border rounded-lg p-3 ${isTokenExpired(token.expiresAt)
+                            ? 'bg-red-50 border-red-200'
+                            : 'bg-white border-gray-200'
+                            }`}
+                        >
+                          <div className="flex justify-between items-start mb-2">
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2 mb-1">
+                                <span className={`text-xs font-medium px-2 py-1 rounded-full ${isTokenExpired(token.expiresAt)
+                                  ? 'bg-red-100 text-red-800'
+                                  : 'bg-green-100 text-green-800'
+                                  }`}>
+                                  {isTokenExpired(token?.expired) ? 'Expiré' : 'Actif'}
+                                </span>
+                                <span className="text-xs text-gray-500">
+                                  Utilisations: {token.usageCount || 0}
+                                </span>
+                              </div>
+
+                              <div className="text-xs text-gray-600 space-y-1">
+                                <div className="flex items-center gap-1">
+                                  <FaClock className="w-3 h-3" />
+                                  <span>Créé: {formatDate(token.createdAt)}</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <FaTimes className="w-3 h-3" />
+                                  <span>Expire: {formatDate(token.expiresAt)}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex gap-1 ml-2">
+                              <button
+                                onClick={() => handleCopyToken(token.url)}
+                                className="p-1.5 text-blue-600 hover:bg-blue-100 rounded transition"
+                                title="Copier le lien"
+                              >
+                                <FaCopy className="w-3 h-3" />
+                              </button>
+                              <button
+                                onClick={() => handleDeleteToken(token.id)}
+                                className="p-1.5 text-red-600 hover:bg-red-100 rounded transition"
+                                title="Supprimer"
+                              >
+                                <FaTrash className="w-3 h-3" />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="mt-2">
+                            <input
+                              readOnly
+                              value={token.url}
+                              className="w-full text-xs border border-gray-300 rounded px-2 py-1 bg-gray-50 truncate"
+                              onClick={(e) => e.currentTarget.select()}
+                            />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-            )}
+            </div>
+
+            {/* Footer */}
+            <div className="p-4 border-t bg-gray-50">
+              <div className="text-xs text-gray-600 space-y-1">
+                <p>💡 Les liens publics permettent un accès temporaire au proforma</p>
+                <p>🔒 Ils expirent automatiquement après la durée définie</p>
+              </div>
+            </div>
           </div>
         </div>
+
+        {/* Overlay pour fermer le panel */}
+        {isTokenPanelOpen && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => setIsTokenPanelOpen(false)}
+          />
+        )}
       </div>
     </div>
   );
