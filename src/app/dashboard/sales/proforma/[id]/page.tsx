@@ -1,17 +1,23 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
-import { FaPrint, FaShare, FaDownload } from "react-icons/fa";
+import { FaPrint, FaShare, FaDownload, FaKey, FaTimes } from "react-icons/fa";
 import { useProformaDetail } from "@/hooks/apis/useProformas";
 import { useAuth } from "@/contexts/AuthContext";
 import { useStoreDetail } from "@/hooks/apis/useStores";
+import API from "@/config/Axios";
 
 
 export default function PublicProformaView() {
   const { id } = useParams();
   const printRef = useRef<HTMLDivElement>(null);
+
+  const [isTokenPanelOpen, setIsTokenPanelOpen] = useState(false);
+  const [validHours, setValidHours] = useState(24);
+  const [tokenData, setTokenData] = useState<any>(null);
+  const [loadingToken, setLoadingToken] = useState(false);
 
   const { user } = useAuth();
 
@@ -241,6 +247,31 @@ export default function PublicProformaView() {
     }, 100);
   };
 
+
+  const handleGenerateToken = async () => {
+    try {
+      setLoadingToken(true);
+      const body = {
+        customerId: proforma?.customerId,
+        storeId: user?.store?.id,
+        proformaId: proforma?.id,
+        validHours,
+      };
+
+      const res = await API.post(`/public-upload/generateLinkToShareProforma/client`, {
+        ...body
+      });
+
+      setTokenData(res.data);
+      console.log("Date ", tokenData)
+
+    } catch (err: any) {
+      alert(err.message);
+    } finally {
+      setLoadingToken(false);
+    }
+  };
+
   const handleShare = async () => {
     const url = window.location.href;
     try {
@@ -316,6 +347,13 @@ export default function PublicProformaView() {
           >
             <FaDownload />
             <span>Télécharger PDF</span>
+          </button>
+
+          <button
+            className="flex items-center gap-2 bg-indigo-600 text-white px-4 py-3 rounded-xl hover:bg-indigo-700 transition"
+            onClick={() => setIsTokenPanelOpen(true)}
+          >
+            <FaKey /> <span>Générer un lien public</span>
           </button>
         </div>
 
@@ -461,6 +499,68 @@ export default function PublicProformaView() {
         <div className="mt-6 text-center text-sm text-gray-600 no-print">
           <p>Pour toute question concernant cette proforma, contactez-nous :</p>
           <p className="font-medium">{companyInfo.phone} | {companyInfo.email}</p>
+        </div>
+
+        {/* ✅ PANEL TOKEN */}
+        <div
+          className={`fixed top-0 right-0 w-full sm:w-96 h-full bg-white shadow-2xl transform transition-transform duration-300 ${isTokenPanelOpen ? "translate-x-0" : "translate-x-full"
+            }`}
+        >
+          <div className="flex justify-between items-center p-4 border-b">
+            <h2 className="text-lg font-bold text-gray-800 flex items-center gap-2">
+              <FaKey className="text-indigo-600" /> Générer un lien public
+            </h2>
+            <button
+              onClick={() => setIsTokenPanelOpen(false)}
+              className="text-gray-500 hover:text-gray-800"
+            >
+              <FaTimes />
+            </button>
+          </div>
+
+          <div className="p-5 space-y-4">
+            <div>
+              <label className="text-sm font-semibold text-gray-700">
+                Durée de validité (en heures)
+              </label>
+              <input
+                type="number"
+                min="1"
+                value={validHours}
+                onChange={(e) => setValidHours(Number(e.target.value))}
+                className="mt-1 w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+              />
+            </div>
+
+            <button
+              disabled={loadingToken}
+              onClick={handleGenerateToken}
+              className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition"
+            >
+              {loadingToken ? "Génération..." : "Générer le lien sécurisé"}
+            </button>
+
+            {tokenData && (
+              <div className="mt-4 bg-green-50 border border-green-200 rounded-lg p-3">
+                <p className="text-green-700 text-sm font-medium mb-2">
+                  ✅ Lien généré avec succès !
+                </p>
+                <input
+                  readOnly
+                  value={`${tokenData.url}`}
+                  className="w-full text-xs border border-gray-200 rounded px-2 py-1 bg-gray-50"
+                />
+                <button
+                  onClick={() =>
+                    navigator.clipboard.writeText(tokenData.url)
+                  }
+                  className="mt-2 text-xs text-blue-600 underline"
+                >
+                  Copier le lien
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
