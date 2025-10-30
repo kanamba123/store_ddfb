@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, FormEvent, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useParams,useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { useRedirectContext } from "@/contexts/RedirectProvider";
 import { API_URL } from "@/config/API";
@@ -19,7 +19,12 @@ import Logo from "@/components/ui/Logo";
 
 export default function LoginPage() {
   const { t } = useTranslation();
+
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -76,8 +81,8 @@ export default function LoginPage() {
       await login(data.token, data.user);
       localStorage.setItem("fingerprintUserId", data.user.id);
 
-      if (redirectUrl) {
-        window.location.href = redirectUrl;
+      if (redirect) {
+        router.push(redirect)
       } else {
         router.push("/dashboard/welcome");
       }
@@ -262,7 +267,7 @@ export default function LoginPage() {
             </button>
           </div>
 
-          
+
           {errorMsg && (
             <p className="text-sm text-red-500 text-center">{errorMsg}</p>
           )}

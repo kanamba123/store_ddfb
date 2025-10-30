@@ -30,7 +30,8 @@ interface ProductSelectProps {
   setSelectedProducts: React.Dispatch<
     React.SetStateAction<Record<number, SelectedProduct>>
   >;
-  isLoading?: boolean;
+  isLoading?: boolean; // rendu optionnel
+  isError?: boolean;   // rendu optionnel
 }
 
 const CustomOption = (props: any) => {
@@ -76,6 +77,7 @@ const ProductSelect: React.FC<ProductSelectProps> = ({
   selectedProducts,
   setSelectedProducts,
   isLoading = false,
+  isError = false, // par défaut false
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -122,6 +124,7 @@ const ProductSelect: React.FC<ProductSelectProps> = ({
         value={options.filter((opt) => selectedProducts[opt.value])}
         onChange={handleChange}
         isLoading={isLoading}
+        isDisabled={isError} // Désactive le select si erreur
         loadingMessage={() =>
           variantesProducts.length === 0 ? <span className="text-blue-600">Chargement des produits...</span> : null
         }
@@ -129,7 +132,7 @@ const ProductSelect: React.FC<ProductSelectProps> = ({
           Option: (props) => <CustomOption {...props} selectOption={props.selectOption} setValue={props.setValue} />,
           LoadingIndicator: CustomLoadingIndicator,
         }}
-        placeholder="Sélectionner des produits"
+        placeholder={isError ? "Erreur lors du chargement" : "Sélectionner des produits"}
         closeMenuOnSelect={false}
         classNames={{
           control: () => "border border-gray-300 rounded-lg p-1 focus:outline-none focus:ring-2 focus:ring-blue-500",

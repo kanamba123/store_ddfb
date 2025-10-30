@@ -30,6 +30,11 @@ export default function ViewProforma() {
     notifySuccess("🖨 Impression des proformas sélectionnés...");
   };
 
+  const handleEdit = (proformaId: string) => {
+    router.push(`/dashboard/sales/proforma/edit/${proformaId}`); 
+  };
+
+
   return (
     <div className="p-6 bg-white rounded-xl shadow-md">
       {/* 🔹 Toolbar / Header */}
@@ -160,9 +165,7 @@ export default function ViewProforma() {
                       />
                       <FaEdit
                         className="text-yellow-500 cursor-pointer hover:scale-125 transition-transform"
-                        onClick={() =>
-                          notifyInfo(`Modifier proforma #${proforma.id}`)
-                        }
+                        onClick={() => handleEdit(proforma.id)} // ✅ On appelle la fonction avec l'id
                       />
                       <FaTrash
                         className="text-red-500 cursor-pointer hover:scale-125 transition-transform"

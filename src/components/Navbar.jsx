@@ -35,10 +35,6 @@ export default function Navbar({ onToggleSidebar }) {
   const languageContext = useLanguage();
   const { t } = useTranslation();
 
-
-  console.log("User ", user)
-
-
   const changeLanguage = languageContext?.changeLanguage || ((lang) => {
     localStorage.setItem("language", lang);
     document.documentElement.lang = lang;

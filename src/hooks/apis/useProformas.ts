@@ -1,3 +1,4 @@
+import { notifyError, notifySuccess } from "@/components/ui/ToastNotification";
 import API from "@/config/Axios";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -47,6 +48,31 @@ const restoreProforma = async (id: number) => {
   return data;
 };
 
+// 🔹 Fonction PATCH pour mettre à jour un champ spécifique d'un proformat
+// 🔹 Fonction PATCH pour mettre à jour un champ spécifique d’un proforma
+const patchProformaField = async ({
+  id,
+  field,
+  value,
+}: {
+  id: string;
+  field: string;
+  value: any;
+}) => {
+  if (!field || value === undefined) {
+    throw new Error("Champ ou valeur manquants.");
+  }
+
+  try {
+    const payload = { value, field };
+    const { data } = await API.patch(`/proforma/${id}`, payload);
+    return { id, updatedField: field, updatedValue: value, data };
+  } catch (error: any) {
+    console.error("Erreur PATCH proforma:", error);
+    throw new Error(error.response?.data?.message || "Erreur de mise à jour.");
+  }
+};
+
 // ========================
 // HOOKS
 // ========================
@@ -63,7 +89,7 @@ export const useProformas = () =>
 // 🔹 Détails d’un proforma
 export const useProformaDetail = (id: string | undefined) =>
   useQuery({
-    queryKey: ["proformaDetail", id],
+    queryKey: ["proformas", id],
     queryFn: () => fetchProformaDetail(id!),
     enabled: !!id,
     staleTime: 5 * 60 * 1000,
@@ -88,11 +114,22 @@ export const useUpdateProforma = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["proformas"] });
       queryClient.invalidateQueries({
-        queryKey: ["proformaDetail", variables.id],
+        queryKey: ["proformas", variables.id],
       });
     },
   });
 };
+
+
+// 🔹 Détails d’un proforma
+export const useProformaDetails = (id?: string) =>
+  useQuery({
+    queryKey: ["proformas", id],
+    queryFn: () => fetchProformaDetail(id!),
+    enabled: !!id,
+    staleTime: 5 * 60 * 1000,
+  });
+
 
 // 🔹 Supprimer un proforma
 export const useDeleteProforma = () => {
@@ -101,6 +138,39 @@ export const useDeleteProforma = () => {
     mutationFn: deleteProforma,
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ["proformas"] }),
+  });
+};
+
+// 🔹 Hook pour mettre à jour un champ spécifique d'une vente (PATCH)
+
+export const usePatchProformaField = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: patchProformaField,
+
+    // ✅ Succès : met à jour le cache React Query
+    onSuccess: ({ id, updatedField, updatedValue }) => {
+      // Met à jour la liste des proformas en cache
+      queryClient.setQueryData(["proformas"], (oldProformas: any) => {
+        if (!oldProformas) return [];
+        return oldProformas.map((p: any) =>
+          p.id === id ? { ...p, [updatedField]: updatedValue } : p
+        );
+      });
+
+      // Met à jour le détail du proforma si ouvert
+      queryClient.setQueryData(["proformas", id], (oldDetail: any) => {
+        if (!oldDetail) return oldDetail;
+        return { ...oldDetail, [updatedField]: updatedValue };
+      });
+
+      notifySuccess("Champ mis à jour avec succès !");
+    },
+
+    onError: (error: any) => {
+      notifyError(error.message || "Erreur lors de la mise à jour.");
+    },
   });
 };
 
