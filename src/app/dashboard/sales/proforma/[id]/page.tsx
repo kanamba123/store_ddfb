@@ -5,184 +5,240 @@ import { useParams } from "next/navigation";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import { FaPrint, FaShare, FaDownload } from "react-icons/fa";
 import { useProformaDetail } from "@/hooks/apis/useProformas";
+import { useAuth } from "@/contexts/AuthContext";
+import { useStoreDetail } from "@/hooks/apis/useStores";
+
 
 export default function PublicProformaView() {
   const { id } = useParams();
   const printRef = useRef<HTMLDivElement>(null);
 
+  const { user } = useAuth();
+
+  const { data: detailStore } = useStoreDetail(user?.store?.id as string);
+
   const { data: proforma, isLoading, isError } = useProformaDetail(id as string);
 
   const handlePrint = () => {
-    if (!printRef.current) return;
-    
+    if (!printRef.current || !proforma) return;
+
     const printContent = printRef.current.innerHTML;
     const originalContents = document.body.innerHTML;
     const originalTitle = document.title;
-    
+
     const printDocument = `
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>Proforma Win2Cop - ${proforma?.proformaNumber}</title>
-          <style>
-            @media print {
-              body { 
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                margin: 0;
-                padding: 20px;
-                color: #1f2937;
-                font-size: 13px;
-                line-height: 1.4;
-              }
-              .print-container { max-width: 100%; }
-              .print-header { 
-                border-bottom: 3px solid #2563eb; 
-                padding-bottom: 20px; 
-                margin-bottom: 25px;
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-              }
-              .company-info { flex: 1; }
-              .proforma-info { 
-                text-align: right;
-                background: #f8fafc;
-                padding: 15px;
-                border-radius: 8px;
-                border-left: 4px solid #2563eb;
-              }
-              .logo-container {
-                display: flex;
-                align-items: center;
-                gap: 12px;
-                margin-bottom: 8px;
-              }
-              .logo { 
-                width: 60px;
-                height: 60px;
-                background: linear-gradient(135deg, #2563eb, #1d4ed8);
-                border-radius: 8px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                font-weight: bold;
-                font-size: 14px;
-              }
-              .company-name {
-                font-size: 24px;
-                font-weight: 700;
-                color: #1e40af;
-                margin: 0;
-              }
-              .section { 
-                margin-bottom: 20px; 
-                page-break-inside: avoid;
-              }
-              .section-title { 
-                background: linear-gradient(135deg, #2563eb, #3b82f6);
-                color: white;
-                padding: 10px 16px;
-                font-weight: 600;
-                border-radius: 6px;
-                margin-bottom: 12px;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-              }
-              .info-card {
-                background: #f8fafc;
-                padding: 12px;
-                border-radius: 6px;
-                border-left: 3px solid #2563eb;
-              }
-              table { 
-                width: 100%; 
-                border-collapse: collapse; 
-                margin: 12px 0;
-                font-size: 12px;
-              }
-              th { 
-                background: #1e40af;
-                color: white;
-                padding: 10px;
-                text-align: left;
-                font-weight: 600;
-              }
-              td { 
-                padding: 10px; 
-                border-bottom: 1px solid #e5e7eb;
-              }
-              tr:nth-child(even) { background: #f8fafc; }
-              .total-section { 
-                background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-                padding: 20px;
-                border-radius: 8px;
-                margin-top: 20px;
-                border: 1px solid #e5e7eb;
-              }
-              .total-row {
-                display: flex;
-                justify-content: space-between;
-                padding: 6px 0;
-              }
-              .total-final {
-                border-top: 2px solid #059669;
-                padding-top: 10px;
-                margin-top: 8px;
-                font-size: 16px;
-              }
-              .total-amount { 
-                font-weight: 700; 
-                color: #059669;
-              }
-              .footer { 
-                margin-top: 30px; 
-                padding-top: 20px; 
-                border-top: 2px solid #e5e7eb;
-                text-align: center;
-                font-size: 11px;
-                color: #6b7280;
-              }
-              .badge {
-                background: #10b981;
-                color: white;
-                padding: 4px 8px;
-                border-radius: 12px;
-                font-size: 10px;
-                font-weight: 600;
-              }
-              .no-print { display: none !important; }
-              .public-banner {
-                background: linear-gradient(135deg, #667eea, #764ba2);
-                color: white;
-                padding: 10px;
-                text-align: center;
-                margin-bottom: 20px;
-                border-radius: 6px;
-              }
-              @page { 
-                margin: 1.5cm;
-                size: A4;
-              }
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <title>Proforma Win2Cop - ${proforma.proformaNumber}</title>
+        <style>
+          @media print {
+            body { 
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              margin: 0;
+              padding: 15px;
+              color: #1f2937;
+              font-size: 12px;
+              line-height: 1.3;
             }
-            @media screen {
-              .print-only { display: none; }
+            .print-container { 
+              max-width: 100%;
+              page-break-inside: avoid;
             }
-          </style>
-        </head>
-        <body>
-          <div class="print-container">
-            ${printContent}
-          </div>
-        </body>
-      </html>
-    `;
-    
+            .print-header { 
+              border-bottom: 2px solid #2563eb; 
+              padding-bottom: 15px; 
+              margin-bottom: 20px;
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-start;
+              page-break-after: avoid;
+            }
+            .company-info { flex: 1; }
+            .proforma-info { 
+              text-align: right;
+              background: #f8fafc;
+              padding: 12px;
+              border-radius: 6px;
+              border-left: 3px solid #2563eb;
+              page-break-inside: avoid;
+            }
+            .logo-container {
+              display: flex;
+              align-items: center;
+              gap: 10px;
+              margin-bottom: 6px;
+            }
+            .logo { 
+              width: 50px;
+              height: 50px;
+              background: linear-gradient(135deg, #2563eb, #1d4ed8);
+              border-radius: 6px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: white;
+              font-weight: bold;
+              font-size: 12px;
+            }
+            .company-name {
+              font-size: 20px;
+              font-weight: 700;
+              color: #1e40af;
+              margin: 0;
+            }
+            .section { 
+              margin-bottom: 15px; 
+              page-break-inside: avoid;
+            }
+            .section-title { 
+              background: linear-gradient(135deg, #2563eb, #3b82f6);
+              color: white;
+              padding: 8px 12px;
+              font-weight: 600;
+              border-radius: 4px;
+              margin-bottom: 10px;
+              font-size: 11px;
+              page-break-after: avoid;
+            }
+            .info-card {
+              background: #f8fafc;
+              padding: 10px;
+              border-radius: 4px;
+              border-left: 2px solid #2563eb;
+              page-break-inside: avoid;
+            }
+            table { 
+              width: 100%; 
+              border-collapse: collapse; 
+              margin: 10px 0;
+              font-size: 11px;
+              page-break-inside: avoid;
+            }
+            th { 
+              background: #1e40af;
+              color: white;
+              padding: 8px;
+              text-align: left;
+              font-weight: 600;
+              font-size: 10px;
+            }
+            td { 
+              padding: 8px; 
+              border-bottom: 1px solid #e5e7eb;
+              page-break-inside: avoid;
+              break-inside: avoid;
+            }
+            tr { 
+              page-break-inside: avoid;
+              break-inside: avoid;
+            }
+            tr:nth-child(even) { background: #f8fafc; }
+            .total-section { 
+              background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+              padding: 15px;
+              border-radius: 6px;
+              margin-top: 15px;
+              border: 1px solid #e5e7eb;
+              page-break-inside: avoid;
+            }
+            .total-row {
+              display: flex;
+              justify-content: space-between;
+              padding: 4px 0;
+            }
+            .total-final {
+              border-top: 2px solid #059669;
+              padding-top: 8px;
+              margin-top: 6px;
+              font-size: 14px;
+            }
+            .total-amount { 
+              font-weight: 700; 
+              color: #059669;
+            }
+            .footer { 
+              margin-top: 20px; 
+              padding-top: 15px; 
+              border-top: 1px solid #e5e7eb;
+              text-align: center;
+              font-size: 10px;
+              color: #6b7280;
+              page-break-before: avoid;
+            }
+            .badge {
+              background: #10b981;
+              color: white;
+              padding: 3px 6px;
+              border-radius: 10px;
+              font-size: 9px;
+              font-weight: 600;
+            }
+            
+            /* Optimisations pour éviter les coupures */
+            .no-print { display: none !important; }
+            .public-banner {
+              background: linear-gradient(135deg, #667eea, #764ba2);
+              color: white;
+              padding: 8px;
+              text-align: center;
+              margin-bottom: 15px;
+              border-radius: 4px;
+              font-size: 11px;
+              page-break-after: avoid;
+            }
+            
+            /* Empêcher les coupures dans les éléments importants */
+            h1, h2, h3, h4, h5, h6 {
+              page-break-after: avoid;
+            }
+            
+            /* Gestion des tableaux longs */
+            table {
+              break-inside: auto;
+            }
+            
+            tr {
+              break-inside: avoid;
+              break-after: auto;
+            }
+            
+            /* Ajustement des marges de page */
+            @page { 
+              margin: 1cm;
+              size: A4;
+            }
+            
+            @page :first {
+              margin-top: 1.5cm;
+            }
+          }
+          @media screen {
+            .print-only { display: none; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="print-container">
+          ${printContent}
+        </div>
+      </body>
+    </html>
+  `;
+
     document.body.innerHTML = printDocument;
-    window.print();
-    document.body.innerHTML = originalContents;
-    document.title = originalTitle;
+
+    // Attendre que le contenu soit chargé avant d'imprimer
+    setTimeout(() => {
+      window.print();
+
+      // Restaurer le contenu original
+      setTimeout(() => {
+        document.body.innerHTML = originalContents;
+        document.title = originalTitle;
+        window.location.reload();
+      }, 500);
+    }, 100);
   };
 
   const handleShare = async () => {
@@ -204,8 +260,6 @@ export default function PublicProformaView() {
   };
 
   const handleDownloadPDF = () => {
-    // Implémentation pour générer un PDF
-    // Vous pouvez utiliser des librairies comme jsPDF ou html2pdf.js
     alert('Fonctionnalité PDF à implémenter');
   };
 
@@ -214,7 +268,7 @@ export default function PublicProformaView() {
       <LoadingSpinner text="Chargement du proforma..." isLoading />
     </div>
   );
-  
+
   if (isError || !proforma) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <LoadingSpinner text="Proforma introuvable ou lien expiré" isError />
@@ -222,11 +276,11 @@ export default function PublicProformaView() {
   );
 
   const companyInfo = {
-    name: "Win2Cop",
-    address: "Avenue de l'Université, Bujumbura",
-    phone: "+257 61 123 456",
-    email: "contact@win2cop.bi",
-    website: "www.win2cop.bi"
+    name: detailStore.storeName,
+    address: detailStore?.storeAddress,
+    phone: detailStore?.storeContactPhone?.call,
+    email: detailStore?.storeContactMail,
+    website: "https://www.win2cop.com"
   };
 
   return (
@@ -247,7 +301,7 @@ export default function PublicProformaView() {
             <FaPrint />
             <span>Imprimer</span>
           </button>
-          
+
           <button
             className="flex items-center gap-2 bg-blue-600 text-white px-4 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:bg-blue-700"
             onClick={handleShare}
@@ -255,7 +309,7 @@ export default function PublicProformaView() {
             <FaShare />
             <span>Partager</span>
           </button>
-          
+
           <button
             className="flex items-center gap-2 bg-green-600 text-white px-4 py-3 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 hover:bg-green-700"
             onClick={handleDownloadPDF}
@@ -291,7 +345,7 @@ export default function PublicProformaView() {
                   </div>
                 </div>
               </div>
-              
+
               <div className="proforma-info">
                 <h2 className="text-2xl font-bold text-gray-800 mb-3">PROFORMA</h2>
                 <div className="space-y-2 text-sm">
