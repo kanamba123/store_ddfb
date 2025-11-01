@@ -20,6 +20,7 @@ const SimpleDataManyPhotosEditInline = ({
   forder,
   namePitch,
   suffixName = "",
+  delet = true,
 }) => {
   const [images, setImages] = useState(value);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -28,11 +29,14 @@ const SimpleDataManyPhotosEditInline = ({
   const [selectedUploader, setSelectedUploader] = useState("image");
   const [loading, setLoading] = useState(false);
   const [showConfirmDelete, setShowConfirmDelete] = useState(false);
-   const { t } = useTranslation();
+  const { t } = useTranslation();
 
   const apiUrl = `${API_URL}/${endpoint}/${id}`;
   const nameForFile = `${namePitch}${(suffixName && suffixName.replace(/\s+/g, "_").toLowerCase()) || ""
     }`;
+
+
+  console.log("Index image ", selectedImageIndex)
 
   // Ajouter une image depuis fichier
   const addNewPhoto = async () => {
@@ -117,13 +121,15 @@ const SimpleDataManyPhotosEditInline = ({
       const res = await fetch(apiUrl, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ field, value: updatedImages }),
+        body: JSON.stringify({ field, value: updatedImages, delet }),
       });
       if (!res.ok) throw new Error("Erreur suppression");
-      await deleteImageFromFirebase(images[selectedImageIndex]);
+      await deleteImageFromFirebase(images[selectedImageIndex],
+        notifySuccess("Image supprimée !")
+      );
       setImages(updatedImages);
       if (onSave) onSave(await res.json());
-      notifySuccess("Image supprimée !");
+
     } catch (err) {
       notifyError(err.message);
     } finally {
@@ -241,14 +247,14 @@ const SimpleDataManyPhotosEditInline = ({
           )}
 
           <ConfirmDialog
-                      isOpen={showConfirmDelete}
-                      title={t("common.delete")}
-                      message={t("common.confirmDelete")}
-                      confirmLabel={t("common.delete")}
-                      cancelLabel={t("common.cancel")}
-                      onConfirm={handleDeleteImage}
-                      onCancel={() => setShowConfirmDelete(false)}
-                    /> 
+            isOpen={showConfirmDelete}
+            title={t("common.delete")}
+            message={t("common.confirmDelete")}
+            confirmLabel={t("common.delete")}
+            cancelLabel={t("common.cancel")}
+            onConfirm={handleDeleteImage}
+            onCancel={() => setShowConfirmDelete(false)}
+          />
         </div>
       )}
     </div>
