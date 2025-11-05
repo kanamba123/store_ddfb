@@ -1,4 +1,5 @@
 import { Product } from "./Product";
+import { Specification } from "./Specification";
 
 export interface VariantsProduct {
   id: number;
@@ -6,7 +7,6 @@ export interface VariantsProduct {
   variantProductName: string;
   recommendedPrice: number;
   purchasePrice: number;
-  specifications: string[] | null;
   sellingPrice: number;
   status: string;
   isDisplay: boolean;
@@ -18,6 +18,13 @@ export interface VariantsProduct {
   storeId: string;
   deletedAt: string | null;
   createdAt: string;
-  updatedAt: string;  
-
+  updatedAt: string;
+  qrCode: string;
+  specifications: Specification;
+  productCode: string;
+  functions: any[];
+  features: any[];
+  isPromotion: boolean;
+  promotion: any;
+  promotionId: number | null;
 }

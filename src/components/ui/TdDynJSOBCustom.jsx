@@ -3,227 +3,190 @@ import { toast } from "react-toastify";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { API_URL } from "@/config/API";
 
+const LANG_OPTIONS = [
+  { code: "fr", label: "Français 🇫🇷" },
+  { code: "en", label: "Anglais 🇬🇧" },
+  { code: "kir", label: "Kirundi 🇧🇮" },
+  { code: "sw", label: "Swahili 🇹🇿" },
+];
+
 const TdDynJSOBCustom = ({
-  field,
+  field = "description",
   id,
   value = {},
   onSave,
   endpoint,
   editable = false,
 }) => {
-  const [updatedSpecs, setUpdatedSpecs] = useState(value);
+  const [descriptions, setDescriptions] = useState(value || {});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [editMode, setEditMode] = useState(null);
-  const [newSpecKey, setNewSpecKey] = useState("");
-  const [newSpecValue, setNewSpecValue] = useState("");
+  const [editLang, setEditLang] = useState(null);
+  const [newLang, setNewLang] = useState("");
+  const [newText, setNewText] = useState("");
   const [showAddField, setShowAddField] = useState(false);
 
   const handleOpenModal = () => setModalOpen(true);
   const handleCloseModal = () => {
-    setEditMode(null);
+    setEditLang(null);
     setShowAddField(false);
     setModalOpen(false);
     setError(null);
   };
 
-  const updateValue = async (key) => {
-    const newValue = updatedSpecs[key]?.trim();
-    if (!newValue) {
-      setError("La valeur ne peut pas être vide.");
-      return;
-    }
-    if (newValue === value[key]) {
-      setEditMode(null);
-      return;
-    }
-
+  const patchData = async (newData) => {
     setLoading(true);
-    setError(null);
-    const payload = { field, value: { ...value, [key]: newValue } };
     try {
-      const response = await fetch(`${API_URL}/${endpoint}/${id}`, {
+      const payload = { field, value: newData };
+      const res = await fetch(`${API_URL}/${endpoint}/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
-      const responseData = await response.json();
-      if (!response.ok)
-        throw new Error(responseData.message || "Erreur de mise à jour");
-
-      onSave && onSave(responseData);
-      toast.success("Modification réussie !");
-      handleCloseModal();
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Erreur de mise à jour");
+      onSave && onSave(data);
+      toast.success("Mise à jour réussie !");
     } catch (err) {
+      toast.error(err.message);
       setError(err.message);
-      toast.error("Erreur lors de la mise à jour !");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleAddNewSpec = async () => {
-    if (!newSpecKey.trim() || !newSpecValue.trim()) {
-      setError("Le nom et la valeur sont requis.");
+  const handleEdit = (lang, text) => {
+    const newData = { ...descriptions, [lang]: text };
+    setDescriptions(newData);
+  };
+
+  const handleSaveEdit = async () => {
+    await patchData(descriptions);
+    setEditLang(null);
+  };
+
+  const handleDelete = async (lang) => {
+    const newData = { ...descriptions };
+    delete newData[lang];
+    setDescriptions(newData);
+    await patchData(newData);
+  };
+
+  const handleAddNew = async () => {
+    if (!newLang || !newText.trim()) {
+      setError("Veuillez sélectionner une langue et saisir une description.");
       return;
     }
-    if (updatedSpecs[newSpecKey]) {
-      setError("Cette valeur existe déjà.");
+    if (descriptions[newLang]) {
+      setError("Cette langue existe déjà.");
       return;
     }
 
-    const newSpecs = { ...updatedSpecs, [newSpecKey]: newSpecValue };
-    setUpdatedSpecs(newSpecs);
-    setNewSpecKey("");
-    setNewSpecValue("");
+    const newData = { ...descriptions, [newLang]: newText };
+    setDescriptions(newData);
+    setNewLang("");
+    setNewText("");
     setShowAddField(false);
-
-    try {
-      const payload = { field, value: newSpecs };
-      const response = await fetch(`${API_URL}/${endpoint}/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const responseData = await response.json();
-      if (!response.ok)
-        throw new Error(responseData.message || "Erreur d'ajout");
-
-      onSave && onSave(responseData);
-      toast.success("Nouvelle valeur ajoutée !");
-    } catch (err) {
-      setError(err.message);
-      toast.error("Erreur lors de l'ajout !");
-    }
+    await patchData(newData);
   };
 
-  const handleDeleteSpec = async (key) => {
-    const newSpecs = { ...updatedSpecs };
-    delete newSpecs[key];
-    setUpdatedSpecs(newSpecs);
-
-    try {
-      const payload = { field, value: newSpecs };
-      const response = await fetch(`${API_URL}/${endpoint}/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const responseData = await response.json();
-      if (!response.ok)
-        throw new Error(responseData.message || "Erreur de suppression");
-
-      onSave && onSave(responseData);
-      toast.success("Valeur supprimée !");
-    } catch (err) {
-      setError(err.message);
-      toast.error("Erreur lors de la suppression !");
-    }
-  };
-
-  const specEntries = Object.entries(updatedSpecs || {});
-  const firstSpec = specEntries[0];
+  const firstLang = Object.entries(descriptions)[0];
 
   return (
     <>
-      {/* Cellule cliquable */}
+      {/* Aperçu de la cellule */}
       <div
         className="whitespace-nowrap overflow-hidden text-ellipsis cursor-pointer max-w-[300px]"
         onClick={handleOpenModal}
       >
-        {firstSpec ? `${firstSpec[0]}: ${firstSpec[1]}...` : "empty"}
+        {firstLang
+          ? `${firstLang[0].toUpperCase()}: ${firstLang[1].substring(0, 20)}...`
+          : "Aucune description"}
       </div>
 
       {/* Modal */}
       {modalOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/40 to-red-500/40 backdrop-blur-sm"></div>
-          <div className="bg-[var(--color-bg-primary)] relative rounded-lg shadow-lg w-96 p-6 z-10 animate-scaleIn">
-            <h2 className="mb-3 text-lg font-semibold">
-              Modifier les informations
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
+          <div className="bg-white dark:bg-gray-800 relative rounded-lg shadow-lg w-96 p-6 z-10">
+            <h2 className="mb-4 text-lg font-semibold">
+              Gérer les descriptions multilingues
             </h2>
 
-            {specEntries.map(([key, val]) => (
-              <div
-                key={key}
-                className="flex justify-between items-center mb-3 w-full"
-              >
-                <div className="flex items-center">
-                  <strong>{key}:</strong>
-                  {editMode === key ? (
-                    <input
-                      className="ml-2 border rounded px-2 py-1 text-sm w-full focus:outline-none focus:ring focus:ring-blue-200"
-                      value={updatedSpecs[key]}
-                      onChange={(e) =>
-                        setUpdatedSpecs({
-                          ...updatedSpecs,
-                          [key]: e.target.value,
-                        })
-                      }
-                      onBlur={() => updateValue(key)}
-                      disabled={loading}
-                    />
-                  ) : (
-                    <span className="ml-2">{val}</span>
-                  )}
-                </div>
-
+            {Object.entries(descriptions).map(([lang, text]) => (
+              <div key={lang} className="flex items-center justify-between mb-3">
+                <span className="font-semibold w-14">{lang.toUpperCase()}:</span>
+                {editLang === lang ? (
+                  <input
+                    className="flex-1 border rounded px-2 py-1 text-sm"
+                    value={text}
+                    onChange={(e) => handleEdit(lang, e.target.value)}
+                    onBlur={handleSaveEdit}
+                    disabled={loading}
+                  />
+                ) : (
+                  <span className="flex-1 text-sm text-gray-700 dark:text-gray-300">
+                    {text}
+                  </span>
+                )}
                 {editable && (
-                  <div className="flex gap-3">
+                  <div className="flex gap-2 ml-2">
                     <FaEdit
-                      className="text-teal-600 cursor-pointer hover:scale-110 transition"
-                      onClick={() => {
-                        setEditMode(key);
-                        setShowAddField(false);
-                      }}
+                      className="text-blue-600 cursor-pointer hover:scale-110"
+                      onClick={() => setEditLang(lang)}
                     />
                     <FaTrash
-                      className="text-red-600 cursor-pointer hover:scale-110 transition"
-                      onClick={() => handleDeleteSpec(key)}
+                      className="text-red-600 cursor-pointer hover:scale-110"
+                      onClick={() => handleDelete(lang)}
                     />
                   </div>
                 )}
               </div>
             ))}
 
-            {/* Ajouter champ */}
-            {editable && !editMode && !showAddField && (
+            {/* Ajouter une langue */}
+            {editable && !showAddField && (
               <button
-                className="mt-2 w-full bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition"
+                className="mt-3 w-full bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition"
                 onClick={() => setShowAddField(true)}
               >
-                Ajouter une autre information
+                Ajouter une autre langue
               </button>
             )}
 
             {editable && showAddField && (
               <div className="mt-3">
+                <select
+                  className="w-full border rounded px-2 py-1 mb-2 text-sm"
+                  value={newLang}
+                  onChange={(e) => setNewLang(e.target.value)}
+                >
+                  <option value="">Choisir une langue</option>
+                  {LANG_OPTIONS.map((lang) => (
+                    <option key={lang.code} value={lang.code}>
+                      {lang.label}
+                    </option>
+                  ))}
+                </select>
+
                 <input
-                  className="w-full border rounded px-2 py-1 mb-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
-                  placeholder="Nom de l'information"
-                  value={newSpecKey}
-                  onChange={(e) => setNewSpecKey(e.target.value)}
+                  className="w-full border rounded px-2 py-1 mb-2 text-sm"
+                  placeholder="Texte dans la langue choisie"
+                  value={newText}
+                  onChange={(e) => setNewText(e.target.value)}
                 />
-                <input
-                  className="w-full border rounded px-2 py-1 mb-2 text-sm focus:outline-none focus:ring focus:ring-blue-200"
-                  placeholder="Valeur"
-                  value={newSpecValue}
-                  onChange={(e) => setNewSpecValue(e.target.value)}
-                />
+
                 <div className="flex justify-end gap-2">
                   <button
-                    className="px-3 py-1 rounded bg-gray-300 hover:bg-gray-400 transition"
+                    className="px-3 py-1 rounded bg-gray-300 hover:bg-gray-400"
                     onClick={() => setShowAddField(false)}
                   >
                     Annuler
                   </button>
                   <button
-                    className="px-3 py-1 rounded bg-green-600 text-white hover:bg-green-700 transition"
-                    onClick={handleAddNewSpec}
+                    className="px-3 py-1 rounded bg-green-600 text-white hover:bg-green-700"
+                    onClick={handleAddNew}
                   >
                     Ajouter
                   </button>
@@ -235,7 +198,7 @@ const TdDynJSOBCustom = ({
 
             <div className="flex justify-end mt-4">
               <button
-                className="px-3 py-1 rounded bg-gray-400 hover:bg-gray-500 text-white transition"
+                className="px-3 py-1 rounded bg-gray-400 hover:bg-gray-500 text-white"
                 onClick={handleCloseModal}
               >
                 Fermer

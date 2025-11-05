@@ -17,42 +17,18 @@ import { increasePriceByPercentage } from "@/utils/priceUtils";
 import { useTranslation } from "react-i18next";
 import TdDynJSOBWithoutKeyCustom from '@/components/ui/TdDynJSOBWithoutKeyCustom';
 import TdCustomViewEditPromotion from '@/components/ui/TdCustomViewEditPromotion';
-
-interface Specification {
-  [key: string]: string;
-}
+import { VariantsProduct } from '@/types/VariantsProduct';
 
 
-interface VariantData {
-  id: number;
-  variantProductName: string;
-  variantType: string;
-  purchasePrice: number;
-  recommendedPrice: number;
-  slug: string;
-  description?: string;
-  qrCode: string;
-  image: string[];
-  specifications: Specification;
-  productCode: string;
-  functions: any[];
-  features: any[];
-  isPromotion: boolean;
-  isDisplay: boolean;
-  Product: Product;
-  promotion: any;
-  productId: number;
-  promotionId: number | null;
-  sellingPrice: number;
-  status: string;
-}
+
+
 
 const ProductDetailBackoffice = () => {
   const router = useRouter();
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [variant, setVariant] = useState<VariantData | null>(null);
+  const [variant, setVariant] = useState<VariantsProduct | null>(null);
   const [data, setData] = useState<Product[]>([])
   const [showQR, setShowQR] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -101,12 +77,6 @@ const ProductDetailBackoffice = () => {
     }).format(price);
   };
 
-  const getSpecificationsArray = (specs: Specification) => {
-    return Object.entries(specs).map(([key, value]) => ({
-      key: key.charAt(0).toUpperCase() + key.slice(1),
-      value
-    }));
-  };
 
   const handleDelete = async () => {
     if (!variant) return;
@@ -616,7 +586,7 @@ const ProductDetailBackoffice = () => {
 
         <TdCustomViewEditPromotion
           id={variant.id}
-          field="status" // <-- obligatoire si tu ne changes pas l'interface
+          field="status" 
           oldPrice={variant?.sellingPrice}
           promotionId={variant.promotionId}
           itemValue={variant?.status}

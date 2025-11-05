@@ -11,9 +11,10 @@ const TdDynJSOBCustomGrid = ({
   endpoint,
   editable = false,
 }) => {
+ 
   const [specs, setSpecs] = useState(
-    Object.entries(value).map(([key, val]) => ({ key, value: val }))
-  );
+  Object.entries(value || {}).map(([key, val]) => ({ key, value: val }))
+);
   const [editIndex, setEditIndex] = useState(null);
   const [editValue, setEditValue] = useState("");
   const [newSpec, setNewSpec] = useState({ key: "", value: "" });
