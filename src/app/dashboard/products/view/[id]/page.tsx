@@ -540,7 +540,7 @@ const ProductDetailBackoffice = () => {
               <TdDynJSOBCustom
                 id={variant.id}
                 field="description"
-                value={variant?.description ?? variant.description}
+                value={variant?.description ?? variant?.description}
                 endpoint={dataendPoint}
                 editable
                 onSave={handleSave}

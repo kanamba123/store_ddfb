@@ -95,17 +95,17 @@ const TdDynJSOBCustom = ({
 
   return (
     <>
-      {/* Aperçu de la cellule */}
       <div
         className="whitespace-nowrap overflow-hidden text-ellipsis cursor-pointer max-w-[300px]"
         onClick={handleOpenModal}
       >
-        {firstLang
+        {firstLang &&
+        typeof firstLang[1] === "string" &&
+        firstLang[1].trim() !== ""
           ? `${firstLang[0].toUpperCase()}: ${firstLang[1].substring(0, 20)}...`
           : "Aucune description"}
       </div>
 
-      {/* Modal */}
       {modalOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
@@ -115,8 +115,13 @@ const TdDynJSOBCustom = ({
             </h2>
 
             {Object.entries(descriptions).map(([lang, text]) => (
-              <div key={lang} className="flex items-center justify-between mb-3">
-                <span className="font-semibold w-14">{lang.toUpperCase()}:</span>
+              <div
+                key={lang}
+                className="flex items-center justify-between mb-3"
+              >
+                <span className="font-semibold w-14">
+                  {lang.toUpperCase()}:
+                </span>
                 {editLang === lang ? (
                   <input
                     className="flex-1 border rounded px-2 py-1 text-sm"
@@ -145,7 +150,6 @@ const TdDynJSOBCustom = ({
               </div>
             ))}
 
-            {/* Ajouter une langue */}
             {editable && !showAddField && (
               <button
                 className="mt-3 w-full bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition"

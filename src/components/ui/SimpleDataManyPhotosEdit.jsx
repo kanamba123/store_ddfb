@@ -35,9 +35,6 @@ const SimpleDataManyPhotosEditInline = ({
   const nameForFile = `${namePitch}${(suffixName && suffixName.replace(/\s+/g, "_").toLowerCase()) || ""
     }`;
 
-
-  console.log("Index image ", selectedImageIndex)
-
   // Ajouter une image depuis fichier
   const addNewPhoto = async () => {
     if (!selectedFile) return notifyError("Aucun fichier !");
